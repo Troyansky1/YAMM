@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yamm_app/AddTransaction.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -40,8 +41,11 @@ class _MyHomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () {Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const AddTransaction()),
+  );},
+        tooltip: 'Add a transaction',
         child: const Icon(Icons.add),
       ),
     );
