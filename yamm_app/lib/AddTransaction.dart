@@ -119,18 +119,32 @@ class _AddTransactionState extends State<AddTransaction> {
                   }
                 },
             ), 
-            
-            DropdownMenu<RepeatOptions>(
-              leadingIcon: const Icon(Icons.repeat),
-              initialSelection: RepeatOptions.noRepeat,
-              controller: repeatOptionCont,
-              dropdownMenuEntries: RepeatOptionsEntries,
-              inputDecorationTheme: const InputDecorationTheme(
-                        filled: false,
-                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+               
+            ElevatedButton.icon(
+              
+              onPressed: () {
+                showDialog(
+                  context: context, 
+                  builder: (context)=> AlertDialog(
+                    title: Text("Repeat options"),
+                    content: 
+                      DropdownMenu<RepeatOptions>(
+                        leadingIcon: const Icon(Icons.repeat),
+                        initialSelection: RepeatOptions.noRepeat,
+                        controller: repeatOptionCont,
+                        dropdownMenuEntries: RepeatOptionsEntries,
+                        inputDecorationTheme: const InputDecorationTheme(
+                          filled: false,
+                          contentPadding: EdgeInsets.symmetric(vertical: 5.0),
                       ),
               onSelected: (RepeatOptions? repeat) => setRepeat(repeat),
               ), 
+                  ),);
+              },
+              icon: const Icon( Icons.repeat, size: 24.0, ),
+              label: const Text('Repeat'), // <-- Text
+            ),  
+            
               
             ToggleButtons(
               constraints: BoxConstraints(minWidth: (MediaQuery.of(context).size.width - 36) / 3),              
