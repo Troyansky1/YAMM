@@ -13,6 +13,7 @@ class _AddTransactionState extends State<AddTransaction> {
  TextEditingController dateinput = TextEditingController(); 
  var isOutcomeController = TextEditingController();
 
+ final List<bool> _selections = [true, false];
   
   @override
   void initState() {
@@ -72,7 +73,22 @@ class _AddTransactionState extends State<AddTransaction> {
                   }
                 },
             ),
-              
+            ToggleButtons(
+              constraints: BoxConstraints(minWidth: (MediaQuery.of(context).size.width - 36) / 3),
+              isSelected: _selections,
+              onPressed: (int index){
+              setState(() {
+                _selections[index] = !_selections[index];
+                _selections[(index+1)%2] = !_selections[index];
+              });
+            },
+            borderRadius: BorderRadius.circular(40),
+            borderWidth: 5,
+            children: const [
+              Text("Income"),
+              Text("Outcome")
+            ],
+            ),
             TextField(
               controller: isOutcomeController,
               decoration: InputDecoration(
@@ -80,7 +96,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 labelText: 'Outcome or income?',
                 suffixIcon: IconButton(
                   onPressed: isOutcomeController.clear,
-                  icon: const Icon(Icons.abc),)
+                  icon: const ImageIcon(AssetImage("assets/icons/income.png")),)
     ),
             ),         
             const TextField(
