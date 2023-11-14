@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 
 class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key});
@@ -10,7 +10,15 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
- 
+ TextEditingController dateinput = TextEditingController(); 
+ var isOutcomeController = TextEditingController();
+
+  
+  @override
+  void initState() {
+    dateinput.text = ""; //set the initial value of text field
+    super.initState();
+  }
  
  @override
   Widget build(BuildContext context) {
@@ -21,12 +29,65 @@ class _AddTransactionState extends State<AddTransaction> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[          
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[ 
             Text(
-              'temp text',
+              'Enter a transaction',
+              textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const TextField(
+              decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Amount'),
+              keyboardType: TextInputType.number
+            ),  
+            const TextField(
+              decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Title'),
+            ),  
+            TextField(
+              controller: dateinput,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                icon: Icon(Icons.calendar_today), 
+                labelText: 'Date'),
+                readOnly: true,
+                onTap: () async{
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context, 
+                    initialDate: DateTime.now(), 
+                    firstDate: DateTime(2000), 
+                    lastDate:DateTime(2101)
+                    );
+                    
+                  if(pickedDate != null ){
+                      print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
+                      String formattedDate = DateFormat('dd/MM/yy').format(pickedDate); 
+                      print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                        //you can implement different kind of Date Format here according to your requirement
+
+                      setState(() {
+                         dateinput.text = formattedDate; //set output date to TextField value. 
+                      });
+                  }else{
+                      print("Date is not selected");
+                  }
+                },
+            ),
+              
+            TextField(
+              controller: isOutcomeController,
+              decoration: InputDecoration(
+                //border: OutlineInputBorder(), 
+                labelText: 'Outcome or income?',
+                suffixIcon: IconButton(
+                  onPressed: isOutcomeController.clear,
+                  icon: const Icon(Icons.abc),)
+    ),
+            ),         
+            const TextField(
+              decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Service provider'),
+            ),         
+
+
           ],
         ),
       ),
