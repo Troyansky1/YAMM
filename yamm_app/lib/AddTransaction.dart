@@ -91,7 +91,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 keyboardType: TextInputType.number),
             const TextField(
               decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Title'),
+                  border: OutlineInputBorder(), labelText: 'Service provider'),
             ),
             TextField(
               controller: dateCont,
@@ -196,8 +196,14 @@ class _AddTransactionState extends State<AddTransaction> {
                                             "On  "), // TODO find way to make the space without space char
                                         Expanded(
                                           child: TextField(
-                                            controller: dateCont,
+                                            style:
+                                                const TextStyle(fontSize: 20),
+                                            controller: endDateCont,
                                             decoration: const InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 1,
+                                                        horizontal: 1),
                                                 isDense: true,
                                                 border: OutlineInputBorder(),
                                                 icon:
@@ -213,6 +219,18 @@ class _AddTransactionState extends State<AddTransaction> {
                                                       firstDate: DateTime(2000),
                                                       lastDate: DateTime(
                                                           2125)); //end date
+
+                                              if (pickedDate != null) {
+                                                //pickedDate output format => 2021-03-10 00:00:00.000
+                                                String formattedDate =
+                                                    DateFormat('dd/MM/yy')
+                                                        .format(pickedDate);
+                                                //formatted date output using intl package =>  2021-03-16
+                                                setState(() {
+                                                  endDateCont.text =
+                                                      formattedDate; //set output date to TextField value.
+                                                });
+                                              } else {}
                                             },
                                           ),
                                         )
@@ -233,9 +251,6 @@ class _AddTransactionState extends State<AddTransaction> {
                                     });
                                   },
                                   title: const ListTileTheme(
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    horizontalTitleGap: 5,
                                     child: Row(
                                       //crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: <Widget>[
@@ -243,13 +258,20 @@ class _AddTransactionState extends State<AddTransaction> {
                                             "After  "), // TODO find way to make the space without space char
                                         Expanded(
                                           child: TextField(
-                                            maxLength: 3,
+                                            maxLength: 2,
+                                            style: TextStyle(fontSize: 20),
                                             decoration: InputDecoration(
                                                 border: OutlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 1,
+                                                        horizontal: 1),
+                                                counterText: "",
                                                 labelText: ''),
                                             keyboardType: TextInputType.number,
                                           ),
-                                        )
+                                        ),
+                                        Text("  occurances")
                                       ],
                                     ),
                                   ),
@@ -275,10 +297,6 @@ class _AddTransactionState extends State<AddTransaction> {
               borderRadius: BorderRadius.circular(40),
               borderWidth: 5,
               children: const [Text("Income"), Text("Outcome")],
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Service provider'),
             ),
           ],
         ),
