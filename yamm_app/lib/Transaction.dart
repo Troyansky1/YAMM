@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Transaction {
   int id;
   int amount = 0;
@@ -8,4 +10,19 @@ class Transaction {
   String paymentMethod = "";
   String notes = "";
   Transaction(this.id, this.serviceProvider, this.amount);
+
+  List convertToListItem() {
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+    List<dynamic> lst = [
+      {
+        'id': id,
+        'amount': amount,
+        'isOutcome': isOutcome,
+        'date': date,
+        'serviceProvider': serviceProvider.toString(),
+      }
+    ];
+
+    return lst;
+  }
 }
