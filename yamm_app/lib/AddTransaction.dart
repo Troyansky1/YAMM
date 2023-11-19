@@ -22,7 +22,7 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  Transaction newTransaction = Transaction();
+  Transaction newTransaction = Transaction(0, '', 100);
 
   //Input controllers
   var amountCont = TextEditingController();

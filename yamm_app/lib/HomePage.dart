@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/AddTransaction.dart';
+import 'package:yamm_app/Transaction.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+  HomePage({super.key, required this.title});
 
   final String title;
 
@@ -11,6 +12,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomePage> {
+  List<Transaction> transactions = [
+    Transaction(0, 'Generic super', 10),
+    Transaction(1, 'Pharmacy', 20),
+    Transaction(2, 'My clothing store', 100)
+  ];
+
+  void newTransaction(Transaction transaction) {
+    setState(() {
+      transactions.add(transaction);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,22 +31,34 @@ class _MyHomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
+      body: ListView.builder(
+          itemCount: transactions.length,
+          itemBuilder: (BuildContext context, int index) {
+            var transaction = transactions[index];
+            return Card(
+                child: Row(
+              children: <Widget>[
+                Expanded(
+                    child: ListTile(
+                  title: Text(transaction.serviceProvider),
+                  subtitle: Text(transaction.amount.toString()),
+                )),
+                Row(
+                  children: <Widget>[
+                    IconButton(onPressed: () => {}, icon: Icon(Icons.edit)),
+                    IconButton(onPressed: () => {}, icon: Icon(Icons.delete)),
+                  ],
+                )
+              ],
+            ));
+          }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const AddTransaction()),
-  );},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddTransaction()),
+          );
+        },
         tooltip: 'Add a transaction',
         child: const Icon(Icons.add),
       ),
