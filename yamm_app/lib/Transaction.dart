@@ -12,7 +12,7 @@ class Transaction {
   Transaction(this.id, this.serviceProvider, this.amount);
 
   List convertToListItem() {
-    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(date);
     List<dynamic> lst = [
       {
         'id': id,

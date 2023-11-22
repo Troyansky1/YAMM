@@ -35,7 +35,7 @@ class _AddTransactionState extends State<AddTransaction> {
   int? selectedRepeatEnd;
   bool repeat = false;
   bool isIncome = true;
-  List<bool> _incomeOutcome = [true, false];
+  final List<bool> _incomeOutcome = [true, false];
 
   void setIncomeOutcome(int indexToToggle) {
     // Presses the current button and unpresses the other button. Does nothing if button is pressed.
@@ -124,12 +124,12 @@ class _AddTransactionState extends State<AddTransaction> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text("Repeat options"),
+                    title: const Text("Repeat options"),
                     actions: <Widget>[
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          child: Text(
+                          child: const Text(
                             "Repeat every:",
                           ),
                         ),
@@ -149,7 +149,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          child: Text(
+                          child: const Text(
                             "End after:",
                           ),
                         ),
@@ -187,7 +187,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                   },
                                   title: ListTileTheme(
                                     contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 20),
+                                        const EdgeInsets.symmetric(horizontal: 20),
                                     horizontalTitleGap: 5,
                                     child: Row(
                                       //crossAxisAlignment: CrossAxisAlignment.stretch,
