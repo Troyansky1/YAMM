@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:intl/intl.dart';
 
 class Transaction {
@@ -10,19 +12,28 @@ class Transaction {
   String paymentMethod = "";
   String notes = "";
   Transaction(this.id, this.serviceProvider, this.amount);
+  final Map<String, dynamic> transactionMap = LinkedHashMap(); // Is a HashMap
+
+  void initMap() {
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(date);
+    transactionMap.addAll({
+      'id': id,
+      'serviceProvider': serviceProvider.toString(),
+      'amount': amount,
+      'isOutcome': isOutcome,
+      'date': formattedDate,
+    });
+  }
 
   List convertToListItem() {
-    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(date);
-    List<dynamic> lst = [
-      {
-        'id': id,
-        'amount': amount,
-        'isOutcome': isOutcome,
-        'date': date,
-        'serviceProvider': serviceProvider.toString(),
-      }
-    ];
+    initMap();
+    final valuesList = transactionMap.values.toList(growable: false);
+    return valuesList;
+  }
 
-    return lst;
+  List convertKeysToListItem() {
+    initMap();
+    final valuesList = transactionMap.values.toList(growable: false);
+    return valuesList;
   }
 }

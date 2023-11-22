@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:open_file/open_file.dart';
@@ -37,6 +36,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late List<List<dynamic>> employeeData;
+  late List<List<dynamic>> transactionsList;
 
   @override
   initState() {
@@ -52,6 +52,22 @@ class _MyHomePageState extends State<MyHomePage> {
       row.add(" Experience : ${i * 5}");
       employeeData.add(row);
     }
+
+    transactionsList = List<List<dynamic>>.empty(growable: true);
+    transactionsList = [
+      Transaction(0, 'Generic super', 10).convertToListItem(),
+      Transaction(1, 'Pharmacy', 20).convertToListItem(),
+      Transaction(2, 'My clothing store', 100).convertToListItem()
+    ];
+  }
+
+  List<Widget> getTextWidgets(List<dynamic> lst) {
+    List<Widget> _widgets = [];
+    for (int i = 1; i < lst.length; i++) {
+      // Does not include id
+      _widgets.add(Text(lst[i].toString()));
+    }
+    return _widgets;
   }
 
   getCsv() async {
@@ -65,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 // convert rows to String and write as csv file
 
-      String csv = const ListToCsvConverter().convert(employeeData);
+      String csv = const ListToCsvConverter().convert(transactionsList);
       f.writeAsString(csv);
     } else {
       Map<Permission, PermissionStatus> statuses = await [
@@ -88,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             ListView.builder(
                 shrinkWrap: true,
-                itemCount: employeeData.length,
+                itemCount: transactionsList.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: Padding(
@@ -96,11 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(employeeData[index][0]),
-                          Text(employeeData[index][1]),
-                          Text(employeeData[index][2]),
-                        ],
+                        children: getTextWidgets(transactionsList[index]),
+                        //Text(transactionsList[index][0].toString()),
+                        //Text(transactionsList[index][1].toString()),
+                        //Text(transactionsList[index][2].toString()),
                       ),
                     ),
                   );
