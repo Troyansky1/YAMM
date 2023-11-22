@@ -186,8 +186,8 @@ class _AddTransactionState extends State<AddTransaction> {
                                     });
                                   },
                                   title: ListTileTheme(
-                                    contentPadding:
-                                        const EdgeInsets.symmetric(horizontal: 20),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
                                     horizontalTitleGap: 5,
                                     child: Row(
                                       //crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/AddTransaction.dart';
 import 'package:yamm_app/SaveTransaction.dart';
 import 'package:yamm_app/Transaction.dart';
 
@@ -59,7 +58,7 @@ class _MyHomePageState extends State<HomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MyHomePage()),
+            MaterialPageRoute(builder: (context) => const MyHomePage()),
           );
         },
         tooltip: 'Add a transaction',

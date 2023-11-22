@@ -1,19 +1,17 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:open_file/open_file.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:yamm_app/Transaction.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -22,13 +20,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -62,28 +60,47 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Widget> getTextWidgets(List<dynamic> lst) {
-    List<Widget> _widgets = [];
+    List<Widget> widgets = [];
     for (int i = 1; i < lst.length; i++) {
       // Does not include id
-      _widgets.add(Text(lst[i].toString()));
+      widgets.add(Text(lst[i].toString()));
     }
-    return _widgets;
+    return widgets;
   }
 
   getCsv() async {
+    print("permission granted");
+    Directory generalDownloadDir = Directory('/storage/emulated/0/Download');
+    String dir = "${generalDownloadDir}/mycsv1.csv";
+    File f = await File('${generalDownloadDir.path}/mycsv.csv').create();
+    String transactionsCSV =
+        const ListToCsvConverter().convert(transactionsList);
+    String keysCSV = const ListToCsvConverter().convert(transactionsList);
+    print(f.lastModified().toString());
+    f.writeAsString(keysCSV);
+    f.writeAsString(transactionsCSV);
+
     if (await Permission.storage.request().isGranted) {
-//store file in documents folder
+      print("permission granted");
+      //store file in documents folder
 
-      String dir = (await getExternalStorageDirectory())!.path + "/mycsv.csv";
-      String file = "$dir";
+      Directory generalDownloadDir = Directory('/storage/emulated/0/Download');
+      //String dir = "${(await getExternalStorageDirectory())!.path}/mycsv1.csv";
+      String dir = "${generalDownloadDir}/mycsv1.csv";
+      File f = await File('${generalDownloadDir.path}/mycsv.csv').create();
+      //String file = dir;
+      //File f = File(file);
 
-      File f = new File(file);
+      // convert rows to String and write as csv file
 
-// convert rows to String and write as csv file
-
-      String csv = const ListToCsvConverter().convert(transactionsList);
-      f.writeAsString(csv);
+      String transactionsCSV =
+          const ListToCsvConverter().convert(transactionsList);
+      String keysCSV = const ListToCsvConverter().convert(transactionsList);
+      print(f.lastModified().toString());
+      f.writeAsString(keysCSV);
+      f.writeAsString(transactionsCSV);
     } else {
+      print("permission not granted");
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
       ].request();
@@ -96,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text("Flutter CSV Upload"),
+        title: const Text("Flutter CSV Upload"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -126,11 +143,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.green,
                 height: 30,
                 child: TextButton(
-                  child: Text(
+                  onPressed: getCsv,
+                  child: const Text(
                     "Export to CSV",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: getCsv,
                 ),
               ),
             ),
