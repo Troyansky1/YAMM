@@ -16,24 +16,26 @@ getCsvFile() async {
 
 writeListToCsv(List<List<dynamic>> lst) async {
   File file = await getCsvFile();
-  String keysCSV = const ListToCsvConverter().convert(lst);
-  String ValuesCSV = const ListToCsvConverter().convert(lst);
-  await file.writeAsString(keysCSV);
-  file.writeAsString(ValuesCSV);
-  print("Wrote list to csv");
+  file.open(mode: FileMode.append);
+  // Added delimiters at the eof
+  String ValuesCSV = const ListToCsvConverter().convert(lst) + "\r\n";
+
+  print("Wrote list to csv:");
+
+  await file.writeAsString(
+    ValuesCSV,
+    mode: FileMode.append,
+  );
 }
 
-Future<List<dynamic>> readListFromCsv() async {
-  late List<List<dynamic>> ImportedTransactionsList;
-  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  File file = getCsvFile();
-  print("CSV to List");
-  final input = file.openRead();
-  final fields = await input
-      .transform(utf8.decoder)
-      .transform(new CsvToListConverter())
-      .toList();
-  ImportedTransactionsList = fields;
-  print("Read list from csv");
-  return ImportedTransactionsList;
+DeleteCsv() async {
+  File file = await getCsvFile();
+  file.open(mode: FileMode.append);
+  String ValuesCSV = const ListToCsvConverter().convert([[]]);
+  await file.writeAsString(
+    ValuesCSV,
+    mode: FileMode.write,
+  );
+  print(ValuesCSV);
+  print("Deleted list from csv");
 }

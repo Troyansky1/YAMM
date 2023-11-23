@@ -42,6 +42,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     ImportedTransactionsList = List<List<dynamic>>.empty(growable: true);
+    transactionsList = List<List<dynamic>>.empty(growable: true);
+    transactionsList = [
+      Transaction(0, 'Generic super', 10).convertToListItem(),
+      Transaction(1, 'Pharmacy', 20).convertToListItem(),
+      //Transaction(2, 'My clothing store', 100).convertToListItem(),
+      //Transaction(2, 'My clothing store2', 100).convertToListItem()
+    ];
   }
 
   readListFromCsv() async {
@@ -58,12 +65,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     print("Read list from csv");
+    print(ImportedTransactionsList);
   }
 
   List<Widget> getTextWidgets(List<dynamic> lst) {
     List<Widget> widgets = [];
-    for (int i = 1; i < lst.length; i++) {
-      // Does not include id
+    for (int i = 0; i < lst.length; i++) {
+      // Includes all fields
       widgets.add(Text(lst[i].toString()));
     }
     return widgets;
@@ -81,6 +89,27 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            TextButton(
+              onPressed: () => writeListToCsv(transactionsList),
+              child: const Text(
+                "Save list",
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+            TextButton(
+              onPressed: () => readListFromCsv(),
+              child: const Text(
+                "Load list",
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+            TextButton(
+              onPressed: () => DeleteCsv(),
+              child: const Text(
+                "Delete list",
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
             ListView.builder(
                 shrinkWrap: true,
                 itemCount: ImportedTransactionsList.length,
@@ -97,20 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 }),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                color: Colors.green,
-                height: 30,
-                child: TextButton(
-                  onPressed: () => readListFromCsv(),
-                  child: const Text(
-                    "Export to CSV",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
