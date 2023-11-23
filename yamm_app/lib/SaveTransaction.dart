@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:yamm_app/Transaction.dart';
+import 'package:yamm_app/SaveAndLoadCsv.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,28 +37,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late List<List<dynamic>> employeeData;
   late List<List<dynamic>> transactionsList;
+  late List<List<dynamic>> ImportedTransactionsList;
 
   @override
   initState() {
-    //create an element rows of type list of list. All the above data set are stored in associate list
-//Let associate be a model class with attributes name,gender and age and associateList be a list of associate model class.
+    ImportedTransactionsList = List<List<dynamic>>.empty(growable: true);
+  }
 
-    employeeData = List<List<dynamic>>.empty(growable: true);
-    for (int i = 0; i < 5; i++) {
-//row refer to each column of a row in csv file and rows refer to each row in a file
-      List<dynamic> row = List.empty(growable: true);
-      row.add("Employee Name $i");
-      row.add((i % 2 == 0) ? "Male" : "Female");
-      row.add(" Experience : ${i * 5}");
-      employeeData.add(row);
-    }
+  readListFromCsv() async {
+    //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    File file = await getCsvFile();
+    print("CSV to List");
+    final input = file.openRead();
+    final fields = await input
+        .transform(utf8.decoder)
+        .transform(new CsvToListConverter())
+        .toList();
+    setState(() {
+      ImportedTransactionsList = fields;
+    });
 
-    transactionsList = List<List<dynamic>>.empty(growable: true);
-    transactionsList = [
-      Transaction(0, 'Generic super', 10).convertToListItem(),
-      Transaction(1, 'Pharmacy', 20).convertToListItem(),
-      Transaction(2, 'My clothing store', 100).convertToListItem()
-    ];
+    print("Read list from csv");
   }
 
   List<Widget> getTextWidgets(List<dynamic> lst) {
@@ -66,45 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
       widgets.add(Text(lst[i].toString()));
     }
     return widgets;
-  }
-
-  getCsv() async {
-    print("permission granted");
-    Directory generalDownloadDir = Directory('/storage/emulated/0/Download');
-    String dir = "${generalDownloadDir}/mycsv1.csv";
-    File f = await File('${generalDownloadDir.path}/mycsv.csv').create();
-    String transactionsCSV =
-        const ListToCsvConverter().convert(transactionsList);
-    String keysCSV = const ListToCsvConverter().convert(transactionsList);
-    print(f.lastModified().toString());
-    f.writeAsString(keysCSV);
-    f.writeAsString(transactionsCSV);
-
-    if (await Permission.storage.request().isGranted) {
-      print("permission granted");
-      //store file in documents folder
-
-      Directory generalDownloadDir = Directory('/storage/emulated/0/Download');
-      //String dir = "${(await getExternalStorageDirectory())!.path}/mycsv1.csv";
-      String dir = "${generalDownloadDir}/mycsv1.csv";
-      File f = await File('${generalDownloadDir.path}/mycsv.csv').create();
-      //String file = dir;
-      //File f = File(file);
-
-      // convert rows to String and write as csv file
-
-      String transactionsCSV =
-          const ListToCsvConverter().convert(transactionsList);
-      String keysCSV = const ListToCsvConverter().convert(transactionsList);
-      print(f.lastModified().toString());
-      f.writeAsString(keysCSV);
-      f.writeAsString(transactionsCSV);
-    } else {
-      print("permission not granted");
-      Map<Permission, PermissionStatus> statuses = await [
-        Permission.storage,
-      ].request();
-    }
   }
 
   @override
@@ -121,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             ListView.builder(
                 shrinkWrap: true,
-                itemCount: transactionsList.length,
+                itemCount: ImportedTransactionsList.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: Padding(
@@ -129,10 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: getTextWidgets(transactionsList[index]),
-                        //Text(transactionsList[index][0].toString()),
-                        //Text(transactionsList[index][1].toString()),
-                        //Text(transactionsList[index][2].toString()),
+                        children:
+                            getTextWidgets(ImportedTransactionsList[index]),
                       ),
                     ),
                   );
@@ -143,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.green,
                 height: 30,
                 child: TextButton(
-                  onPressed: getCsv,
+                  onPressed: () => readListFromCsv(),
                   child: const Text(
                     "Export to CSV",
                     style: TextStyle(color: Colors.white),
