@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/Transaction.dart';
 import 'package:yamm_app/SaveAndLoadCsv.dart';
-import 'package:yamm_app/SaveTransaction.dart';
+import 'package:yamm_app/addTransaction.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -117,7 +117,7 @@ class _MyHomePageState extends State<HomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const MyHomePage()),
+            MaterialPageRoute(builder: (context) => const AddTransaction()),
           );
         },
         tooltip: 'Add a transaction',
