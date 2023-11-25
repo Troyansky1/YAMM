@@ -51,23 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-  readListFromCsv() async {
-    //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    File file = await getCsvFile();
-    print("CSV to List");
-    final input = file.openRead();
-    final fields = await input
-        .transform(utf8.decoder)
-        .transform(new CsvToListConverter())
-        .toList();
-    setState(() {
-      ImportedTransactionsList = fields;
-    });
-
-    print("Read list from csv");
-    print(ImportedTransactionsList);
-  }
-
   List<Widget> getTextWidgets(List<dynamic> lst) {
     List<Widget> widgets = [];
     for (int i = 0; i < lst.length; i++) {
@@ -97,7 +80,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             TextButton(
-              onPressed: () => readListFromCsv(),
+              onPressed: () async => {
+                ImportedTransactionsList = await readListFromCsv(),
+                setState(() {
+                  ImportedTransactionsList = ImportedTransactionsList;
+
+                  print("ImportedTransactionsList: $ImportedTransactionsList");
+                })
+              },
               child: const Text(
                 "Load list",
                 style: TextStyle(color: Colors.green),
@@ -129,7 +119,16 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MyHomePage()),
+          );
+        },
+        tooltip: 'Add a transaction',
+        child: const Icon(Icons.add),
+      ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

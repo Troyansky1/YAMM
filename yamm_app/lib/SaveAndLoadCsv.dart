@@ -20,7 +20,7 @@ writeListToCsv(List<List<dynamic>> lst) async {
   // Added delimiters at the eof
   String ValuesCSV = const ListToCsvConverter().convert(lst) + "\r\n";
 
-  print("Wrote list to csv:");
+  print("Wrote list to csv: $ValuesCSV");
 
   await file.writeAsString(
     ValuesCSV,
@@ -38,4 +38,17 @@ DeleteCsv() async {
   );
   print(ValuesCSV);
   print("Deleted list from csv");
+}
+
+Future<List<List<dynamic>>> readListFromCsv() async {
+  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  print("readListFromCsv");
+  File file = await getCsvFile();
+  final input = file.openRead();
+  final fields = await input
+      .transform(utf8.decoder)
+      .transform(new CsvToListConverter())
+      .toList();
+  print("fields from csv: $fields");
+  return fields;
 }

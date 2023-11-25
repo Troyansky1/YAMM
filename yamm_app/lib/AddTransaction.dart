@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/Transaction.dart';
+import 'package:yamm_app/SaveAndLoadCsv.dart';
 
 enum RepeatOptions {
   noRepeat('Does not repeat'),
@@ -53,6 +54,8 @@ class _AddTransactionState extends State<AddTransaction> {
       if (repeat != RepeatOptions.noRepeat) {}
     });
   }
+
+  void buildAndVarifyTransaction() {}
 
   @override
   void initState() {
@@ -297,6 +300,14 @@ class _AddTransactionState extends State<AddTransaction> {
               borderRadius: BorderRadius.circular(40),
               borderWidth: 5,
               children: const [Text("Income"), Text("Outcome")],
+            ),
+            TextButton(
+              onPressed: () => buildAndVarifyTransaction(),
+              //writeListToCsv(transactionsList),
+              child: const Text(
+                "Save list",
+                style: TextStyle(color: Colors.green),
+              ),
             ),
           ],
         ),
