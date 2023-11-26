@@ -1,26 +1,27 @@
-
 import 'package:intl/intl.dart';
 
 class Transaction {
+  int minAmount = 0;
+  int maxAmount = 1000000;
   int id;
-  int amount = 0;
+  double amount = 0;
   bool isOutcome = true; // Default is outcome and not income
-  DateTime date = DateTime.now();
+  String date = "";
   String serviceProvider = "";
   String currency = "";
   String paymentMethod = "";
   String notes = "";
-  Transaction(this.id, this.serviceProvider, this.amount);
+  Transaction.forDebug(this.id, this.serviceProvider, this.amount);
+  Transaction(this.id);
   final Map<String, dynamic> transactionMap = {}; // Is a HashMap
 
   void initMap() {
-    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(date);
     transactionMap.addAll({
       'id': id,
       'serviceProvider': serviceProvider.toString(),
       'amount': amount,
       'isOutcome': isOutcome,
-      'date': formattedDate,
+      'date': date,
     });
   }
 
@@ -33,6 +34,34 @@ class Transaction {
       'date',
     ];
     return lst;
+  }
+
+  bool addAmount(double enteredAmount) {
+    if (enteredAmount >= minAmount && enteredAmount < maxAmount) {
+      amount = enteredAmount;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool addIsOutcome(bool enteredIsOutcome) {
+    isOutcome = enteredIsOutcome;
+    return true;
+  }
+
+  bool addDate(String date) {
+    //String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(enteredDate);
+    date = date;
+    return true;
+  }
+
+  bool addServiceProvider(String enteredServiceProvider) {
+    if (enteredServiceProvider != "") {
+      serviceProvider = enteredServiceProvider;
+      return true;
+    }
+    return false;
   }
 
   List convertToListItem() {

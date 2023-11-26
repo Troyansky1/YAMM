@@ -5,7 +5,6 @@ import 'package:yamm_app/addTransaction.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -13,32 +12,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomePage> {
-  //late List<List<dynamic>> employeeData;
-
   late List<List<dynamic>> transactionsList;
   late List<List<dynamic>> ImportedTransactionsList;
+  late int TransactionId = 0;
 
   List<Transaction> transactions = [
-    Transaction(0, 'Generic super', 10),
-    Transaction(1, 'Pharmacy', 20),
-    Transaction(2, 'My clothing store', 100)
+    Transaction.forDebug(0, 'Generic super', 10),
+    Transaction.forDebug(1, 'Pharmacy', 20),
+    Transaction.forDebug(2, 'My clothing store', 100)
   ];
+
+  void reloadList() async {
+    ImportedTransactionsList = await readListFromCsv();
+    setState(() {
+      ImportedTransactionsList = ImportedTransactionsList;
+      TransactionId = getLastID(ImportedTransactionsList);
+    });
+  }
 
   @override
   initState() {
     ImportedTransactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = [
-      Transaction(0, 'Generic super', 10).convertToListItem(),
-      Transaction(1, 'Pharmacy', 20).convertToListItem(),
+      Transaction.forDebug(0, 'Generic super', 10).convertToListItem(),
+      Transaction.forDebug(1, 'Pharmacy', 20).convertToListItem(),
     ];
-
-    () async {
-      ImportedTransactionsList = await readListFromCsv();
-      setState(() {
-        ImportedTransactionsList = ImportedTransactionsList;
-      });
-    }();
+    // For debug
+    if (ImportedTransactionsList == []) {
+      writeListToCsv(transactionsList);
+    }
+    reloadList();
   }
 
   List<Widget> getTextWidgets(List<dynamic> lst) {
@@ -68,29 +72,12 @@ class _MyHomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             TextButton(
-              onPressed: () => writeListToCsv(transactionsList),
-              child: const Text(
-                "Save list",
-                style: TextStyle(color: Colors.green),
-              ),
-            ),
-            //The three buttons are for debug purposes.
-            TextButton(
-              onPressed: () async => {
-                ImportedTransactionsList = await readListFromCsv(),
-                setState(() {
-                  ImportedTransactionsList = ImportedTransactionsList;
-                })
+              onPressed: () => {
+                DeleteCsv(),
+                reloadList(),
               },
               child: const Text(
-                "Load list",
-                style: TextStyle(color: Colors.green),
-              ),
-            ),
-            TextButton(
-              onPressed: () => DeleteCsv(),
-              child: const Text(
-                "Delete list",
+                "Clear list",
                 style: TextStyle(color: Colors.green),
               ),
             ),
@@ -117,8 +104,13 @@ class _MyHomePageState extends State<HomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddTransaction()),
-          );
+            MaterialPageRoute(
+                builder: (context) => AddTransaction(id: TransactionId)),
+          ).then((data) {
+            // then will return value when the loginScreen's pop is called.
+            reloadList();
+          });
+          ;
         },
         tooltip: 'Add a transaction',
         child: const Icon(Icons.add),

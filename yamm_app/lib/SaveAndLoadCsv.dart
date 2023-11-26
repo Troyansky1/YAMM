@@ -28,6 +28,12 @@ writeListToCsv(List<List<dynamic>> lst) async {
   );
 }
 
+AppendItemToCsv(List<dynamic> item) async {
+  List<List<dynamic>> lst = [];
+  lst.add(item);
+  writeListToCsv(lst);
+}
+
 DeleteCsv() async {
   File file = await getCsvFile();
   file.open(mode: FileMode.append);
@@ -36,19 +42,33 @@ DeleteCsv() async {
     ValuesCSV,
     mode: FileMode.write,
   );
-  print(ValuesCSV);
-  print("Deleted list from csv");
+  //print(ValuesCSV);
+  //print("Deleted list from csv");
 }
 
 Future<List<List<dynamic>>> readListFromCsv() async {
   //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  print("readListFromCsv");
+  //print("readListFromCsv");
   File file = await getCsvFile();
   final input = file.openRead();
   final fields = await input
       .transform(utf8.decoder)
       .transform(new CsvToListConverter())
       .toList();
-  print("fields from csv: $fields");
+  //print("fields from csv: $fields");
   return fields;
+}
+
+int getLastID(List<List<dynamic>> importedList) {
+  int ID;
+  int len = importedList.length;
+  if (len > 0) {
+    int lastId = importedList[len - 1][0];
+    ID = lastId + 1;
+    print("The last id is $lastId and the new is $ID");
+  } else {
+    ID = 0;
+  }
+
+  return ID;
 }

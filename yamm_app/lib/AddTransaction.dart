@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:yamm_app/Transaction.dart';
 import 'package:yamm_app/SaveAndLoadCsv.dart';
+import 'package:yamm_app/Transaction.dart';
+import 'package:yamm_app/TransactionControllers.dart';
+//import 'package:yamm_app/SaveAndLoadCsv.dart';
 
 enum RepeatOptions {
   noRepeat('Does not repeat'),
@@ -15,7 +19,8 @@ enum RepeatOptions {
 }
 
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({super.key});
+  const AddTransaction({super.key, required this.id});
+  final int id;
   final String title = "Add a transaction";
 
   @override
@@ -23,16 +28,8 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  Transaction newTransaction = Transaction(0, '', 100);
-
-  //Input controllers
-  var amountCont = TextEditingController();
-  var titleCont = TextEditingController();
-  var isOutcomeCont = TextEditingController();
-  var dateCont = TextEditingController();
-  var serviceProviderCont = TextEditingController();
-  var repeatOptionCont = TextEditingController();
-  var endDateCont = TextEditingController();
+  Transaction newTransaction = Transaction.forDebug(0, '', 100);
+  TransactionControllers controllers = TransactionControllers();
   int? selectedRepeatEnd;
   bool repeat = false;
   bool isIncome = true;
@@ -55,11 +52,15 @@ class _AddTransactionState extends State<AddTransaction> {
     });
   }
 
-  void buildAndVarifyTransaction() {}
+  void varifyAndSaveTransaction(id) {
+    List<dynamic> transactionToSave;
+    transactionToSave = controllers.buildTransactionItem(id);
+    AppendItemToCsv(transactionToSave);
+  }
 
   @override
   void initState() {
-    amountCont.text = ""; //set the initial value of text field
+    controllers.initCOntrollers();
     super.initState();
   }
 
@@ -88,16 +89,19 @@ class _AddTransactionState extends State<AddTransaction> {
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Amount'),
-                keyboardType: TextInputType.number),
-            const TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Service provider'),
+            TextField(
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(), labelText: 'Amount'),
+              keyboardType: TextInputType.number,
+              controller: controllers.amountCont,
             ),
             TextField(
-              controller: dateCont,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(), labelText: 'Service provider'),
+              controller: controllers.serviceProviderCont,
+            ),
+            TextField(
+              controller: controllers.dateCont,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   icon: Icon(Icons.calendar_today),
@@ -113,10 +117,10 @@ class _AddTransactionState extends State<AddTransaction> {
                 if (pickedDate != null) {
                   //pickedDate output format => 2021-03-10 00:00:00.000
                   String formattedDate =
-                      DateFormat('dd/MM/yy').format(pickedDate);
+                      DateFormat('dd/MM/yy – kk:mm').format(pickedDate);
                   //formatted date output using intl package =>  2021-03-16
                   setState(() {
-                    dateCont.text =
+                    controllers.dateCont.text =
                         formattedDate; //set output date to TextField value.
                   });
                 } else {}
@@ -140,7 +144,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       DropdownMenu<RepeatOptions>(
                         leadingIcon: const Icon(Icons.repeat),
                         initialSelection: RepeatOptions.noRepeat,
-                        controller: repeatOptionCont,
+                        controller: controllers.repeatOptionCont,
                         dropdownMenuEntries: RepeatOptionsEntries,
                         inputDecorationTheme: const InputDecorationTheme(
                           filled: false,
@@ -201,7 +205,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                           child: TextField(
                                             style:
                                                 const TextStyle(fontSize: 20),
-                                            controller: endDateCont,
+                                            controller: controllers.endDateCont,
                                             decoration: const InputDecoration(
                                                 contentPadding:
                                                     EdgeInsets.symmetric(
@@ -230,7 +234,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                                         .format(pickedDate);
                                                 //formatted date output using intl package =>  2021-03-16
                                                 setState(() {
-                                                  endDateCont.text =
+                                                  controllers.endDateCont.text =
                                                       formattedDate; //set output date to TextField value.
                                                 });
                                               } else {}
@@ -302,10 +306,11 @@ class _AddTransactionState extends State<AddTransaction> {
               children: const [Text("Income"), Text("Outcome")],
             ),
             TextButton(
-              onPressed: () => buildAndVarifyTransaction(),
-              //writeListToCsv(transactionsList),
+              onPressed: () =>
+                  {varifyAndSaveTransaction(widget.id), Navigator.pop(context)},
+              //writeListToCsv(),
               child: const Text(
-                "Save list",
+                "Save!",
                 style: TextStyle(color: Colors.green),
               ),
             ),
