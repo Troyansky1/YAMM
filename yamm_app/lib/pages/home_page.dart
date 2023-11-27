@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/Transaction.dart';
-import 'package:yamm_app/SaveAndLoadCsv.dart';
-import 'package:yamm_app/addTransaction.dart';
+import 'package:yamm_app/save_and_load_csv.dart';
+import 'package:yamm_app/pages/addTransaction.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
