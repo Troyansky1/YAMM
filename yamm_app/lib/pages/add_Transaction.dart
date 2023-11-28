@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/Transaction.dart';
-import 'package:yamm_app/transaction_controllers.dart';
-import 'package:yamm_app/widgets/transaction_entries/transaction_entries.dart';
+import 'package:yamm_app/transaction_form.dart';
+import 'package:yamm_app/back_dialog.dart';
 
 class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key, required this.id});
@@ -13,18 +12,10 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  Transaction newTransaction = Transaction.forDebug(0, '', 100);
-  TransactionControllers controllers = TransactionControllers();
-
-  @override
-  void initState() {
-    controllers.initCOntrollers();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
@@ -33,18 +24,27 @@ class _AddTransactionState extends State<AddTransaction> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            PopScope(
+              canPop: false,
+              onPopInvoked: (bool didPop) {
+                if (didPop) {
+                  return;
+                }
+                showBackDialog(context);
+              },
+              child: TextButton(
+                onPressed: () {
+                  showBackDialog(context);
+                },
+                child: const Text('Go back'),
+              ),
+            ),
             Text(
               'Enter a transaction',
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            amountEntry(controllers: controllers),
-            serviceProviderEntry(controllers: controllers),
-            dateEntry(controllers: controllers),
-            //Does not have internal logic, but design is a thing.
-            //repeatEntry(controllers: controllers),
-            incomeOutcomeEntry(controllers: controllers),
-            SaveEntry(controllers: controllers, id: widget.id)
+            TransactionEntryForm(id: widget.id),
           ],
         ),
       ),

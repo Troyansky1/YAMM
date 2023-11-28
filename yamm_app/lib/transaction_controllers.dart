@@ -12,7 +12,7 @@ class TransactionControllers {
 
   TransactionControllers();
 
-  void initCOntrollers() {
+  void initControllers() {
     amountCont.text = "0";
     titleCont.text = "";
     isOutcomeCont.text = "";
