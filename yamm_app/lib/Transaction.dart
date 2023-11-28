@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class Transaction {
   int minAmount = 0;
   int maxAmount = 1000000;

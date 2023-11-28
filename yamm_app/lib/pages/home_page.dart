@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/Transaction.dart';
 import 'package:yamm_app/save_and_load_csv.dart';
-import 'package:yamm_app/pages/addTransaction.dart';
+import 'package:yamm_app/pages/add_transaction.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -32,6 +32,7 @@ class _MyHomePageState extends State<HomePage> {
 
   @override
   initState() {
+    super.initState();
     ImportedTransactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = [
