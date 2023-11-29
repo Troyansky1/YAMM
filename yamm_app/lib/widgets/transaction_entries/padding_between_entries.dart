@@ -10,9 +10,9 @@ class EntriesPadding extends StatefulWidget {
 class _EntriesPaddingState extends State<EntriesPadding> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return const Padding(
       padding: EdgeInsets.all(16.0),
-      child: Container(
+      child: SizedBox(
         height: 2,
         width: 100,
       ),

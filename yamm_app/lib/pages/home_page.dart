@@ -13,8 +13,8 @@ class HomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<HomePage> {
   late List<List<dynamic>> transactionsList;
-  late List<List<dynamic>> ImportedTransactionsList;
-  late int TransactionId = 0;
+  late List<List<dynamic>> importedTransactionsList;
+  late int transactionId = 0;
 
   List<Transaction> transactions = [
     Transaction.forDebug(0, 'Generic super', 10),
@@ -23,24 +23,24 @@ class _MyHomePageState extends State<HomePage> {
   ];
 
   void reloadList() async {
-    ImportedTransactionsList = await readListFromCsv();
+    importedTransactionsList = await readListFromCsv();
     setState(() {
-      ImportedTransactionsList = ImportedTransactionsList;
-      TransactionId = getLastID(ImportedTransactionsList);
+      importedTransactionsList = importedTransactionsList;
+      transactionId = getLastID(importedTransactionsList);
     });
   }
 
   @override
   initState() {
     super.initState();
-    ImportedTransactionsList = List<List<dynamic>>.empty(growable: true);
+    importedTransactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = [
       Transaction.forDebug(0, 'Generic super', 10).convertToListItem(),
       Transaction.forDebug(1, 'Pharmacy', 20).convertToListItem(),
     ];
     // For debug
-    if (ImportedTransactionsList == []) {
+    if (importedTransactionsList == []) {
       writeListToCsv(transactionsList);
     }
     reloadList();
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<HomePage> {
           children: <Widget>[
             TextButton(
               onPressed: () => {
-                DeleteCsv(),
+                deleteCsv(),
                 reloadList(),
               },
               child: const Text(
@@ -84,7 +84,7 @@ class _MyHomePageState extends State<HomePage> {
             ),
             ListView.builder(
                 shrinkWrap: true,
-                itemCount: ImportedTransactionsList.length,
+                itemCount: importedTransactionsList.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: Padding(
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children:
-                            getTextWidgets(ImportedTransactionsList[index]),
+                            getTextWidgets(importedTransactionsList[index]),
                       ),
                     ),
                   );
@@ -106,7 +106,7 @@ class _MyHomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => AddTransaction(id: TransactionId)),
+                builder: (context) => AddTransaction(id: transactionId)),
           ).then((data) {
             // then will return value when the loginScreen's pop is called.
             reloadList();

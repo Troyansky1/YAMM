@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 
-class incomeOutcomeEntry extends StatefulWidget {
+class IncomeOutcomeEntry extends StatefulWidget {
   //final Widget child;
   final TransactionControllers controllers;
-  const incomeOutcomeEntry(
-      {super.key, required TransactionControllers this.controllers});
+  const IncomeOutcomeEntry({super.key, required this.controllers});
 
   @override
-  State<incomeOutcomeEntry> createState() => _incomeOutcomeEntryState();
+  State<IncomeOutcomeEntry> createState() => _IncomeOutcomeEntryState();
 }
 
-class _incomeOutcomeEntryState extends State<incomeOutcomeEntry> {
+class _IncomeOutcomeEntryState extends State<IncomeOutcomeEntry> {
   final List<bool> _incomeOutcome = [true, false];
   void setIncomeOutcome(int indexToToggle) {
     // Presses the current button and unpresses the other button. Does nothing if button is pressed.

@@ -13,16 +13,15 @@ enum RepeatOptions {
   final String label;
 }
 
-class repeatEntry extends StatefulWidget {
+class RepeatEntry extends StatefulWidget {
   final TransactionControllers controllers;
-  const repeatEntry(
-      {super.key, required TransactionControllers this.controllers});
+  const RepeatEntry({super.key, required this.controllers});
 
   @override
-  State<repeatEntry> createState() => _repeatEntryState();
+  State<RepeatEntry> createState() => _RepeatEntryState();
 }
 
-class _repeatEntryState extends State<repeatEntry> {
+class _RepeatEntryState extends State<RepeatEntry> {
   int? selectedRepeatEnd;
   bool repeat = false;
 

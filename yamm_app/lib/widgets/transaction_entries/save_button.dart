@@ -27,7 +27,7 @@ class _SaveEntryState extends State<SaveEntry> {
       );
       List<dynamic> transactionToSave;
       transactionToSave = widget.controllers.buildTransactionItem(id);
-      AppendItemToCsv(transactionToSave);
+      appendItemToCsv(transactionToSave);
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

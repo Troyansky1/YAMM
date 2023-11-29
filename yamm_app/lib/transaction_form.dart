@@ -44,17 +44,17 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          amountEntry(controllers: controllers),
-          EntriesPadding(),
-          serviceProviderEntry(controllers: controllers),
-          EntriesPadding(),
-          dateEntry(controllers: controllers),
-          EntriesPadding(),
+          AmountEntry(controllers: controllers),
+          const EntriesPadding(),
+          ServiceProviderEntry(controllers: controllers),
+          const EntriesPadding(),
+          DateEntry(controllers: controllers),
+          const EntriesPadding(),
           //Does not have internal logic, but design is a thing.
           //repeatEntry(controllers: controllers),
           //EntriesPadding(),
-          incomeOutcomeEntry(controllers: controllers),
-          EntriesPadding(),
+          IncomeOutcomeEntry(controllers: controllers),
+          const EntriesPadding(),
           SaveEntry(controllers: controllers, id: widget.id, formKey: _formKey)
         ],
       ),

@@ -14,28 +14,28 @@ writeListToCsv(List<List<dynamic>> lst) async {
   File file = await getCsvFile();
   file.open(mode: FileMode.append);
   // Added delimiters at the eof
-  String ValuesCSV = const ListToCsvConverter().convert(lst) + "\r\n";
+  String valuesCSV = const ListToCsvConverter().convert(lst) + "\r\n";
 
-  print("Wrote list to csv: $ValuesCSV");
+  print("Wrote list to csv: $valuesCSV");
 
   await file.writeAsString(
-    ValuesCSV,
+    valuesCSV,
     mode: FileMode.append,
   );
 }
 
-AppendItemToCsv(List<dynamic> item) async {
+appendItemToCsv(List<dynamic> item) async {
   List<List<dynamic>> lst = [];
   lst.add(item);
   writeListToCsv(lst);
 }
 
-DeleteCsv() async {
+deleteCsv() async {
   File file = await getCsvFile();
   file.open(mode: FileMode.append);
-  String ValuesCSV = const ListToCsvConverter().convert([[]]);
+  String valuesCSV = const ListToCsvConverter().convert([[]]);
   await file.writeAsString(
-    ValuesCSV,
+    valuesCSV,
     mode: FileMode.write,
   );
   //print(ValuesCSV);
@@ -56,15 +56,14 @@ Future<List<List<dynamic>>> readListFromCsv() async {
 }
 
 int getLastID(List<List<dynamic>> importedList) {
-  int ID;
+  int id;
   int len = importedList.length;
   if (len > 0) {
     int lastId = importedList[len - 1][0];
-    ID = lastId + 1;
-    print("The last id is $lastId and the new is $ID");
+    id = lastId + 1;
   } else {
-    ID = 0;
+    id = 0;
   }
 
-  return ID;
+  return id;
 }

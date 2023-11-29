@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 
-class dateEntry extends StatefulWidget {
+class DateEntry extends StatefulWidget {
   final TransactionControllers controllers;
-  const dateEntry(
-      {super.key, required TransactionControllers this.controllers});
+  const DateEntry({super.key, required this.controllers});
 
   @override
-  State<dateEntry> createState() => _dateEntryState();
+  State<DateEntry> createState() => _DateEntryState();
 }
 
-class _dateEntryState extends State<dateEntry> {
+class _DateEntryState extends State<DateEntry> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(

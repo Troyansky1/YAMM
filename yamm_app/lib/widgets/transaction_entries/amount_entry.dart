@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 
-class amountEntry extends StatefulWidget {
+class AmountEntry extends StatefulWidget {
   //final Widget child;
   final TransactionControllers controllers;
-  const amountEntry(
-      {super.key, required TransactionControllers this.controllers});
+  const AmountEntry({super.key, required this.controllers});
 
   @override
-  State<amountEntry> createState() => _amountEntryState();
+  State<AmountEntry> createState() => _AmountEntryState();
 }
 
-class _amountEntryState extends State<amountEntry> {
+class _AmountEntryState extends State<AmountEntry> {
   double? toDouble(String? s) {
     if (s == null || s.isEmpty) {
       return null;
