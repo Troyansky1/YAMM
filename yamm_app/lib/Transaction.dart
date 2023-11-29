@@ -1,3 +1,6 @@
+import 'package:yamm_app/currency_enum.dart';
+import 'package:yamm_app/user_preferences.dart';
+
 class Transaction {
   int minAmount = 0;
   int maxAmount = 1000000;
@@ -6,7 +9,7 @@ class Transaction {
   bool isOutcome = true; // Default is outcome and not income
   String date = "";
   String serviceProvider = "";
-  String currency = "";
+  Currency currency = defaultCurrency;
   String paymentMethod = "";
   String notes = "";
   Transaction.forDebug(this.id, this.serviceProvider, this.amount);
@@ -16,22 +19,12 @@ class Transaction {
   void initMap() {
     transactionMap.addAll({
       'id': id,
-      'serviceProvider': serviceProvider.toString(),
-      'amount': amount,
       'isOutcome': isOutcome,
+      'amount': amount,
+      'serviceProvider': serviceProvider.toString(),
       'date': date,
+      'currency': currency,
     });
-  }
-
-  static List<String> genListOfKeys() {
-    List<String> lst = [
-      'id',
-      'serviceProvider',
-      'amount',
-      'isOutcome',
-      'date',
-    ];
-    return lst;
   }
 
   bool addAmount(double enteredAmount) {
@@ -70,7 +63,7 @@ class Transaction {
 
   List convertKeysToListItem() {
     initMap();
-    final valuesList = transactionMap.values.toList(growable: false);
+    final valuesList = transactionMap.keys.toList(growable: false);
     return valuesList;
   }
 }

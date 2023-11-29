@@ -1,4 +1,4 @@
-import 'package:yamm_app/Transaction.dart';
+import 'package:yamm_app/transaction.dart';
 
 class TransactionsList {
   TransactionsList._sharedInstance();

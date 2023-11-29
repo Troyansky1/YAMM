@@ -20,24 +20,31 @@ class _AmountEntryState extends State<AmountEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(), hintText: 'Amount widget'),
-      keyboardType: TextInputType.number,
-      controller: widget.controllers.amountCont,
-      validator: (String? value) {
-        var amount = toDouble(value);
-        if (amount == null) {
-          return 'Enter a valid amount';
-        } else if (amount == 0) {
-          return 'Amount must be bigger than 0';
-        } else if (amount > 1000000) {
-          return 'Amount is too big';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (String? value) {},
+    return SizedBox(
+      height: 100,
+      width: 100,
+      child: TextFormField(
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: 'Amount widget',
+          contentPadding: EdgeInsets.symmetric(vertical: 2),
+        ),
+        keyboardType: TextInputType.number,
+        controller: widget.controllers.amountCont,
+        validator: (String? value) {
+          var amount = toDouble(value);
+          if (amount == null) {
+            return 'Enter a valid amount';
+          } else if (amount == 0) {
+            return 'Amount must be\nbigger than 0';
+          } else if (amount > 1000000) {
+            return 'Amount is too big';
+          } else {
+            return null;
+          }
+        },
+        onSaved: (String? value) {},
+      ),
     );
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/Transaction.dart';
+import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/save_and_load_csv.dart';
 import 'package:yamm_app/pages/add_transaction.dart';
+import 'package:yamm_app/widgets/build_list_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -44,21 +45,6 @@ class _MyHomePageState extends State<HomePage> {
       writeListToCsv(transactionsList);
     }
     reloadList();
-  }
-
-  List<Widget> getTextWidgets(List<dynamic> lst) {
-    List<Widget> widgets = [];
-    for (int i = 0; i < lst.length; i++) {
-      // Includes all fields
-      widgets.add(Text(lst[i].toString()));
-    }
-    return widgets;
-  }
-
-  void newTransaction(Transaction transaction) {
-    setState(() {
-      transactions.add(transaction);
-    });
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/Transaction.dart';
+import 'package:yamm_app/transaction.dart';
+import 'package:yamm_app/widgets/transaction_entries/currency_entry.dart';
 
 class TransactionControllers {
   var amountCont = TextEditingController();
@@ -9,6 +10,7 @@ class TransactionControllers {
   var serviceProviderCont = TextEditingController();
   var repeatOptionCont = TextEditingController();
   var endDateCont = TextEditingController();
+  var CurrencyCont = TextEditingController();
 
   TransactionControllers();
 

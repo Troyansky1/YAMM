@@ -5,3 +5,4 @@ export 'save_button.dart';
 export 'repeat_entry.dart';
 export 'service_provider_entry.dart';
 export 'padding_between_entries.dart';
+import 'currency_entry.dart';

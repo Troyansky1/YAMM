@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
+import 'package:yamm_app/widgets/transaction_entries/currency_entry.dart';
 import 'package:yamm_app/widgets/transaction_entries/transaction_entries.dart';
 
 // Create a Form widget.
@@ -44,8 +45,15 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          AmountEntry(controllers: controllers),
-          const EntriesPadding(),
+          Row(
+            crossAxisAlignment:
+                CrossAxisAlignment.start, // Aligns children to the top
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              AmountEntry(controllers: controllers),
+              CurrencyEntry(controllers: controllers),
+            ],
+          ),
           ServiceProviderEntry(controllers: controllers),
           const EntriesPadding(),
           DateEntry(controllers: controllers),
