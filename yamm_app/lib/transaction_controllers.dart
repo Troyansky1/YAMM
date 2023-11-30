@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction.dart';
-import 'package:yamm_app/widgets/transaction_entries/currency_entry.dart';
+import 'package:yamm_app/currency_enum.dart';
+import 'package:yamm_app/user_preferences.dart';
 
 class TransactionControllers {
   var amountCont = TextEditingController();
@@ -10,7 +11,8 @@ class TransactionControllers {
   var serviceProviderCont = TextEditingController();
   var repeatOptionCont = TextEditingController();
   var endDateCont = TextEditingController();
-  var CurrencyCont = TextEditingController();
+  Currency currencyValue = defaultCurrency;
+  List<bool> incomeOutcome = [true, false];
 
   TransactionControllers();
 
@@ -28,10 +30,12 @@ class TransactionControllers {
     return false;
   }
 
-  List<dynamic> buildTransactionItem(int id) {
+  List<dynamic> buildTransactionItemFromForm(int id) {
     Transaction transaction = Transaction(id);
     transaction.addAmount(double.parse(amountCont.text));
     transaction.addDate(dateCont.text);
+    transaction.addCurrency(currencyValue);
+    transaction.addIsOutcome(incomeOutcome);
     return transaction.convertToListItem();
   }
 }

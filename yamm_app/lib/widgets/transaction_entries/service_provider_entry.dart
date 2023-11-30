@@ -26,6 +26,7 @@ class _ServiceProviderEntryState extends State<ServiceProviderEntry> {
       decoration: const InputDecoration(
           border: OutlineInputBorder(), labelText: 'Service provider'),
       controller: widget.controllers.serviceProviderCont,
+      autovalidateMode: AutovalidateMode.disabled,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter a service provider.';

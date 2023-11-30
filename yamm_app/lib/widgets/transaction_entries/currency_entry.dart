@@ -40,14 +40,13 @@ class _CurrencyEntryState extends State<CurrencyEntry> {
             height: 50,
             width: 70,
             child: DropdownButton2<Currency>(
-              value: dropdownValue,
+              value: widget.controllers.currencyValue,
               style: const TextStyle(color: Colors.deepPurple),
               alignment: AlignmentDirectional.center,
               items: currencyOptionsEntries,
               onChanged: (Currency? value) {
                 setState(() {
-                  dropdownValue = value!;
-                  print(dropdownValue);
+                  widget.controllers.currencyValue = value!;
                 });
               },
             ))
