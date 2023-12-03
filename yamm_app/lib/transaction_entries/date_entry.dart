@@ -30,7 +30,7 @@ class _DateEntryState extends State<DateEntry> {
         if (pickedDate != null) {
           //pickedDate output format => 2021-03-10 00:00:00.000
           String formattedDate =
-              DateFormat('dd/MM/yy – kk:mm').format(pickedDate);
+              DateFormat('yyyy-MM-dd kk:mm').format(pickedDate);
           //formatted date output using intl package =>  2021-03-16
           setState(() {
             widget.controllers.dateCont.text =

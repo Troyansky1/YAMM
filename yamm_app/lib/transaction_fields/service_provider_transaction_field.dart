@@ -1,17 +1,21 @@
-import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction_fields/transaction_field.dart';
 
-class serviceProviderField extends TransactionField {
-  int _position = 4;
-  Type _type = String;
-  String _title = "service provider";
-  late dynamic _value;
-  late String _strValue;
-  serviceProviderField() : super();
+class ServiceProviderField extends TransactionField {
+  @override
+  int position = 4;
+  @override
+  Type type = String;
+  @override
+  String title = "service provider";
+  @override
+  dynamic value = "";
+  @override
+  String strValue = "";
+  ServiceProviderField() : super();
 
   @override
-  String converToString(dynamic value) {
-    if (value.runtimeType == _type) {
+  String converToString(dynamic val) {
+    if (value.runtimeType == type) {
       return value;
     } else {
       return "";
@@ -19,7 +23,7 @@ class serviceProviderField extends TransactionField {
   }
 
   @override
-  dynamic converFromString(String value) {
+  dynamic converFromString(String val) {
     return value;
   }
 }

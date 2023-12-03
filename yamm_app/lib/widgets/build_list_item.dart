@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/transaction_fields_enum.dart';
 
 void parseTransaction(List<dynamic> lst) {}

@@ -1,24 +1,29 @@
 import 'package:yamm_app/transaction_fields/transaction_field.dart';
 
-class isOutcomeField extends TransactionField {
-  int _position = 2;
-  Type _type = bool;
-  String _title = "isOutcome";
-  late dynamic _value;
-  late String _strValue;
-  isOutcomeField() : super();
+class IsOutcomeField extends TransactionField {
+  @override
+  int position = 2;
+  @override
+  Type type = bool;
+  @override
+  String title = "isOutcome";
+  @override
+  dynamic value = true;
+  @override
+  String strValue = "true";
+  IsOutcomeField() : super();
 
   @override
-  String converToString(dynamic value) {
-    if (value.runtimeType == _type) {
-      return value.toString();
+  String converToString(dynamic val) {
+    if (val.runtimeType == type) {
+      return val.toString();
     } else {
       return "";
     }
   }
 
   @override
-  dynamic converFromString(String value) {
-    return value == "true" ? true : false;
+  dynamic converFromString(String val) {
+    return val == "true" ? true : false;
   }
 }

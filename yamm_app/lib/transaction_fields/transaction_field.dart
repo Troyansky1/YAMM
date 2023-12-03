@@ -1,43 +1,38 @@
 abstract class TransactionField {
-  abstract int _position;
-  abstract Type _type;
-  abstract String _title;
-  abstract String Function<R>(R value) _typeToStringFunction;
-  abstract dynamic Function(String value) _stringToTypeFunction;
-  abstract dynamic _value;
-  abstract String _strValue;
+  abstract int position;
+  abstract Type type;
+  abstract String title;
+  abstract dynamic value;
+  abstract String strValue;
   TransactionField();
 
-  String converToString(dynamic value);
-  dynamic converFromString(String value);
+  String converToString(dynamic val);
+  dynamic converFromString(String val);
 
-  bool setValue(value) {
-    if (value.type == _type) {
-      _value = value;
-      _strValue = converToString(value);
-      return true;
-    } else if (value.type == String) {
-      _value = converFromString(value);
-      _strValue = value;
-      return true;
-    } else {
-      return false;
-    }
+  void setValue(val) {
+    value = val;
+    strValue = converToString(val);
+    print("Set the value of $title field to $strValue");
+  }
+
+  void setStringValue(val) {
+    value = converFromString(val);
+    strValue = val;
   }
 
   int getPosition() {
-    return _position;
+    return position;
   }
 
   String getTitle() {
-    return _title;
+    return title;
   }
 
   dynamic getValue() {
-    return _value;
+    return value;
   }
 
   String getStrValue() {
-    return _strValue;
+    return strValue;
   }
 }

@@ -1,78 +1,73 @@
-import 'package:intl/intl.dart';
 import 'package:yamm_app/currency_enum.dart';
-import 'package:yamm_app/transaction_fields_enum.dart';
-import 'package:yamm_app/user_preferences.dart';
-import 'package:yamm_app/transaction_fields/transaction_field.dart';
-import 'package:yamm_app/transaction_fields_converters.dart';
+import 'package:yamm_app/transaction_fields/currency_transaction_field.dart';
 import 'package:yamm_app/transaction_fields/transaction_fields.dart';
 
 class Transaction {
   int minAmount = 0;
   int maxAmount = 1000000;
   int _id = 0;
-  double _amount = 0;
-  bool _isOutcome = true; // Default is outcome and not income
-  DateTime _date = DateTime.now();
-  String _serviceProvider = "";
-  Currency _currency = defaultCurrency;
+  final IdField _idField = IdField();
+  final AmountField _amountField = AmountField();
+  final IsOutcomeField _isOutcomeField = IsOutcomeField();
+  final ServiceProviderField _serviceProviderField = ServiceProviderField();
+  final DateField _dateField = DateField();
+  final CurrencyField _currencyField = CurrencyField();
   String paymentMethod = "";
   String notes = "";
-  Transaction.forDebug(this._id, this._serviceProvider, this._amount);
-  Transaction(this._id);
+  List<TransactionField?> fieldsList = [];
+
+  Transaction(this._id) {
+    setFieldsList();
+  }
+
+  void setFieldsList() {
+    fieldsList = [
+      _idField,
+      _amountField,
+      _isOutcomeField,
+      _dateField,
+      _currencyField,
+      _serviceProviderField
+    ];
+  }
+
   Map<String, dynamic> transactionMap = {}; // Is a HashMap
-  late ({
-    String id,
-    String isOutcome,
-    String amount,
-    String serviceProvider,
-    String date,
-    String currency,
-  }) transactionRecord;
 
   String intToString<int>(int a) {
     return a.toString();
   }
 
-  void initMapFromList(List<dynamic> lst) {
-    for (var val in lst) {
-      //transactionMap.update(TransactionEnum.(value) => null)
-    }
+  void initMapFromList(List<String> lst) {
     transactionMap.addAll({
-      'isOutcome': _isOutcome,
-      'amount': _amount,
-      'serviceProvider': _serviceProvider.toString(),
-      'date': _date,
-      'currency': _currency,
+      'id': _idField.getStrValue(),
+      'isOutcome': _isOutcomeField.getStrValue,
+      'amount': _amountField.getStrValue(),
+      'serviceProvider': _serviceProviderField.getStrValue(),
+      'date': _dateField.getStrValue(),
+      'currency': _currencyField.getStrValue(),
     });
   }
 
-  void initRecordFromFields(List<dynamic> lst) {
-    var transactionRecord = (
-      id: _id.toString(),
-      isOutcome: _isOutcome.toString(),
-      amount: _amount.toString(),
-      serviceProvider: _serviceProvider.toString(),
-      date: "",
-      currency: "",
-    );
-  }
+  void initRecordFromFields(List<dynamic> lst) {}
 
   void initFieldsFromList(List<dynamic> lst) {}
 
   void initMap() {
     transactionMap.addAll({
-      'id': _id,
-      'isOutcome': _isOutcome,
-      'amount': _amount,
-      'serviceProvider': _serviceProvider.toString(),
-      'date': _date,
-      'currency': _currency,
+      'id': _idField.getStrValue(),
+      'isOutcome': _isOutcomeField.getStrValue,
+      'amount': _amountField.getStrValue(),
+      'serviceProvider': _serviceProviderField.getStrValue(),
+      'date': _dateField.getStrValue(),
+      'currency': _currencyField.getStrValue(),
     });
   }
 
   bool addAmount(double enteredAmount) {
+    print("enteredAmount = $enteredAmount");
     if (enteredAmount >= minAmount && enteredAmount < maxAmount) {
-      _amount = enteredAmount;
+      _amountField.setValue(enteredAmount);
+
       return true;
     } else {
       return false;
@@ -80,24 +75,23 @@ class Transaction {
   }
 
   bool addIsOutcome(List<bool> enteredIsOutcome) {
-    _isOutcome = enteredIsOutcome[1];
+    _isOutcomeField.setValue(enteredIsOutcome[0]);
     return true;
   }
 
   bool addDate(String date) {
-    var parsedDate = DateTime.parse(date);
-    _date = parsedDate;
+    _dateField.setStringValue(date);
     return true;
   }
 
   bool addCurrency(Currency currency) {
-    _currency = currency;
+    _currencyField.setValue(currency);
     return true;
   }
 
   bool addServiceProvider(String serviceProvider) {
     if (serviceProvider != "") {
-      _serviceProvider = serviceProvider;
+      _serviceProviderField.setValue(serviceProvider);
       return true;
     }
     return false;

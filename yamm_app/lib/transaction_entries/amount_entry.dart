@@ -11,7 +11,7 @@ class AmountEntry extends StatefulWidget {
 }
 
 class _AmountEntryState extends State<AmountEntry> {
-  double? toDouble(String? s) {
+  num? toNum(String? s) {
     if (s == null || s.isEmpty) {
       return null;
     }
@@ -32,7 +32,7 @@ class _AmountEntryState extends State<AmountEntry> {
         keyboardType: TextInputType.number,
         controller: widget.controllers.amountCont,
         validator: (String? value) {
-          var amount = toDouble(value);
+          var amount = toNum(value);
           if (amount == null) {
             return 'Enter a valid amount';
           } else if (amount == 0) {

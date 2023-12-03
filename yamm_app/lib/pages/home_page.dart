@@ -17,12 +17,6 @@ class _MyHomePageState extends State<HomePage> {
   late List<List<dynamic>> importedTransactionsList;
   late int transactionId = 0;
 
-  List<Transaction> transactions = [
-    Transaction.forDebug(0, 'Generic super', 10),
-    Transaction.forDebug(1, 'Pharmacy', 20),
-    Transaction.forDebug(2, 'My clothing store', 100)
-  ];
-
   void reloadList() async {
     importedTransactionsList = await readListFromCsv();
     setState(() {
@@ -37,8 +31,8 @@ class _MyHomePageState extends State<HomePage> {
     importedTransactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = [
-      Transaction.forDebug(0, 'Generic super', 10).convertToListItem(),
-      Transaction.forDebug(1, 'Pharmacy', 20).convertToListItem(),
+      Transaction(0).convertToListItem(),
+      Transaction(1).convertToListItem(),
     ];
     // For debug
     if (importedTransactionsList == []) {
