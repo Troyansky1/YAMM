@@ -1,14 +1,18 @@
+import 'package:intl/intl.dart';
 import 'package:yamm_app/currency_enum.dart';
 import 'package:yamm_app/transaction_fields_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
+import 'package:yamm_app/transaction_fields/transaction_field.dart';
+import 'package:yamm_app/transaction_fields_converters.dart';
+import 'package:yamm_app/transaction_fields/transaction_fields.dart';
 
 class Transaction {
   int minAmount = 0;
   int maxAmount = 1000000;
-  int _id;
+  int _id = 0;
   double _amount = 0;
   bool _isOutcome = true; // Default is outcome and not income
-  String _date = "";
+  DateTime _date = DateTime.now();
   String _serviceProvider = "";
   Currency _currency = defaultCurrency;
   String paymentMethod = "";
@@ -25,14 +29,15 @@ class Transaction {
     String currency,
   }) transactionRecord;
 
-  void initMapFromList(List<dynamic> lst) {
+  String intToString<int>(int a) {
+    return a.toString();
+  }
 
-    for (var val in lst){
-      
-      transactionMap.update(TransactionEnum., (value) => null)
+  void initMapFromList(List<dynamic> lst) {
+    for (var val in lst) {
+      //transactionMap.update(TransactionEnum.(value) => null)
     }
     transactionMap.addAll({
-      'id': lst[0],
       'isOutcome': _isOutcome,
       'amount': _amount,
       'serviceProvider': _serviceProvider.toString(),
@@ -41,7 +46,17 @@ class Transaction {
     });
   }
 
-  void initRecordFromFields(List<dynamic> lst) {}
+  void initRecordFromFields(List<dynamic> lst) {
+    var transactionRecord = (
+      id: _id.toString(),
+      isOutcome: _isOutcome.toString(),
+      amount: _amount.toString(),
+      serviceProvider: _serviceProvider.toString(),
+      date: "",
+      currency: "",
+    );
+  }
+
   void initFieldsFromList(List<dynamic> lst) {}
 
   void initMap() {
@@ -70,8 +85,8 @@ class Transaction {
   }
 
   bool addDate(String date) {
-    //String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(enteredDate);
-    _date = date;
+    var parsedDate = DateTime.parse(date);
+    _date = parsedDate;
     return true;
   }
 

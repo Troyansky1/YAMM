@@ -26,7 +26,7 @@ class _SaveEntryState extends State<SaveEntry> {
         const SnackBar(content: Text('Processing Data')),
       );
       List<dynamic> transactionToSave;
-      transactionToSave = widget.controllers.buildTransactionItem(id);
+      transactionToSave = widget.controllers.buildTransactionItemFromForm(id);
       appendItemToCsv(transactionToSave);
       Navigator.pop(context);
     } else {

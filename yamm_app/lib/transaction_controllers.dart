@@ -8,6 +8,7 @@ class TransactionControllers {
   var titleCont = TextEditingController();
   var isOutcomeCont = TextEditingController();
   var dateCont = TextEditingController();
+  late DateTime pickedDate;
   var serviceProviderCont = TextEditingController();
   var repeatOptionCont = TextEditingController();
   var endDateCont = TextEditingController();
@@ -33,7 +34,7 @@ class TransactionControllers {
   List<dynamic> buildTransactionItemFromForm(int id) {
     Transaction transaction = Transaction(id);
     transaction.addAmount(double.parse(amountCont.text));
-    transaction.addDate(dateCont.text);
+    transaction.addDate(pickedDate);
     transaction.addCurrency(currencyValue);
     transaction.addIsOutcome(incomeOutcome);
     return transaction.convertToListItem();
