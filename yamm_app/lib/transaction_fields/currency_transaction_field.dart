@@ -26,6 +26,11 @@ class CurrencyField extends TransactionField {
 
   @override
   dynamic converFromString(String val) {
-    return int.parse(val);
+    for (Currency currency in Currency.values) {
+      if (currency.name == val) {
+        return currency;
+      }
+    }
+    return defaultCurrency;
   }
 }

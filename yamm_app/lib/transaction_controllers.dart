@@ -32,10 +32,12 @@ class TransactionControllers {
 
   List<dynamic> buildTransactionItemFromForm(int id) {
     Transaction transaction = Transaction(id);
-    transaction.addAmount(double.parse(amountCont.text));
-    transaction.addDate(dateCont.text);
-    transaction.addCurrency(currencyValue);
-    transaction.addIsOutcome(incomeOutcome);
+    transaction.setId(id);
+    transaction.setAmount(double.parse(amountCont.text));
+    transaction.setDate(dateCont.text);
+    transaction.setCurrency(currencyValue);
+    transaction.setIsOutcome(incomeOutcome);
+    transaction.setServiceProvider(serviceProviderCont.text);
     return transaction.convertToListItem();
   }
 }

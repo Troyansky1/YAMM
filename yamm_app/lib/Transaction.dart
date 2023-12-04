@@ -13,7 +13,7 @@ class Transaction {
   final DateField _dateField = DateField();
   final CurrencyField _currencyField = CurrencyField();
   String paymentMethod = "";
-  String notes = "";
+  String notes = "notes";
   List<TransactionField?> fieldsList = [];
 
   Transaction(this._id) {
@@ -63,38 +63,60 @@ class Transaction {
     });
   }
 
-  bool addAmount(double enteredAmount) {
-    print("enteredAmount = $enteredAmount");
-    if (enteredAmount >= minAmount && enteredAmount < maxAmount) {
-      _amountField.setValue(enteredAmount);
-
-      return true;
-    } else {
-      return false;
-    }
+  void setId(dynamic id) {
+    _idField.setValue(id);
   }
 
-  bool addIsOutcome(List<bool> enteredIsOutcome) {
-    _isOutcomeField.setValue(enteredIsOutcome[0]);
+  bool setAmount(dynamic enteredAmount) {
+    _amountField.setValue(enteredAmount);
     return true;
   }
 
-  bool addDate(String date) {
-    _dateField.setStringValue(date);
+  String getAmountString() {
+    return _amountField.getStrValue();
+  }
+
+  dynamic getAmount() {
+    return _amountField.getValue();
+  }
+
+  bool setIsOutcome(dynamic enteredIsOutcome) {
+    _isOutcomeField.setValue(enteredIsOutcome);
     return true;
   }
 
-  bool addCurrency(Currency currency) {
+  bool getIsOutcome() {
+    return _isOutcomeField.getValue();
+  }
+
+  bool setDate(dynamic date) {
+    _dateField.setValue(date);
+    return true;
+  }
+
+  bool setCurrency(dynamic currency) {
     _currencyField.setValue(currency);
     return true;
   }
 
-  bool addServiceProvider(String serviceProvider) {
+  Currency getCurrency() {
+    return _currencyField.value;
+  }
+
+  bool setServiceProvider(String serviceProvider) {
     if (serviceProvider != "") {
       _serviceProviderField.setValue(serviceProvider);
       return true;
     }
     return false;
+  }
+
+  String getServiceProvider() {
+    return _serviceProviderField.getStrValue();
+  }
+
+  int getId() {
+    return IdField().getValue();
   }
 
   List convertToListItem() {

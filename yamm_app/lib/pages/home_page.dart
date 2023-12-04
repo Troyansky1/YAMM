@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<HomePage> {
   late List<List<dynamic>> transactionsList;
-  late List<List<dynamic>> importedTransactionsList;
+  late List<Transaction> importedTransactionsList;
   late int transactionId = 0;
 
   void reloadList() async {
@@ -28,7 +28,7 @@ class _MyHomePageState extends State<HomePage> {
   @override
   initState() {
     super.initState();
-    importedTransactionsList = List<List<dynamic>>.empty(growable: true);
+    importedTransactionsList = List<Transaction>.empty(growable: true);
     transactionsList = List<List<dynamic>>.empty(growable: true);
     transactionsList = [
       Transaction(0).convertToListItem(),
@@ -62,9 +62,11 @@ class _MyHomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.green),
               ),
             ),
+            //TransactionsList(transactionsList:importedTransactionsList),
             ListView.builder(
                 shrinkWrap: true,
                 itemCount: importedTransactionsList.length,
+                physics: ScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Card(
                     child: Padding(

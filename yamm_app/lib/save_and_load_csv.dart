@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'package:csv/csv.dart';
+import 'package:yamm_app/transaction.dart';
 
 getCsvFile() async {
   final directory = await getApplicationSupportDirectory();
@@ -42,7 +43,7 @@ deleteCsv() async {
   //print("Deleted list from csv");
 }
 
-Future<List<List<dynamic>>> readListFromCsv() async {
+Future<List<Transaction>> readListFromCsv() async {
   //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   //print("readListFromCsv");
   File file = await getCsvFile();
@@ -52,18 +53,30 @@ Future<List<List<dynamic>>> readListFromCsv() async {
       .transform(new CsvToListConverter())
       .toList();
   //print("fields from csv: $fields");
-  return fields;
+
+  return buildTransactionItemFromCsv(fields);
 }
 
-int getLastID(List<List<dynamic>> importedList) {
-  int id;
-  int len = importedList.length;
-  if (len > 0) {
-    int lastId = importedList[len - 1][0];
-    id = lastId + 1;
-  } else {
-    id = 0;
+List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
+  List<Transaction> transactionsList = List<Transaction>.empty(growable: true);
+  for (List<dynamic> textTransaction in lst) {
+    Transaction transaction = Transaction(0);
+    transaction.setId(textTransaction[0]);
+    transaction.setIsOutcome(textTransaction[1]);
+    transaction.setAmount(textTransaction[2]);
+    transaction.setServiceProvider(textTransaction[3]);
+    transaction.setDate(textTransaction[4]);
+    transaction.setCurrency(textTransaction[5]);
+
+    transactionsList.add(transaction);
   }
+  return transactionsList;
+}
+
+int getLastID(List<Transaction> transactionsList) {
+  int id;
+  int len = transactionsList.length;
+  id = transactionsList[len - 1].getId();
 
   return id;
 }

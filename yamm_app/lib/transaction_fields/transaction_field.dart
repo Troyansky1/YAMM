@@ -10,14 +10,21 @@ abstract class TransactionField {
   dynamic converFromString(String val);
 
   void setValue(val) {
-    value = val;
-    strValue = converToString(val);
-    print("Set the value of $title field to $strValue");
+    if (val.runtimeType == String) {
+      value = converFromString(val);
+      strValue = val;
+      print("Set the string value of $title field to $strValue");
+    } else {
+      value = val;
+      strValue = converToString(val);
+      print("Set the value of $title field to $strValue");
+    }
   }
 
   void setStringValue(val) {
     value = converFromString(val);
     strValue = val;
+    print("Set the value of $title field to $strValue");
   }
 
   int getPosition() {
