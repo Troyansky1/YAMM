@@ -13,18 +13,15 @@ abstract class TransactionField {
     if (val.runtimeType == String) {
       value = converFromString(val);
       strValue = val;
-      print("Set the string value of $title field to $strValue");
     } else {
       value = val;
       strValue = converToString(val);
-      print("Set the value of $title field to $strValue");
     }
   }
 
   void setStringValue(val) {
     value = converFromString(val);
     strValue = val;
-    print("Set the value of $title field to $strValue");
   }
 
   int getPosition() {

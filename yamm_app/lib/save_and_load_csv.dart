@@ -15,9 +15,7 @@ writeListToCsv(List<List<dynamic>> lst) async {
   File file = await getCsvFile();
   file.open(mode: FileMode.append);
   // Added delimiters at the eof
-  String valuesCSV = const ListToCsvConverter().convert(lst) + "\r\n";
-
-  print("Wrote list to csv: $valuesCSV");
+  String valuesCSV = "${const ListToCsvConverter().convert(lst)}\r\n";
 
   await file.writeAsString(
     valuesCSV,
@@ -50,9 +48,9 @@ Future<List<Transaction>> readListFromCsv() async {
   final input = file.openRead();
   final fields = await input
       .transform(utf8.decoder)
-      .transform(new CsvToListConverter())
+      .transform(const CsvToListConverter())
       .toList();
-  //print("fields from csv: $fields");
+  print("fields from csv: $fields");
 
   return buildTransactionItemFromCsv(fields);
 }
@@ -73,10 +71,11 @@ List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
   return transactionsList;
 }
 
-int getLastID(List<Transaction> transactionsList) {
+Future<int> getLastID(Future<List<Transaction>> transactionsList) async {
   int id;
-  int len = transactionsList.length;
-  id = transactionsList[len - 1].getId();
+  List<Transaction> lst = await transactionsList;
+  int len = lst.length;
+  id = lst[len - 1].getId();
 
   return id;
 }

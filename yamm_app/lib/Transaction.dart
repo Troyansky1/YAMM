@@ -5,7 +5,7 @@ import 'package:yamm_app/transaction_fields/transaction_fields.dart';
 class Transaction {
   int minAmount = 0;
   int maxAmount = 1000000;
-  int _id = 0;
+  final int _id;
   final IdField _idField = IdField();
   final AmountField _amountField = AmountField();
   final IsOutcomeField _isOutcomeField = IsOutcomeField();
@@ -55,7 +55,7 @@ class Transaction {
   void initMap() {
     transactionMap.addAll({
       'id': _idField.getStrValue(),
-      'isOutcome': _isOutcomeField.getStrValue,
+      'isOutcome': _isOutcomeField.getStrValue(),
       'amount': _amountField.getStrValue(),
       'serviceProvider': _serviceProviderField.getStrValue(),
       'date': _dateField.getStrValue(),
@@ -92,6 +92,10 @@ class Transaction {
   bool setDate(dynamic date) {
     _dateField.setValue(date);
     return true;
+  }
+
+  DateTime getDate() {
+    return _dateField.getValue();
   }
 
   bool setCurrency(dynamic currency) {

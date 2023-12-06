@@ -15,15 +15,17 @@ class IsOutcomeField extends TransactionField {
 
   @override
   String converToString(dynamic val) {
-    if (val.runtimeType == type) {
-      return val.toString();
+    if (val) {
+      return "true";
     } else {
-      return "";
+      return "false";
     }
   }
 
   @override
   dynamic converFromString(String val) {
-    return val == "true" ? true : false;
+    bool outcome = val == "true" ? true : false;
+
+    return outcome;
   }
 }

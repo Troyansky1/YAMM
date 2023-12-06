@@ -22,7 +22,6 @@ class _CurrencyEntryState extends State<CurrencyEntry> {
         <DropdownMenuItem<Currency>>[];
     for (final Currency currency in Currency.values) {
       String symbolPath = currency.symbolPath;
-      print("added entry");
       currencyOptionsEntries.add(
         DropdownMenuItem<Currency>(
             value: currency,

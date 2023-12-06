@@ -13,7 +13,7 @@ class CurrencyField extends TransactionField {
   dynamic value = defaultCurrency;
   @override
   String strValue = defaultCurrency.name;
-  CurrencyField() : super() {}
+  CurrencyField() : super();
 
   @override
   String converToString(dynamic val) {

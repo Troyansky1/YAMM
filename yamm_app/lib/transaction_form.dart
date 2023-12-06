@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
-import 'package:yamm_app/transaction_entries/currency_entry.dart';
 import 'package:yamm_app/transaction_entries/transaction_entries.dart';
 
 // Create a Form widget.
