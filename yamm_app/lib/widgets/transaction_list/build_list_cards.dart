@@ -58,26 +58,3 @@ class _TransactionsListCardsState extends State<TransactionsListCards> {
     }
   }
 }
-
-/*
-return Card(
-        margin: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            ListTile(
-              title: Text('$day.$month'),
-              dense: true,
-            ),
-            const Divider(),
-            ListView.builder(
-              itemCount: widget.transactionList.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return BuildListItems.buildListItem(
-                    widget.transactionList[index]);
-              },
-            ),
-          ],
-        ),
-      ); */

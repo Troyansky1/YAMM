@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/home_page_list_show.dart';
+import 'package:yamm_app/pages/add_Transaction.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/save_and_load_csv.dart';
 
@@ -18,26 +19,14 @@ class _MyHomePageState extends State<HomePage> {
     Transaction(2),
   ];
   late Future<List<Transaction>> importedTransactionsList;
-  late int transactionId;
-
-  Future<void> getListFromFile() async {
-    try {
-      //Future<List<Transaction>> transactionsList = readListFromCsv();
-      setState(() {
-        //importedTransactionsList = transactionsList;
-        //transactionId = getLastID(importedTransactionsList);
-      });
-    } catch (ex) {
-      print(ex);
-    }
-  }
+  late Future<int> transactionId;
 
   void reloadList() async {
     try {
-      //importedTransactionsList = readListFromCsv();
+      importedTransactionsList = readListFromCsv();
       setState(() {
-        //importedTransactionsList = importedTransactionsList;
-        //transactionId = getLastID(importedTransactionsList);
+        importedTransactionsList = importedTransactionsList;
+        transactionId = getLastID(importedTransactionsList);
       });
     } catch (ex) {
       print(ex);
@@ -47,27 +36,9 @@ class _MyHomePageState extends State<HomePage> {
   @override
   initState() {
     super.initState();
-
     importedTransactionsList = readListFromCsv();
-    //transactionId = getLastID(importedTransactionsList);
+    transactionId = getLastID(importedTransactionsList);
   }
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-        ),
-        body: Column(
-          children: <Widget>[
-            HomePageList(transactionsList: transactionsList),
-            Text("text")
-          ],
-        ));
-  }
-
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -125,61 +96,33 @@ class _MyHomePageState extends State<HomePage> {
           },
         ),
       ),
-    );
-  }
+      floatingActionButton: FutureBuilder<int>(
+        future: transactionId,
 
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body:
-      SingleChildScrollView(
-        child: FutureBuilder<List<Transaction>>(future: importedTransactionsList, builder: (BuildContext context,  AsyncSnapshot<String> snapshot)))
-        
-         Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            TextButton(
-              onPressed: () => {
-                deleteCsv(),
-                reloadList(),
+        // a previously-obtained Future<String> or null
+        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+          FloatingActionButton fab;
+          if (snapshot.hasData && snapshot.data != null) {
+            fab = FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddTransaction(id: snapshot.data!)),
+                ).then((data) {
+                  // then will return value when the loginScreen's pop is called.
+                  reloadList();
+                });
               },
-              child: const Text(
-                "Clear list",
-                style: TextStyle(color: Colors.green),
-              ),
-            ),
-            HomePageList(transactionsList: importedTransactionsList),
-            /*
-            FutureBuilder(
-                future: getFileData(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<Transaction>> TransactionsList) {
-                  return HomePageList(transactionsList: TransactionsList.data);
-                }),  */
-          ],
-        ),
-      ), 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AddTransaction(id: transactionId)),
-          ).then((data) {
-            // then will return value when the loginScreen's pop is called.
-            reloadList();
-          });
-          ;
+              tooltip: 'Add a transaction',
+              child: const Icon(Icons.add),
+            );
+          } else {
+            fab = FloatingActionButton(onPressed: () {});
+          }
+          return fab;
         },
-        tooltip: 'Add a transaction',
-        child: const Icon(Icons.add),
       ),
     );
   }
-  */
 }

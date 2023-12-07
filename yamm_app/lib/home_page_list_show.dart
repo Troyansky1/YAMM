@@ -21,10 +21,8 @@ class _HomePageListState extends State<HomePageList> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        const Text("data"),
-        const Row(), //In here will be the stats
-        const Row(), //In here will be the filters
-
+        const Text("stats"),
+        const Text("filters"),
         TransactionsListView(
             transactionsList: widget.transactionsList,
             year: DateTime.now().year,
