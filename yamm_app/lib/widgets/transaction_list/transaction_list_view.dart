@@ -35,7 +35,7 @@ class _TransactionsListViewState extends State<TransactionsListView> {
       return ListView.builder(
           itemCount: listToShow.length,
           shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             return TransactionsListCards(
                 transactionList: listToShow[index],

@@ -27,7 +27,40 @@ class _TransactionsListCardsState extends State<TransactionsListCards> {
     int day = widget.day;
     int month = widget.month;
     if (widget.transactionList.isNotEmpty) {
-      return Card(
+      return CustomScrollView(
+        shrinkWrap: true,
+        physics: AlwaysScrollableScrollPhysics(),
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                ' $day.$month',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return BuildListItems.buildListItem(
+                    widget.transactionList[index]);
+              },
+              childCount: widget.transactionList.length,
+            ),
+          ),
+        ],
+      );
+    } else {
+      return const SizedBox(height: 0);
+    }
+  }
+}
+
+/*
+return Card(
         margin: const EdgeInsets.all(10.0),
         child: Column(
           children: [
@@ -47,9 +80,4 @@ class _TransactionsListCardsState extends State<TransactionsListCards> {
             ),
           ],
         ),
-      );
-    } else {
-      return Text("empty day");
-    }
-  }
-}
+      ); */
