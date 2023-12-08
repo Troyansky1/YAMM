@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/filter_transactions.dart';
+import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/widgets/transaction_list/build_list_cards.dart';
 

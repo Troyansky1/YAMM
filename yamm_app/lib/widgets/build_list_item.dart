@@ -48,17 +48,37 @@ class BuildListItems {
     return dateRow;
   }
 
-  static Widget buildListItem(Transaction transaction) {
+  static Column buildEditColumn(Transaction transaction) {
+    Column editColumn = const Column(children: <Widget>[
+      Row(
+        children: <Widget>[
+          Icon(Icons.edit_note_rounded),
+          Icon(Icons.delete_outlined)
+        ],
+      )
+    ]);
+    return editColumn;
+  }
+
+  static Column buildDataColumn(Transaction transaction) {
     List<Widget> rows = List<Widget>.empty(growable: true);
     rows.addAll(
         [buildAmountRow(transaction), buildServiceProviderRow(transaction)]);
+    Column dataColumn = Column(children: rows);
+    return dataColumn;
+  }
+
+  static Widget buildListItem(Transaction transaction) {
+    List<Widget> columns = List<Widget>.empty(growable: true);
+    columns
+        .addAll([buildDataColumn(transaction), buildEditColumn(transaction)]);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: rows,
+          children: columns,
         ),
       ),
     );

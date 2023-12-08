@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/home_page_list_show.dart';
+import 'package:yamm_app/widgets/home_page_list_show.dart';
 import 'package:yamm_app/pages/add_Transaction.dart';
 import 'package:yamm_app/transaction.dart';
-import 'package:yamm_app/save_and_load_csv.dart';
+import 'package:yamm_app/functions/save_and_load_csv.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -42,7 +42,6 @@ class _MyHomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //final Future<List<Transaction>> lst = getFileData();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -52,14 +51,12 @@ class _MyHomePageState extends State<HomePage> {
         child: FutureBuilder<List<Transaction>>(
           future: importedTransactionsList,
           initialData: transactionsList,
-          // a previously-obtained Future<String> or null
           builder: (BuildContext context,
               AsyncSnapshot<List<Transaction>> snapshot) {
             List<Widget> children;
             if (snapshot.hasData && snapshot.data != null) {
               List<Transaction> lst = snapshot.data!;
               children = <Widget>[
-                Text("Has data ${lst[0].getAmount().toString()}"),
                 HomePageList(transactionsList: snapshot.data)
               ];
             } else if (snapshot.hasError) {
@@ -97,9 +94,8 @@ class _MyHomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FutureBuilder<int>(
+        //This is a classic I have a hammer so everything is a nail. This should not have been in a future builder and should be fixed (low priority though).
         future: transactionId,
-
-        // a previously-obtained Future<String> or null
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           FloatingActionButton fab;
           if (snapshot.hasData && snapshot.data != null) {
@@ -110,7 +106,6 @@ class _MyHomePageState extends State<HomePage> {
                   MaterialPageRoute(
                       builder: (context) => AddTransaction(id: snapshot.data!)),
                 ).then((data) {
-                  // then will return value when the loginScreen's pop is called.
                   reloadList();
                 });
               },

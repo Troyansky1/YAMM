@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/transaction_form.dart';
-import 'package:yamm_app/back_dialog.dart';
+import 'package:yamm_app/widgets/transaction_form.dart';
+import 'package:yamm_app/functions/back_dialog.dart';
 
 class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key, required this.id});
