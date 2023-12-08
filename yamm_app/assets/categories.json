@@ -1,0 +1,56 @@
+[
+    {
+        "index": 0,
+        "name": "Others",
+        "income": true,
+        "outcome": true
+    },
+    {
+        "index": 1,
+        "name": "Bills",
+        "income": false,
+        "outcome": true
+    },
+    {
+        "index": 2,
+        "name": "Leisure",
+        "income": false,
+        "outcome": true
+    },
+    {
+        "index": 3,
+        "name": "Shopping",
+        "income": false,
+        "outcome": true
+    },
+    {
+        "index": 4,
+        "name": "Services",
+        "income": false,
+        "outcome": true
+    },
+    {
+        "index": 5,
+        "name": "Transportation",
+        "income": false,
+        "outcome": true
+    },
+    {
+        "index": 6,
+        "name": "Gift/Donation",
+        "income": true,
+        "outcome": true
+    },
+    {
+        "index": 7,
+        "name": "Work",
+        "income": true,
+        "outcome": false
+    },
+    {
+        "index": 8,
+        "name": "Return/Refund",
+        "income": true,
+        "outcome": false
+    }
+]

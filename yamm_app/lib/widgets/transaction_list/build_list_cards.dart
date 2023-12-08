@@ -29,7 +29,7 @@ class _TransactionsListCardsState extends State<TransactionsListCards> {
     if (widget.transactionList.isNotEmpty) {
       return CustomScrollView(
         shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Align(

@@ -1,5 +1,5 @@
+import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/currency_enum.dart';
-import 'package:yamm_app/transaction_fields/currency_transaction_field.dart';
 import 'package:yamm_app/transaction_fields/transaction_fields.dart';
 
 class Transaction {
@@ -12,6 +12,7 @@ class Transaction {
   final ServiceProviderField _serviceProviderField = ServiceProviderField();
   final DateField _dateField = DateField();
   final CurrencyField _currencyField = CurrencyField();
+  final CategoryField _categoryField = CategoryField();
   String paymentMethod = "";
   String notes = "notes";
   List<TransactionField?> fieldsList = [];
@@ -45,6 +46,7 @@ class Transaction {
       'serviceProvider': _serviceProviderField.getStrValue(),
       'date': _dateField.getStrValue(),
       'currency': _currencyField.getStrValue(),
+      'category': _currencyField.getStrValue(),
     });
   }
 
@@ -60,6 +62,7 @@ class Transaction {
       'serviceProvider': _serviceProviderField.getStrValue(),
       'date': _dateField.getStrValue(),
       'currency': _currencyField.getStrValue(),
+      'category': _categoryField.getStrValue(),
     });
   }
 
@@ -105,6 +108,15 @@ class Transaction {
 
   Currency getCurrency() {
     return _currencyField.value;
+  }
+
+  bool setCategory(dynamic category) {
+    _categoryField.setValue(category);
+    return true;
+  }
+
+  TransactionCategory getCategory() {
+    return _categoryField.value;
   }
 
   bool setServiceProvider(String serviceProvider) {

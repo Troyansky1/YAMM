@@ -48,6 +48,12 @@ class BuildListItems {
     return dateRow;
   }
 
+  static Row buildCategoryRow(Transaction transaction) {
+    String categoryName = transaction.getCategory().name;
+    Row categoryRow = Row(children: <Widget>[Text(categoryName)]);
+    return categoryRow;
+  }
+
   static Column buildEditColumn(Transaction transaction) {
     Column editColumn = const Column(children: <Widget>[
       Row(
@@ -62,8 +68,11 @@ class BuildListItems {
 
   static Column buildDataColumn(Transaction transaction) {
     List<Widget> rows = List<Widget>.empty(growable: true);
-    rows.addAll(
-        [buildAmountRow(transaction), buildServiceProviderRow(transaction)]);
+    rows.addAll([
+      buildAmountRow(transaction),
+      buildServiceProviderRow(transaction),
+      buildCategoryRow(transaction)
+    ]);
     Column dataColumn = Column(children: rows);
     return dataColumn;
   }

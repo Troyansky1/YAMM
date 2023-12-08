@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yamm_app/functions/save_and_load_csv.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/widgets/transaction_list/transaction_list_view.dart';
 
@@ -23,6 +24,7 @@ class _HomePageListState extends State<HomePageList> {
       children: <Widget>[
         const Text("to do stats"),
         const Text("to do filters"),
+        const TextButton(onPressed: deleteCsv, child: Text("Clear list")),
         TransactionsListView(
             transactionsList: widget.transactionsList,
             year: DateTime.now().year,

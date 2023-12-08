@@ -65,6 +65,7 @@ List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
     transaction.setServiceProvider(textTransaction[3]);
     transaction.setDate(textTransaction[4]);
     transaction.setCurrency(textTransaction[5]);
+    transaction.setCategory(textTransaction[6]);
 
     transactionsList.add(transaction);
   }
@@ -75,7 +76,10 @@ Future<int> getLastID(Future<List<Transaction>> transactionsList) async {
   int id;
   List<Transaction> lst = await transactionsList;
   int len = lst.length;
-  id = lst[len - 1].getId();
-
-  return id;
+  if (len > 0) {
+    id = lst[len - 1].getId();
+    return id;
+  } else {
+    return 0;
+  }
 }

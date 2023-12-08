@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
+import 'package:yamm_app/transaction_entries/category_entry.dart';
 import 'package:yamm_app/transaction_entries/transaction_entries.dart';
 
 // Create a Form widget.
@@ -61,6 +62,7 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
           //repeatEntry(controllers: controllers),
           //EntriesPadding(),
           IncomeOutcomeEntry(controllers: controllers),
+          CategoryEntry(controllers: controllers),
           const EntriesPadding(),
           SaveEntry(controllers: controllers, id: widget.id, formKey: _formKey)
         ],
