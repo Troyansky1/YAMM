@@ -16,9 +16,11 @@ class _DateEntryState extends State<DateEntry> {
     return TextFormField(
       controller: widget.controllers.dateCont,
       decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          icon: Icon(Icons.calendar_today),
-          labelText: 'Date'),
+        border: OutlineInputBorder(),
+        icon: Icon(Icons.calendar_today),
+        labelText: 'Date',
+        contentPadding: EdgeInsets.symmetric(vertical: 1.0),
+      ),
       readOnly: true,
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(

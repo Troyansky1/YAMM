@@ -13,6 +13,7 @@ class Transaction {
   final DateField _dateField = DateField();
   final CurrencyField _currencyField = CurrencyField();
   final CategoryField _categoryField = CategoryField();
+  final LableField _lableField = LableField();
   String paymentMethod = "";
   String notes = "notes";
   List<TransactionField?> fieldsList = [];
@@ -47,12 +48,9 @@ class Transaction {
       'date': _dateField.getStrValue(),
       'currency': _currencyField.getStrValue(),
       'category': _currencyField.getStrValue(),
+      'lable': _lableField.getStrValue(),
     });
   }
-
-  void initRecordFromFields(List<dynamic> lst) {}
-
-  void initFieldsFromList(List<dynamic> lst) {}
 
   void initMap() {
     transactionMap.addAll({
@@ -63,6 +61,7 @@ class Transaction {
       'date': _dateField.getStrValue(),
       'currency': _currencyField.getStrValue(),
       'category': _categoryField.getStrValue(),
+      'lable': _lableField.getStrValue(),
     });
   }
 

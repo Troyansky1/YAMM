@@ -24,7 +24,10 @@ class _ServiceProviderEntryState extends State<ServiceProviderEntry> {
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: const InputDecoration(
-          border: OutlineInputBorder(), labelText: 'Service provider'),
+        border: OutlineInputBorder(),
+        labelText: 'Service provider',
+        contentPadding: EdgeInsets.symmetric(vertical: 1.0),
+      ),
       controller: widget.controllers.serviceProviderCont,
       autovalidateMode: AutovalidateMode.disabled,
       validator: (value) {

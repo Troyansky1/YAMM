@@ -11,11 +11,11 @@ class TransactionControllers {
   var serviceProviderCont = TextEditingController();
   var repeatOptionCont = TextEditingController();
   var endDateCont = TextEditingController();
+  // var lableCont = SingleValueDropDownController();
+  List<String> lables = List.empty(growable: true);
   Currency currencyValue = defaultCurrency;
   TransactionCategory categoryValue = defaultCategory;
   List<bool> incomeOutcome = [false, true];
-
-  TransactionControllers();
 
   void initControllers() {
     amountCont.text = "0";
@@ -25,6 +25,7 @@ class TransactionControllers {
     serviceProviderCont.text = "";
     repeatOptionCont.text = "";
     endDateCont.text = "";
+    lables = <String>[];
   }
 
   bool fieldsVarified() {

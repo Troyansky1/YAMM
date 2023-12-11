@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
-import 'package:yamm_app/transaction_entries/category_entry.dart';
 import 'package:yamm_app/transaction_entries/transaction_entries.dart';
 
 // Create a Form widget.
@@ -50,19 +49,24 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
                 CrossAxisAlignment.start, // Aligns children to the top
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.all(5.0),
+              ),
               AmountEntry(controllers: controllers),
               CurrencyEntry(controllers: controllers),
             ],
           ),
+          LableEntry(controllers: controllers),
           ServiceProviderEntry(controllers: controllers),
           const EntriesPadding(),
           DateEntry(controllers: controllers),
-          const EntriesPadding(),
+          //const EntriesPadding(),
           //Does not have internal logic, but design is a thing.
           //repeatEntry(controllers: controllers),
-          //EntriesPadding(),
+
           IncomeOutcomeEntry(controllers: controllers),
           CategoryEntry(controllers: controllers),
+
           const EntriesPadding(),
           SaveEntry(controllers: controllers, id: widget.id, formKey: _formKey)
         ],
