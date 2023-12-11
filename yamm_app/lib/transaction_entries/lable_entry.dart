@@ -107,28 +107,22 @@ class _LableEntryState extends State<LableEntry> {
       child: Column(
         children: <Widget>[
           Row(
-            children: <Widget>[
-              Text(_enteredLables.toString()),
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 5.0,
-                children: List<Widget>.generate(
-                  _enteredLables.length,
-                  (int index) {
-                    String lable = _enteredLables[index];
-                    return InputChip(
-                      label: Text(lable),
-                      onDeleted: () {
-                        _onChipDeleted(lable, setState);
-                      },
-                      onSelected: (bool True) {
-                        _onChipTapped(lable, setState);
-                      },
-                    );
+            children: List<Widget>.generate(
+              _enteredLables.length,
+              (int index) {
+                String lable = _enteredLables[index];
+                return InputChip(
+                  label: Text('#$lable'),
+                  labelPadding: EdgeInsets.all(1),
+                  onDeleted: () {
+                    _onChipDeleted(lable, setState);
                   },
-                ).toList(),
-              ),
-            ],
+                  onSelected: (bool True) {
+                    _onChipTapped(lable, setState);
+                  },
+                );
+              },
+            ).toList(),
           ),
           ElevatedButton(
             onPressed: () {
@@ -168,6 +162,9 @@ class _LableEntryState extends State<LableEntry> {
       _enteredLables.add(lable);
       _suggestions = <String>[];
     });
+    setState(() {
+      _enteredLables = _enteredLables;
+    });
   }
 
   void _onChipTapped(String lable, StateSetter setModalState) {}
@@ -183,6 +180,9 @@ class _LableEntryState extends State<LableEntry> {
     if (text.trim().isNotEmpty) {
       setModalState(() {
         _enteredLables = <String>[..._enteredLables, text.trim()];
+      });
+      setState(() {
+        _enteredLables = _enteredLables;
       });
     } else {
       setModalState(() {
