@@ -56,7 +56,7 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
               CurrencyEntry(controllers: controllers),
             ],
           ),
-          LableEntry(controllers: controllers),
+
           ServiceProviderEntry(controllers: controllers),
           const EntriesPadding(),
           DateEntry(controllers: controllers),
@@ -66,7 +66,7 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
 
           IncomeOutcomeEntry(controllers: controllers),
           CategoryEntry(controllers: controllers),
-
+          LableEntry(controllers: controllers),
           const EntriesPadding(),
           SaveEntry(controllers: controllers, id: widget.id, formKey: _formKey)
         ],

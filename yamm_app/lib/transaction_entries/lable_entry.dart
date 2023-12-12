@@ -1,20 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
+import 'package:yamm_app/functions/preferences.dart';
 import 'dart:async';
-
-final List<String> labels = <String>[
-  'a',
-  'aa',
-  'aab',
-  'aabb',
-  'Shopping',
-  'Car',
-  'House',
-  'Birthday',
-  'Alcohol',
-];
 
 class LableEntry extends StatefulWidget {
   //final Widget child;
@@ -27,14 +14,15 @@ class LableEntry extends StatefulWidget {
 
 class _LableEntryState extends State<LableEntry> {
   final FocusNode _chipFocusNode = FocusNode();
-  List<String> _enteredLables = <String>[];
-  //List<String> _lables = <String>[];
+
+  late FutureOr<List<String>> _labels;
   List<String> _suggestions = <String>[];
   VoidCallback? _showPersBottomSheetCallBack;
 
   @override
   void initState() {
     super.initState();
+    _labels = getLabels();
     _showPersBottomSheetCallBack = () {
       _showModalSheet();
     };
@@ -54,7 +42,7 @@ class _LableEntryState extends State<LableEntry> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ChipsInput<String>(
-                        values: _enteredLables,
+                        values: widget.controllers.labels,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.local_pizza_rounded),
                         ),
@@ -74,20 +62,13 @@ class _LableEntryState extends State<LableEntry> {
                       ),
                     ),
                     if (_suggestions.isNotEmpty)
-                      Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: AlwaysScrollableScrollPhysics(),
-                          itemCount: _suggestions.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return LableSuggestions(
-                              _suggestions[index],
-                              onTap: (String str) {
-                                _selectSuggestion(str, setModalState);
-                              },
-                            );
-                          },
-                        ),
+                      SizedBox(
+                        height: 200,
+                        child: Wrap(
+                            spacing: 1,
+                            runSpacing: 0.0,
+                            children:
+                                getSuggstions(_suggestions, setModalState)),
                       ),
                   ],
                 ),
@@ -95,7 +76,21 @@ class _LableEntryState extends State<LableEntry> {
             );
           });
         });
-    return _enteredLables;
+    return widget.controllers.labels;
+  }
+
+  List<Widget> getSuggstions(List<String> lst, StateSetter setModalState) {
+    List<ActionChip> suggestions = List<ActionChip>.empty(growable: true);
+    for (String lable in lst) {
+      ActionChip chip = ActionChip(
+        label: Text(lable),
+        onPressed: () {
+          _selectSuggestion(lable, setModalState);
+        },
+      );
+      suggestions.add(chip);
+    }
+    return suggestions;
   }
 
   @override
@@ -106,40 +101,52 @@ class _LableEntryState extends State<LableEntry> {
       width: 500,
       child: Column(
         children: <Widget>[
-          Row(
-            children: List<Widget>.generate(
-              _enteredLables.length,
-              (int index) {
-                String lable = _enteredLables[index];
-                return InputChip(
-                  label: Text('#$lable'),
-                  labelPadding: EdgeInsets.all(1),
-                  onDeleted: () {
-                    _onChipDeleted(lable, setState);
-                  },
-                  onSelected: (bool True) {
-                    _onChipTapped(lable, setState);
-                  },
-                );
-              },
-            ).toList(),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _showModalSheet();
-            },
-            child: const Text("Add labels"),
+          SizedBox(
+            height: 200,
+            child: Wrap(
+                spacing: 1,
+                runSpacing: 0.0,
+                children: getChosenLabels(widget.controllers.labels)),
           ),
         ],
       ),
     );
   }
 
+  List<Widget> getChosenLabels(List<String> lst) {
+    List<Widget> chosenLabels = List<Widget>.empty(growable: true);
+
+    for (String lable in lst) {
+      InputChip chip = InputChip(
+        label: Text('#$lable'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+          side: const BorderSide(color: Colors.transparent),
+        ),
+        labelPadding: EdgeInsets.all(1),
+        onDeleted: () {
+          _onChipDeleted(lable, setState);
+        },
+        onSelected: (bool True) {
+          _onChipTapped(lable, setState);
+        },
+      );
+      chosenLabels.add(chip);
+    }
+    chosenLabels.add(ElevatedButton(
+      onPressed: () {
+        _showModalSheet();
+      },
+      child: const Text("Add labels"),
+    ));
+    return chosenLabels;
+  }
+
   Future<void> _onSearchChanged(String value, StateSetter setModalState) async {
     final List<String> results = await _suggestionCallback(value);
     setModalState(() {
       _suggestions = results
-          .where((String lable) => !_enteredLables.contains(lable))
+          .where((String lable) => !widget.controllers.labels.contains(lable))
           .toList();
     });
   }
@@ -159,11 +166,11 @@ class _LableEntryState extends State<LableEntry> {
 
   void _selectSuggestion(String lable, StateSetter setModalState) {
     setModalState(() {
-      _enteredLables.add(lable);
+      widget.controllers.labels.add(lable);
       _suggestions = <String>[];
     });
     setState(() {
-      _enteredLables = _enteredLables;
+      widget.controllers.labels = widget.controllers.labels;
     });
   }
 
@@ -171,43 +178,49 @@ class _LableEntryState extends State<LableEntry> {
 
   void _onChipDeleted(String lable, StateSetter setModalState) {
     setModalState(() {
-      _enteredLables.remove(lable);
-      _suggestions = <String>[];
+      widget.controllers.labels.remove(lable);
+    });
+    setState(() {
+      widget.controllers.labels = widget.controllers.labels;
     });
   }
 
   void _onSubmitted(String text, StateSetter setModalState) {
     if (text.trim().isNotEmpty) {
       setModalState(() {
-        _enteredLables = <String>[..._enteredLables, text.trim()];
+        widget.controllers.labels = <String>[
+          ...widget.controllers.labels,
+          text.trim()
+        ];
       });
       setState(() {
-        _enteredLables = _enteredLables;
+        widget.controllers.labels = widget.controllers.labels;
       });
     } else {
       setModalState(() {
         _suggestions = <String>[];
       });
       setState(() {
-        _enteredLables = _enteredLables;
+        widget.controllers.labels = widget.controllers.labels;
       });
     }
   }
 
   void _onChanged(List<String> data, StateSetter setModalState) {
     setModalState(() {
-      _enteredLables = data;
+      widget.controllers.labels = data;
       _chipFocusNode.unfocus();
     });
   }
 
-  FutureOr<List<String>> _suggestionCallback(String text) {
+  FutureOr<List<String>> _suggestionCallback(String text) async {
+    List<String> labels = await _labels;
     if (text.isNotEmpty) {
       return labels.where((String lable) {
         return lable.toLowerCase().contains(text.toLowerCase());
       }).toList();
     }
-    return const <String>[];
+    return labels;
   }
 }
 
@@ -391,11 +404,6 @@ class LableSuggestions extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       key: ObjectKey(lable),
-      leading: CircleAvatar(
-        child: Text(
-          lable[0].toUpperCase(),
-        ),
-      ),
       title: Text(lable),
       onTap: () => onTap?.call(lable),
     );

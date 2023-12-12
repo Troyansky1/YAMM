@@ -66,6 +66,7 @@ List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
     transaction.setDate(textTransaction[4]);
     transaction.setCurrency(textTransaction[5]);
     transaction.setCategory(textTransaction[6]);
+    transaction.setLabels(textTransaction[7]);
 
     transactionsList.add(transaction);
   }

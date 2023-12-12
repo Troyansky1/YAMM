@@ -48,7 +48,7 @@ class Transaction {
       'date': _dateField.getStrValue(),
       'currency': _currencyField.getStrValue(),
       'category': _currencyField.getStrValue(),
-      'lable': _lableField.getStrValue(),
+      'lables': _lableField.getStrValue(),
     });
   }
 
@@ -61,7 +61,7 @@ class Transaction {
       'date': _dateField.getStrValue(),
       'currency': _currencyField.getStrValue(),
       'category': _categoryField.getStrValue(),
-      'lable': _lableField.getStrValue(),
+      'lables': _lableField.getStrValue(),
     });
   }
 
@@ -116,6 +116,15 @@ class Transaction {
 
   TransactionCategory getCategory() {
     return _categoryField.value;
+  }
+
+  bool setLabels(dynamic labels) {
+    _lableField.setValue(labels);
+    return true;
+  }
+
+  List<String> getLabels() {
+    return _lableField.value;
   }
 
   bool setServiceProvider(String serviceProvider) {

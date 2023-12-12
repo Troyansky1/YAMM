@@ -1,141 +1,211 @@
-import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:yamm_app/transaction_controllers.dart';
+import 'dart:async';
 
-const List<String> _pizzaToppings = <String>[
-  'Olives',
-  'Tomato',
-  'Cheese',
-  'Pepperoni',
-  'Bacon',
-  'Onion',
-  'Jalapeno',
-  'Mushrooms',
-  'Pineapple',
+final List<String> labels = <String>[
+  'a',
+  'aa',
+  'aab',
+  'aabb',
+  'Shopping',
+  'Car',
+  'House',
+  'Birthday',
+  'Alcohol',
 ];
 
-class EditableChipFieldApp extends StatelessWidget {
-  const EditableChipFieldApp({super.key});
+class LableEntry extends StatefulWidget {
+  //final Widget child;
+  final TransactionControllers controllers;
+  const LableEntry({super.key, required this.controllers});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      home: const EditableChipFieldExample(),
-    );
-  }
+  State<LableEntry> createState() => _LableEntryState();
 }
 
-class EditableChipFieldExample extends StatefulWidget {
-  const EditableChipFieldExample({super.key});
-
-  @override
-  EditableChipFieldExampleState createState() {
-    return EditableChipFieldExampleState();
-  }
-}
-
-class EditableChipFieldExampleState extends State<EditableChipFieldExample> {
+class _LableEntryState extends State<LableEntry> {
   final FocusNode _chipFocusNode = FocusNode();
-  List<String> _toppings = <String>[_pizzaToppings.first];
+  List<String> _enteredLables = <String>[];
+  //List<String> _lables = <String>[];
   List<String> _suggestions = <String>[];
+  VoidCallback? _showPersBottomSheetCallBack;
+  final ExpansionTileController controller = ExpansionTileController();
+
+  @override
+  void initState() {
+    super.initState();
+    _showPersBottomSheetCallBack = () {
+      _showModalSheet();
+    };
+  }
+
+  _showModalSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setModalState) {
+            return Container(
+              color: const Color.fromARGB(255, 195, 221, 215),
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ChipsInput<String>(
+                        values: _enteredLables,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.local_pizza_rounded),
+                        ),
+                        strutStyle: const StrutStyle(fontSize: 15),
+                        onChanged: (List<String> data) {
+                          _onChanged(data, setModalState);
+                        },
+                        onSubmitted: (String data) {
+                          _onSubmitted(data, setModalState);
+                        },
+                        chipBuilder: (BuildContext context, String str) {
+                          return _chipBuilder(context, str, setModalState);
+                        },
+                        onTextChanged: (String data) {
+                          _onSearchChanged(data, setModalState);
+                        },
+                      ),
+                    ),
+                    if (_suggestions.isNotEmpty)
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          itemCount: _suggestions.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return LableSuggestions(
+                              _suggestions[index],
+                              onTap: (String str) {
+                                _selectSuggestion(str, setModalState);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+    return _enteredLables;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editable Chip Field Sample'),
-      ),
-      body: Column(
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    return SizedBox(
+      height: 200,
+      width: 500,
+      child: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ChipsInput<String>(
-              values: _toppings,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.local_pizza_rounded),
-                hintText: 'Search for toppings',
-              ),
-              strutStyle: const StrutStyle(fontSize: 15),
-              onChanged: _onChanged,
-              onSubmitted: _onSubmitted,
-              chipBuilder: _chipBuilder,
-              onTextChanged: _onSearchChanged,
-            ),
+          Row(
+            children: List<Widget>.generate(
+              _enteredLables.length,
+              (int index) {
+                String lable = _enteredLables[index];
+                return InputChip(
+                  label: Text('#$lable'),
+                  labelPadding: EdgeInsets.all(1),
+                  onDeleted: () {
+                    _onChipDeleted(lable, setState);
+                  },
+                  onSelected: (bool True) {
+                    _onChipTapped(lable, setState);
+                  },
+                );
+              },
+            ).toList(),
           ),
-          if (_suggestions.isNotEmpty)
-            Expanded(
-              child: ListView.builder(
-                itemCount: _suggestions.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ToppingSuggestion(
-                    _suggestions[index],
-                    onTap: _selectSuggestion,
-                  );
-                },
-              ),
-            ),
+          ElevatedButton(
+            onPressed: () {
+              _showModalSheet();
+            },
+            child: const Text("Add labels"),
+          ),
         ],
       ),
     );
   }
 
-  Future<void> _onSearchChanged(String value) async {
+  Future<void> _onSearchChanged(String value, StateSetter setModalState) async {
     final List<String> results = await _suggestionCallback(value);
-    setState(() {
+    setModalState(() {
       _suggestions = results
-          .where((String topping) => !_toppings.contains(topping))
+          .where((String lable) => !_enteredLables.contains(lable))
           .toList();
     });
   }
 
-  Widget _chipBuilder(BuildContext context, String topping) {
+  Widget _chipBuilder(
+      BuildContext context, String lable, StateSetter setModalState) {
     return ToppingInputChip(
-      topping: topping,
-      onDeleted: _onChipDeleted,
-      onSelected: _onChipTapped,
+      lable: lable,
+      onDeleted: (String str) {
+        _onChipDeleted(str, setModalState);
+      },
+      onSelected: (String str) {
+        _onChipTapped(str, setModalState);
+      },
     );
   }
 
-  void _selectSuggestion(String topping) {
+  void _selectSuggestion(String lable, StateSetter setModalState) {
+    setModalState(() {
+      _enteredLables.add(lable);
+      _suggestions = <String>[];
+    });
     setState(() {
-      _toppings.add(topping);
+      _enteredLables = _enteredLables;
+    });
+  }
+
+  void _onChipTapped(String lable, StateSetter setModalState) {}
+
+  void _onChipDeleted(String lable, StateSetter setModalState) {
+    setModalState(() {
+      _enteredLables.remove(lable);
       _suggestions = <String>[];
     });
   }
 
-  void _onChipTapped(String topping) {}
-
-  void _onChipDeleted(String topping) {
-    setState(() {
-      _toppings.remove(topping);
-      _suggestions = <String>[];
-    });
-  }
-
-  void _onSubmitted(String text) {
+  void _onSubmitted(String text, StateSetter setModalState) {
     if (text.trim().isNotEmpty) {
+      setModalState(() {
+        _enteredLables = <String>[..._enteredLables, text.trim()];
+      });
       setState(() {
-        _toppings = <String>[..._toppings, text.trim()];
+        _enteredLables = _enteredLables;
       });
     } else {
-      _chipFocusNode.unfocus();
+      setModalState(() {
+        _suggestions = <String>[];
+      });
       setState(() {
-        _toppings = <String>[];
+        _enteredLables = _enteredLables;
       });
     }
   }
 
-  void _onChanged(List<String> data) {
-    setState(() {
-      _toppings = data;
+  void _onChanged(List<String> data, StateSetter setModalState) {
+    setModalState(() {
+      _enteredLables = data;
+      _chipFocusNode.unfocus();
     });
   }
 
   FutureOr<List<String>> _suggestionCallback(String text) {
     if (text.isNotEmpty) {
-      return _pizzaToppings.where((String topping) {
-        return topping.toLowerCase().contains(text.toLowerCase());
+      return labels.where((String lable) {
+        return lable.toLowerCase().contains(text.toLowerCase());
       }).toList();
     }
     return const <String>[];
@@ -312,23 +382,23 @@ class ChipsInputEditingController<T> extends TextEditingController {
   }
 }
 
-class ToppingSuggestion extends StatelessWidget {
-  const ToppingSuggestion(this.topping, {super.key, this.onTap});
+class LableSuggestions extends StatelessWidget {
+  const LableSuggestions(this.lable, {super.key, this.onTap});
 
-  final String topping;
+  final String lable;
   final ValueChanged<String>? onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      key: ObjectKey(topping),
+      key: ObjectKey(lable),
       leading: CircleAvatar(
         child: Text(
-          topping[0].toUpperCase(),
+          lable[0].toUpperCase(),
         ),
       ),
-      title: Text(topping),
-      onTap: () => onTap?.call(topping),
+      title: Text(lable),
+      onTap: () => onTap?.call(lable),
     );
   }
 }
@@ -336,12 +406,12 @@ class ToppingSuggestion extends StatelessWidget {
 class ToppingInputChip extends StatelessWidget {
   const ToppingInputChip({
     super.key,
-    required this.topping,
+    required this.lable,
     required this.onDeleted,
     required this.onSelected,
   });
 
-  final String topping;
+  final String lable;
   final ValueChanged<String> onDeleted;
   final ValueChanged<String> onSelected;
 
@@ -350,13 +420,13 @@ class ToppingInputChip extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: 3),
       child: InputChip(
-        key: ObjectKey(topping),
-        label: Text(topping),
+        key: ObjectKey(lable),
+        label: Text(lable),
         avatar: CircleAvatar(
-          child: Text(topping[0].toUpperCase()),
+          child: Text(lable[0].toUpperCase()),
         ),
-        onDeleted: () => onDeleted(topping),
-        onSelected: (bool value) => onSelected(topping),
+        onDeleted: () => onDeleted(lable),
+        onSelected: (bool value) => onSelected(lable),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: const EdgeInsets.all(2),
       ),

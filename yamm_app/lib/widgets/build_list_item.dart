@@ -37,7 +37,9 @@ class BuildListItems {
 
   static Row buildServiceProviderRow(Transaction transaction) {
     String serviceProvider = transaction.getServiceProvider();
-    Row serviceProviderRow = Row(children: <Widget>[Text(serviceProvider)]);
+    Row serviceProviderRow = Row(
+      children: <Widget>[Text(serviceProvider)],
+    );
     return serviceProviderRow;
   }
 
@@ -50,7 +52,17 @@ class BuildListItems {
 
   static Row buildCategoryRow(Transaction transaction) {
     String categoryName = transaction.getCategory().name;
-    Row categoryRow = Row(children: <Widget>[Text(categoryName)]);
+    List<String> labels = transaction.getLabels();
+    List<Text> textLabels = labels
+        .map((label) => label != "" ? Text(" #$label") : const Text(""))
+        .toList();
+    textLabels.insert(
+        0,
+        Text(
+          categoryName,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ));
+    Row categoryRow = Row(children: textLabels);
     return categoryRow;
   }
 
@@ -73,7 +85,8 @@ class BuildListItems {
       buildServiceProviderRow(transaction),
       buildCategoryRow(transaction)
     ]);
-    Column dataColumn = Column(children: rows);
+    Column dataColumn =
+        Column(mainAxisAlignment: MainAxisAlignment.start, children: rows);
     return dataColumn;
   }
 

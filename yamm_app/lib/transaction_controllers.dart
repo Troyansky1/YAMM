@@ -3,6 +3,7 @@ import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/currency_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
+import 'package:yamm_app/functions/preferences.dart';
 
 class TransactionControllers {
   var amountCont = TextEditingController();
@@ -12,7 +13,7 @@ class TransactionControllers {
   var repeatOptionCont = TextEditingController();
   var endDateCont = TextEditingController();
   // var lableCont = SingleValueDropDownController();
-  List<String> lables = List.empty(growable: true);
+  List<String> labels = List.empty(growable: true);
   Currency currencyValue = defaultCurrency;
   TransactionCategory categoryValue = defaultCategory;
   List<bool> incomeOutcome = [false, true];
@@ -25,7 +26,7 @@ class TransactionControllers {
     serviceProviderCont.text = "";
     repeatOptionCont.text = "";
     endDateCont.text = "";
-    lables = <String>[];
+    labels = <String>[];
   }
 
   bool fieldsVarified() {
@@ -41,6 +42,8 @@ class TransactionControllers {
     transaction.setCategory(categoryValue);
     transaction.setIsOutcome(incomeOutcome[1]);
     transaction.setServiceProvider(serviceProviderCont.text);
+    transaction.setLabels(labels);
+    updateLabels(labels);
     return transaction.convertToListItem();
   }
 }
