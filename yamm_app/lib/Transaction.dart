@@ -78,7 +78,7 @@ class Transaction {
     return _amountField.getStrValue();
   }
 
-  dynamic getAmount() {
+  num getAmount() {
     return _amountField.getValue();
   }
 

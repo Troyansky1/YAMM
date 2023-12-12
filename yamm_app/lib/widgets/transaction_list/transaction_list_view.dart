@@ -6,12 +6,9 @@ import 'package:yamm_app/widgets/transaction_list/build_list_cards.dart';
 class TransactionsListView extends StatefulWidget {
   final List<Transaction>? transactionsList;
   final int month;
-  final int year;
+
   const TransactionsListView(
-      {super.key,
-      required this.transactionsList,
-      required this.year,
-      required this.month});
+      {super.key, required this.transactionsList, required this.month});
 
   @override
   State<TransactionsListView> createState() => _TransactionsListViewState();
@@ -29,8 +26,7 @@ class _TransactionsListViewState extends State<TransactionsListView> {
       return const Text("No transactions in this month");
     } else {
       List<Transaction> transactionsList = widget.transactionsList!;
-      List<List<Transaction>> listToShow =
-          genListPerDay(transactionsList, widget.year, widget.month);
+      List<List<Transaction>> listToShow = genListPerDay(transactionsList);
 
       return ListView.builder(
           itemCount: listToShow.length,

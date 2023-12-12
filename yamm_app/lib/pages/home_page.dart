@@ -50,14 +50,14 @@ class _MyHomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: FutureBuilder<List<Transaction>>(
           future: importedTransactionsList,
-          initialData: transactionsList,
+          //initialData: transactionsList,
           builder: (BuildContext context,
               AsyncSnapshot<List<Transaction>> snapshot) {
             List<Widget> children;
             if (snapshot.hasData && snapshot.data != null) {
               List<Transaction> lst = snapshot.data!;
               children = <Widget>[
-                HomePageList(transactionsList: snapshot.data)
+                HomePageList(transactionsList: snapshot.data!)
               ];
             } else if (snapshot.hasError) {
               children = <Widget>[

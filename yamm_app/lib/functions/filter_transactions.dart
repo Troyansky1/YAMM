@@ -15,16 +15,19 @@ List<Transaction> filterListDay(List<Transaction> lst, int day) {
   return dayList.toList();
 }
 
+List<Transaction> filterIncomeOutcome(List<Transaction> lst, bool outcome) {
+  var inOutList = lst.where((e) => e.getIsOutcome() == outcome);
+  return inOutList.toList();
+}
+
 List<Transaction> sortList(List<Transaction> lst) {
   List<Transaction> sortedList = lst;
   sortedList.sort((a, b) => a.getDate().compareTo(b.getDate()));
   return sortedList;
 }
 
-List<List<Transaction>> genListPerDay(
-    List<Transaction> lst, int year, int month) {
+List<List<Transaction>> genListPerDay(List<Transaction> lst) {
   lst = sortList(lst);
-  lst = filterListMonth(filterListYear(lst, year), month);
   List<List<Transaction>> listOfLists =
       List<List<Transaction>>.empty(growable: true);
   for (int day = 1; day <= 31; day++) {

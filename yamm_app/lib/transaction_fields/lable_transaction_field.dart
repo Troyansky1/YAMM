@@ -8,7 +8,7 @@ class LableField extends TransactionField {
   @override
   String title = "lables";
   @override
-  dynamic value = "";
+  dynamic value = List<String>.empty();
   @override
   String strValue = "";
   LableField() : super();
