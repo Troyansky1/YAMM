@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/transaction_entries/transaction_entries.dart';
+import 'package:yamm_app/transactions_list.dart';
 
 // Create a Form widget.
 class TransactionEntryForm extends StatefulWidget {
   final int id;
-  const TransactionEntryForm({super.key, required this.id});
+  final TransactionsListsNotifier transactionsListsNotifier;
+  const TransactionEntryForm(
+      {super.key, required this.id, required this.transactionsListsNotifier});
 
   @override
   TransactionEntryFormState createState() {
@@ -63,12 +66,16 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
           //const EntriesPadding(),
           //Does not have internal logic, but design is a thing.
           //repeatEntry(controllers: controllers),
-
           IncomeOutcomeEntry(controllers: controllers),
           CategoryEntry(controllers: controllers),
           LableEntry(controllers: controllers),
           const EntriesPadding(),
-          SaveEntry(controllers: controllers, id: widget.id, formKey: _formKey)
+          SaveEntry(
+            controllers: controllers,
+            id: widget.id,
+            formKey: _formKey,
+            transactionsListsNotifier: widget.transactionsListsNotifier,
+          )
         ],
       ),
     );

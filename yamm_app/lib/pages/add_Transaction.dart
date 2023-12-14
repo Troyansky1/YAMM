@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/widgets/transaction_form.dart';
 import 'package:yamm_app/functions/back_dialog.dart';
 
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({super.key, required this.id});
-  final int id;
+  const AddTransaction({super.key, required this.transactionsListsNotifier});
+  final TransactionsListsNotifier transactionsListsNotifier;
   final String title = "Add a transaction";
 
   @override
@@ -44,7 +45,15 @@ class _AddTransactionState extends State<AddTransaction> {
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            TransactionEntryForm(id: widget.id),
+            ValueListenableBuilder(
+                valueListenable:
+                    widget.transactionsListsNotifier.transactionsListId,
+                builder: (BuildContext context, int id, Widget? child) {
+                  return TransactionEntryForm(
+                      id: id,
+                      transactionsListsNotifier:
+                          widget.transactionsListsNotifier);
+                })
           ],
         ),
       ),

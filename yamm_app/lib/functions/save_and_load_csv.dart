@@ -11,6 +11,17 @@ getCsvFile() async {
   return file;
 }
 
+initCsv() async {
+  File file = await getCsvFile();
+  file.open();
+  String valuesCSV = const ListToCsvConverter().convert([[]]);
+
+  await file.writeAsString(
+    valuesCSV,
+    mode: FileMode.write,
+  );
+}
+
 writeListToCsv(List<List<dynamic>> lst) async {
   File file = await getCsvFile();
   file.open(mode: FileMode.append);
@@ -37,8 +48,6 @@ deleteCsv() async {
     valuesCSV,
     mode: FileMode.write,
   );
-  //print(ValuesCSV);
-  //print("Deleted list from csv");
 }
 
 Future<List<Transaction>> readListFromCsv() async {
@@ -73,9 +82,9 @@ List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
   return transactionsList;
 }
 
-Future<int> getLastID(Future<List<Transaction>> transactionsList) async {
+int getLastID(List<Transaction> transactionsList) {
   int id;
-  List<Transaction> lst = await transactionsList;
+  List<Transaction> lst = transactionsList;
   int len = lst.length;
   if (len > 0) {
     id = lst[len - 1].getId();

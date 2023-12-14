@@ -33,7 +33,7 @@ class TransactionControllers {
     return false;
   }
 
-  List<dynamic> buildTransactionItemFromForm(int id) {
+  Transaction setTransaction(int id) {
     Transaction transaction = Transaction(id);
     transaction.setId(id);
     transaction.setAmount(double.parse(amountCont.text));
@@ -43,6 +43,11 @@ class TransactionControllers {
     transaction.setIsOutcome(incomeOutcome[1]);
     transaction.setServiceProvider(serviceProviderCont.text);
     transaction.setLabels(labels);
+
+    return transaction;
+  }
+
+  List<dynamic> buildTransactionListItem(Transaction transaction) {
     updateLabels(labels);
     return transaction.convertToListItem();
   }

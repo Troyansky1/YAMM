@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
+import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/widgets/transaction_list/build_list_cards.dart';
 
 class TransactionsListView extends StatefulWidget {
-  final List<Transaction>? transactionsList;
+  final TransactionsListsNotifier transactionsListsNotifier;
   final int month;
 
   const TransactionsListView(
-      {super.key, required this.transactionsList, required this.month});
+      {super.key,
+      required this.transactionsListsNotifier,
+      required this.month});
 
   @override
   State<TransactionsListView> createState() => _TransactionsListViewState();
@@ -18,15 +21,19 @@ class _TransactionsListViewState extends State<TransactionsListView> {
   @override
   void initState() {
     super.initState();
+    widget.transactionsListsNotifier
+        .addListener(() => mounted ? setState(() {}) : null);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.transactionsList == null) {
+    List<Transaction> lst =
+        widget.transactionsListsNotifier.transactionsList.value;
+    if (lst.isEmpty) {
       return const Text("No transactions in this month");
     } else {
-      List<Transaction> transactionsList = widget.transactionsList!;
-      List<List<Transaction>> listToShow = genListPerDay(transactionsList);
+      List<List<Transaction>> listToShow = genListPerDay(
+          widget.transactionsListsNotifier.transactionsList.value);
 
       return ListView.builder(
           itemCount: listToShow.length,

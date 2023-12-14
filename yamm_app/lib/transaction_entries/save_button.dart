@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/functions/save_and_load_csv.dart';
+import 'package:yamm_app/transactions_list.dart';
+import 'package:yamm_app/functions/preferences.dart';
 
 class SaveEntry extends StatefulWidget {
   //final Widget child;
   final TransactionControllers controllers;
   final int id;
   final GlobalKey<FormState> formKey;
+  final TransactionsListsNotifier transactionsListsNotifier;
   const SaveEntry(
       {super.key,
       required this.controllers,
       required this.id,
-      required this.formKey});
+      required this.formKey,
+      required this.transactionsListsNotifier});
 
   @override
   State<SaveEntry> createState() => _SaveEntryState();
@@ -25,9 +30,14 @@ class _SaveEntryState extends State<SaveEntry> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Processing Data')),
       );
-      List<dynamic> transactionToSave;
-      transactionToSave = widget.controllers.buildTransactionItemFromForm(id);
-      appendItemToCsv(transactionToSave);
+      Transaction transaction = widget.controllers.setTransaction(id);
+      List<dynamic> transactionListItem;
+      transactionListItem =
+          widget.controllers.buildTransactionListItem(transaction);
+      updateLabels(widget.controllers.labels);
+      appendItemToCsv(transactionListItem);
+      widget.transactionsListsNotifier.addTransaction(transaction);
+
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

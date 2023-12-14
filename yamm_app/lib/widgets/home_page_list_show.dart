@@ -4,10 +4,12 @@ import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/widgets/home_page_stats_show.dart';
 import 'package:yamm_app/widgets/transaction_list/transaction_list_view.dart';
 import 'package:yamm_app/functions/filter_transactions.dart';
+import 'package:yamm_app/widgets/home_page_filter_entries.dart';
+import 'package:yamm_app/transactions_list.dart';
 
 class HomePageList extends StatefulWidget {
-  final List<Transaction> transactionsList;
-  const HomePageList({super.key, required this.transactionsList});
+  final TransactionsListsNotifier transactionsListsNotifier;
+  const HomePageList({super.key, required this.transactionsListsNotifier});
 
   @override
   State<HomePageList> createState() => _HomePageListState();
@@ -24,13 +26,14 @@ class _HomePageListState extends State<HomePageList> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        HomePageStats(filterdTransactionsList: widget.transactionsList),
-        const Text("to do filters"),
+        HomePageStats(
+            transactionsListsNotifier: widget.transactionsListsNotifier),
+        //HomePageFilters(TransactionsList: widget.transactionsList),
         const TextButton(onPressed: deleteCsv, child: Text("Clear list")),
         TransactionsListView(
-            transactionsList:
-                filterListYear(widget.transactionsList, DateTime.now().year),
-            month: DateTime.now().month),
+          transactionsListsNotifier: widget.transactionsListsNotifier,
+          month: DateTime.now().month,
+        ),
       ],
     );
   }

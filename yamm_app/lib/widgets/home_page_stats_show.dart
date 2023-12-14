@@ -1,36 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/functions/calc_stats.dart';
-import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
+import 'package:yamm_app/transactions_list.dart';
 
 class HomePageStats extends StatefulWidget {
-  final List<Transaction>? filterdTransactionsList;
+  final TransactionsListsNotifier transactionsListsNotifier;
 
-  const HomePageStats({super.key, required this.filterdTransactionsList});
+  const HomePageStats({super.key, required this.transactionsListsNotifier});
 
   @override
   State<HomePageStats> createState() => _HomePageStatsState();
 }
 
 class _HomePageStatsState extends State<HomePageStats> {
-  int income = 0;
-  int outcome = 0;
-  int balance = 0;
+  ValueNotifier<int> income = ValueNotifier(0);
+  ValueNotifier<int> outcome = ValueNotifier(0);
+  ValueNotifier<int> balance = ValueNotifier(0);
 
   @override
   void initState() {
     super.initState();
-    income = calcIncomesOutcomes(widget.filterdTransactionsList, false);
-    outcome = calcIncomesOutcomes(widget.filterdTransactionsList, true);
-    balance = calcBalance(widget.filterdTransactionsList);
+    widget.transactionsListsNotifier
+        .addListener(() => mounted ? setState(() {}) : null);
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Transaction> lst =
+        widget.transactionsListsNotifier.transactionsList.value;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Total balance: $balance Outcome: $outcome Income: $income")
+        Row(
+          children: <Widget>[
+            const Text("Total balance: "),
+            Text("${calcBalance(lst)}  "),
+            const Text("Income: "),
+            Text("${calcIncomesOutcomes(lst, false)}  "),
+            const Text("Outcome: "),
+            Text("${calcIncomesOutcomes(lst, true)}  "),
+          ],
+        ),
       ],
     );
   }
