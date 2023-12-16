@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:yamm_app/category_enum.dart';
 
 class Filters {

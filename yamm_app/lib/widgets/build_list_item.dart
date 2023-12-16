@@ -83,6 +83,7 @@ class BuildListItems {
     rows.addAll([
       buildAmountRow(transaction),
       buildServiceProviderRow(transaction),
+      buildDateRow(transaction),
       buildCategoryRow(transaction)
     ]);
     Column dataColumn =

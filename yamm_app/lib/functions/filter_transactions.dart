@@ -30,7 +30,7 @@ List<List<Transaction>> genListPerDay(List<Transaction> lst) {
   lst = sortList(lst);
   List<List<Transaction>> listOfLists =
       List<List<Transaction>>.empty(growable: true);
-  for (int day = 1; day <= 31; day++) {
+  for (int day = 0; day <= 31; day++) {
     listOfLists.add(filterListDay(lst, day));
   }
   return listOfLists;

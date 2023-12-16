@@ -11,11 +11,11 @@ class YearMonthPicker extends StatefulWidget {
       required this.pickMonth,
       Key? key})
       : super(key: key);
-  TransactionsListsNotifier transactionsListsNotifier;
-  late int initialYear;
-  late int startYear;
-  late int endYear;
-  late bool pickMonth;
+  final TransactionsListsNotifier transactionsListsNotifier;
+  late final int initialYear;
+  late final int startYear;
+  late final int endYear;
+  late final bool pickMonth;
   @override
   State<YearMonthPicker> createState() => _YearMonthPickerState();
 }

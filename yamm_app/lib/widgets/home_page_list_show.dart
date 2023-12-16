@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:yamm_app/functions/save_and_load_csv.dart';
 import 'package:yamm_app/widgets/home_page_stats_show.dart';
 import 'package:yamm_app/widgets/transaction_list/transaction_list_view.dart';
-import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/widgets/home_page_filter_entries.dart';
 import 'package:yamm_app/transactions_list.dart';
 

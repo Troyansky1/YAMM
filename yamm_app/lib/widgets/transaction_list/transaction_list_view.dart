@@ -28,12 +28,14 @@ class _TransactionsListViewState extends State<TransactionsListView> {
   @override
   Widget build(BuildContext context) {
     List<Transaction> lst =
-        widget.transactionsListsNotifier.transactionsList.value;
+        widget.transactionsListsNotifier.filteredTransactionsList.value;
     if (lst.isEmpty) {
-      return const Text("No transactions in this month");
+      String dateFrameStr =
+          widget.transactionsListsNotifier.dateFrame.value.name.toString();
+      return Text("No transactions in this $dateFrameStr");
     } else {
       List<List<Transaction>> listToShow = genListPerDay(
-          widget.transactionsListsNotifier.transactionsList.value);
+          widget.transactionsListsNotifier.filteredTransactionsList.value);
 
       return ListView.builder(
           itemCount: listToShow.length,

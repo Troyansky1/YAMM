@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/functions/save_and_load_csv.dart';
 import 'package:yamm_app/transaction.dart';
+import 'package:yamm_app/functions/filter_transactions.dart';
 
 enum DateFrames { year, month, day }
 
@@ -37,5 +38,23 @@ class TransactionsListsNotifier with ChangeNotifier {
 
   void editListItem(int id, Transaction transaction) {}
 
-  void filterList() {}
+  void filterListDate() {
+    if (dateFrame.value == DateFrames.year) {
+      filteredTransactionsList.value =
+          filterListYear(transactionsList.value, year.value);
+    } else if (dateFrame.value == DateFrames.month) {
+      filteredTransactionsList.value =
+          filterListYear(transactionsList.value, year.value);
+      filteredTransactionsList.value =
+          filterListMonth(filteredTransactionsList.value, month.value);
+    } else if (dateFrame.value == DateFrames.day) {
+      filteredTransactionsList.value =
+          filterListYear(transactionsList.value, year.value);
+      filteredTransactionsList.value =
+          filterListMonth(filteredTransactionsList.value, month.value);
+      filteredTransactionsList.value =
+          filterListDay(filteredTransactionsList.value, day.value);
+    }
+    notifyListeners();
+  }
 }

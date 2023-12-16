@@ -16,12 +16,14 @@ class DateField extends TransactionField {
 
   @override
   String converToString(dynamic val) {
-    String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(val);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(val);
     return formattedDate;
   }
 
   @override
   dynamic converFromString(String val) {
+    String str = val;
+    DateTime time = DateTime.parse(val);
     return DateTime.parse(val);
   }
 }

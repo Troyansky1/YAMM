@@ -19,6 +19,7 @@ class Transaction {
   List<TransactionField?> fieldsList = [];
 
   Transaction(this._id) {
+    setId(_id);
     setFieldsList();
   }
 

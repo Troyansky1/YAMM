@@ -17,15 +17,11 @@ class _LableEntryState extends State<LableEntry> {
 
   late FutureOr<List<String>> _labels;
   List<String> _suggestions = <String>[];
-  VoidCallback? _showPersBottomSheetCallBack;
 
   @override
   void initState() {
     super.initState();
     _labels = getLabels();
-    _showPersBottomSheetCallBack = () {
-      _showModalSheet();
-    };
   }
 
   _showModalSheet() {
@@ -95,7 +91,6 @@ class _LableEntryState extends State<LableEntry> {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
     return SizedBox(
       height: 200,
       width: 500,

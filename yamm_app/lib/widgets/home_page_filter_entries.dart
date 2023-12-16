@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/functions/dateFilterDialogs.dart';
 import 'package:yamm_app/transactions_list.dart';
-import 'package:yamm_app/widgets/year_month_day_pickers.dart';
 
 class HomePageFilters extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;
@@ -70,15 +67,14 @@ class _HomePageFiltersState extends State<HomePageFilters> {
                           widget.transactionsListsNotifier, context, value!)
                       .then((a) => setState(() {
                             widget.transactionsListsNotifier.dateFrame.value =
-                                value!;
+                                value;
+                            widget.transactionsListsNotifier.filterListDate();
                           }));
                 }),
             ValueListenableBuilder(
                 valueListenable: widget.transactionsListsNotifier.dateFrame,
                 builder: (BuildContext context, DateFrames dateFrame,
                     Widget? child) {
-                  List<Widget> rowChildren = List<Widget>.empty(growable: true);
-                  //w(dateFrame);
                   return showDatesRange(widget.transactionsListsNotifier);
                 })
           ],
