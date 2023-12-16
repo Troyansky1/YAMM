@@ -46,6 +46,7 @@ dependencies:
   json_serializable: ^6.7.1 
   json_annotation: ^4.8.1
   shared_preferences: ^2.2.2
+  side_sheet: ^1.0.4
   #chips_choice_null_safety: ^2.0.6 
   
   #path_provider: ^0.4.0

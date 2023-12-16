@@ -28,7 +28,7 @@ class _HomePageListState extends State<HomePageList> {
             transactionsListsNotifier: widget.transactionsListsNotifier),
         HomePageFilters(
             transactionsListsNotifier: widget.transactionsListsNotifier),
-        const TextButton(onPressed: deleteCsv, child: Text("Clear list")),
+        const TextButton(onPressed: deleteCsv, child: Text("Debug Clear list")),
         TransactionsListView(
           transactionsListsNotifier: widget.transactionsListsNotifier,
           month: DateTime.now().month,
