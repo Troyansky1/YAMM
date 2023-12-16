@@ -5,7 +5,7 @@ import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/widgets/year_month_day_pickers.dart';
 import 'package:yamm_app/user_preferences.dart';
 
-void showCustomDatePickerDialog(
+Future<void> showCustomDatePickerDialog(
     TransactionsListsNotifier transactionsListsNotifier,
     BuildContext context,
     DateFrames dateFrame) async {
@@ -24,8 +24,10 @@ void showCustomDatePickerDialog(
               if (pickedDate?.day != null)
                 {transactionsListsNotifier.day.value = pickedDate!.day}
             });
+    transactionsListsNotifier.dateFrame.value =
+        transactionsListsNotifier.dateFrame.value;
   } else if (dateFrame == DateFrames.month) {
-    showDialog(
+    await showDialog(
       context: context,
       //barrierDismissible: dismissible,
       builder: (BuildContext context) {
@@ -50,7 +52,7 @@ void showCustomDatePickerDialog(
       },
     );
   } else if (dateFrame == DateFrames.year) {
-    showDialog(
+    await showDialog(
       context: context,
       //barrierDismissible: dismissible,
       builder: (BuildContext context) {
