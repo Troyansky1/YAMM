@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:yamm_app/functions/dateFilterDialogs.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/widgets/year_month_day_pickers.dart';
 
@@ -20,34 +21,8 @@ class _HomePageFiltersState extends State<HomePageFilters> {
   void initState() {
     super.initState();
     dateFrame = dateFrames[2];
-  }
-
-  w(DateFrames dateFrame) {
-    DateTime currentDate = DateTime.now();
-    showDialog(
-      context: context,
-      //barrierDismissible: dismissible,
-      builder: (BuildContext context) {
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          child: PopScope(
-            canPop: true,
-            child: Dialog(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: MonthPicker(
-                  initialYear: currentDate.year,
-                  startYear: 2000,
-                  endYear: currentDate.year,
-                  currentYear: widget.transactionsListsNotifier.year.value,
-                  month: currentDate.month),
-            ),
-          ),
-        );
-      },
-    );
+    widget.transactionsListsNotifier
+        .addListener(() => mounted ? setState(() {}) : null);
   }
 
   @override
@@ -72,7 +47,8 @@ class _HomePageFiltersState extends State<HomePageFilters> {
                 items: dateFrameOptionsEntries,
                 value: widget.transactionsListsNotifier.dateFrame.value,
                 onChanged: (DateFrames? value) {
-                  w(DateFrames.day);
+                  showCustomDatePickerDialog(
+                      widget.transactionsListsNotifier, context, value!);
                   setState(() {
                     widget.transactionsListsNotifier.dateFrame.value = value!;
                   });

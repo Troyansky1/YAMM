@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:yamm_app/transactions_list.dart';
 
-class MonthPicker extends StatefulWidget {
-  MonthPicker(
-      {required this.initialYear,
+class YearMonthPicker extends StatefulWidget {
+  YearMonthPicker(
+      {required this.transactionsListsNotifier,
+      required this.initialYear,
       required this.startYear,
       required this.endYear,
-      required this.currentYear,
-      required this.month,
+      required this.pickMonth,
       Key? key})
       : super(key: key);
+  TransactionsListsNotifier transactionsListsNotifier;
   late int initialYear;
   late int startYear;
   late int endYear;
-  late int currentYear;
-  late int month;
+  late bool pickMonth;
   @override
-  State<MonthPicker> createState() => _MonthPickerState();
+  State<YearMonthPicker> createState() => _YearMonthPickerState();
 }
 
-class _MonthPickerState extends State<MonthPicker> {
+class _YearMonthPickerState extends State<YearMonthPicker> {
   final List<int> _monthList = [
     DateTime.january,
     DateTime.february,
@@ -35,10 +36,11 @@ class _MonthPickerState extends State<MonthPicker> {
     DateTime.december,
   ];
 
-  late int selectedMonthIndex;
-  late int selectedYearIndex;
-  String selectedMonth = "";
-  String selectedYear = "";
+  late int selectedMonth;
+  late int selectedYear;
+  late String selectedMonthStr;
+  late String selectedYearStr;
+
   final List<DropdownMenuItem<int>> monthsOptions =
       List<DropdownMenuItem<int>>.empty(growable: true);
   final List<DropdownMenuItem<int>> yearOptions =
@@ -64,13 +66,13 @@ class _MonthPickerState extends State<MonthPicker> {
         ),
       );
     }
-    selectedMonthIndex = widget.month - 1;
-    selectedYearIndex = widget.currentYear!;
+    selectedMonth = widget.transactionsListsNotifier.month.value;
+    selectedYear = widget.transactionsListsNotifier.year.value;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
-        selectedMonth =
-            DateFormat('MMMM').format(DateTime(0, selectedMonthIndex));
-        selectedYear = selectedYearIndex.toString();
+        selectedMonthStr =
+            DateFormat('MMMM').format(DateTime(0, selectedMonth));
+        selectedYearStr = selectedYear.toString();
       });
     });
     super.initState();
@@ -97,51 +99,36 @@ class _MonthPickerState extends State<MonthPicker> {
             height: 20,
           ),
           Row(
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
-                child: DropdownButton<int>(
-                  underline: Container(),
-                  items: yearOptions,
-                  value: selectedYearIndex,
-                  onChanged: (val) {
-                    setState(() {
-                      selectedYearIndex = val!;
-                      selectedYear =
-                          DateFormat('YYYY').format(DateTime(0, val));
-                    });
-                  },
-                ),
+              DropdownButton<int>(
+                underline: Container(),
+                items: yearOptions,
+                value: selectedYear,
+                onChanged: (val) {
+                  setState(() {
+                    selectedYear = val!;
+                    selectedYearStr =
+                        DateFormat('YYYY').format(DateTime(0, val));
+                  });
+                },
               ),
-              Expanded(
-                child: DropdownButton<int>(
-                  underline: Container(),
-                  items: monthsOptions,
-                  value: selectedMonthIndex,
-                  onChanged: (val) {
-                    setState(() {
-                      selectedMonthIndex = val!;
-                      selectedMonth =
-                          DateFormat('MMMM').format(DateTime(0, val));
-                    });
-                  },
+              if (widget.pickMonth)
+                Expanded(
+                  child: DropdownButton<int>(
+                    underline: Container(),
+                    items: monthsOptions,
+                    value: selectedMonth,
+                    onChanged: (val) {
+                      setState(() {
+                        selectedMonth = val!;
+                        selectedMonthStr =
+                            DateFormat('MMMM').format(DateTime(0, val));
+                      });
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(width: 20),
-              /*Expanded(
-                child: DropdownButton<String>(
-                  underline: Container(),
-                  items: _yearList.map((e) {
-                    return DropdownMenuItem<String>(value: e, child: Text(e));
-                  }).toList(),
-                  value: selectedYear,
-                  onChanged: (val) {
-                    setState(() {
-                      selectedYear = val ?? "";
-                    });
-                  },
-                ),
-              ) */
             ],
           ),
           const SizedBox(
@@ -152,16 +139,12 @@ class _MonthPickerState extends State<MonthPicker> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancel")),
-              ElevatedButton(
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   onPressed: () {
-                    // save your value
+                    widget.transactionsListsNotifier.year.value = selectedYear;
+                    widget.transactionsListsNotifier.month.value =
+                        selectedMonth;
                     Navigator.pop(
                       context,
                     );

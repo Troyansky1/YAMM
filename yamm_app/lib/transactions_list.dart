@@ -31,21 +31,6 @@ class TransactionsListsNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDateFromPicker(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2125)); //end date
-
-    if (pickedDate != null) {
-      year.value = pickedDate.year;
-      month.value = pickedDate.month;
-      day.value = pickedDate.day;
-      notifyListeners();
-    }
-  }
-
   void setyearFromPicker(BuildContext context) async {}
 
   void deleteListItem(int id) {}
