@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:side_sheet/side_sheet.dart';
 import 'package:yamm_app/functions/dateFilterDialogs.dart';
 import 'package:yamm_app/transactions_list.dart';
+import 'package:yamm_app/widgets/home_page_list_view/filter_list_side_sheet.dart';
 
 class HomePageFilters extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;
@@ -22,6 +23,9 @@ class _HomePageFiltersState extends State<HomePageFilters> {
     dateFrame = dateFrames[2];
     widget.transactionsListsNotifier
         .addListener(() => mounted ? setState(() {}) : null);
+
+    widget.transactionsListsNotifier.setCategoryMap();
+    widget.transactionsListsNotifier.setLabelsMap();
   }
 
   Widget showDatesRange(TransactionsListsNotifier transactionsListsNotifier) {
@@ -99,8 +103,12 @@ class _HomePageFiltersState extends State<HomePageFilters> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
-                onPressed: () =>
-                    SideSheet.right(body: Text("Body"), context: context),
+                onPressed: () => SideSheet.right(
+                    width: MediaQuery.of(context).size.width / 1.4,
+                    body: filterSideSheet(
+                        transactionsListsNotifier:
+                            widget.transactionsListsNotifier),
+                    context: context),
                 child: const Icon(Icons.tune)),
             const SizedBox(height: 10),
           ],

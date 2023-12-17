@@ -7,4 +7,7 @@ class Filters {
   final int dayFilter = DateTime.now().day;
   final List<TransactionCategory> categoryFilter =
       List<TransactionCategory>.empty(growable: true);
+
+  final Map<TransactionCategory, bool> categoryFilters = {};
+  final Map<String, bool> labelsFilters = {};
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/transactions_list.dart';
-import 'package:yamm_app/widgets/transaction_list/build_list_cards.dart';
+import 'package:yamm_app/widgets/home_page_list_view/build_list_cards.dart';
 
 class TransactionsListView extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;

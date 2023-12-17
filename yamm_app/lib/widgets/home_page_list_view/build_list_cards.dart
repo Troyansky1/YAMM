@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction.dart';
-import 'package:yamm_app/widgets/build_list_item.dart';
+import 'package:yamm_app/widgets/home_page_list_view/build_list_item.dart';
 
 class TransactionsListCards extends StatefulWidget {
   final List<Transaction> transactionList;
