@@ -17,7 +17,7 @@ class _DateEntryState extends State<DateEntry> {
       BuildContext context, TransactionControllers controllers) {
     return DatePicker.showDatePicker(
       context,
-      dateFormat: transactionDateFormat,
+      dateFormat: presentDateFormat,
       initialDateTime: DateTime.now(),
       minDateTime: defaultStartYear,
       maxDateTime: defaultEndYear,

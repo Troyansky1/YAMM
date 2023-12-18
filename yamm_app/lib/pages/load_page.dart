@@ -20,7 +20,6 @@ class _MyLoadPageState extends State<LoadPage> {
   late Future<List<Transaction>> importedTransactionsList;
   final TransactionsListsNotifier lists = TransactionsListsNotifier();
 
-  late Timer timer;
   bool isLoading = true;
 
   @override

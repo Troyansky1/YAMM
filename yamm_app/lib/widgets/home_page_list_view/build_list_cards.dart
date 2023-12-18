@@ -54,7 +54,7 @@ class _TransactionsListCardsState extends State<TransactionsListCards> {
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return BuildListItems.buildListItem(
-                    widget.transactionList[index], width);
+                    widget.transactionList[index], context);
               },
               childCount: widget.transactionList.length,
             ),

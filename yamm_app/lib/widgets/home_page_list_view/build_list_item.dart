@@ -109,15 +109,17 @@ class BuildListItems {
     );
   }
 
-  static Widget buildListItem(Transaction transaction, double width) {
+  static Widget buildListItem(Transaction transaction, BuildContext context) {
     List<Widget> columns = List<Widget>.empty(growable: true);
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     columns.addAll([
       buildDataContainer(transaction, width),
       buildEditContainer(transaction, width)
     ]);
     return Container(
       width: width,
-      height: 100,
+      height: height / 7,
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.horizontal(),
         border: Border.all(

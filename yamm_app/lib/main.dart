@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/pages/load_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yamm_app/pages/trying_page.dart';
 
 void main() {
   runApp(const MyApp());
