@@ -37,16 +37,19 @@ class _TransactionsListViewState extends State<TransactionsListView> {
       List<List<Transaction>> listToShow = genListPerDay(
           widget.transactionsListsNotifier.filteredTransactionsList.value);
 
-      return ListView.builder(
-          itemCount: listToShow.length,
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          itemBuilder: (context, index) {
-            return TransactionsListCards(
-                transactionList: listToShow[index],
-                day: index,
-                month: widget.month);
-          });
+      return Padding(
+        padding: const EdgeInsets.all(0),
+        child: ListView.builder(
+            itemCount: listToShow.length,
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return TransactionsListCards(
+                  transactionList: listToShow[index],
+                  day: index,
+                  month: widget.month);
+            }),
+      );
     }
   }
 }

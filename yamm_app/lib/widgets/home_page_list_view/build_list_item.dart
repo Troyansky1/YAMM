@@ -50,22 +50,27 @@ class BuildListItems {
     return dateRow;
   }
 
-  static Flexible buildCategoryRow(Transaction transaction) {
+  static Row buildCategoryRow(Transaction transaction) {
     String categoryName = transaction.getCategory().name;
     List<String> labels = transaction.getLabels();
     List<String> strLabels =
         labels.map((label) => label != "" ? " #$label" : "").toList();
 
     Text txt = Text(
-      "$categoryName ${strLabels.join()}",
+      strLabels.join(),
       overflow: TextOverflow.clip,
+      style: TextStyle(fontStyle: FontStyle.italic),
     );
-
-    Flexible categoryContainer = Flexible(
-      child: txt,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("$categoryName ", style: TextStyle(fontWeight: FontWeight.bold)),
+        Flexible(
+          child: txt,
+        ),
+      ],
     );
-
-    return categoryContainer;
   }
 
   static Container buildEditContainer(Transaction transaction, double width) {
@@ -86,9 +91,10 @@ class BuildListItems {
   static Container buildDataContainer(Transaction transaction, double width) {
     List<Widget> rows = List<Widget>.empty(growable: true);
     rows.addAll([
-      buildAmountRow(transaction),
       buildServiceProviderRow(transaction),
-      buildDateRow(transaction),
+      buildAmountRow(transaction),
+
+      //buildDateRow(transaction),
       buildCategoryRow(transaction)
     ]);
     return Container(
@@ -110,7 +116,13 @@ class BuildListItems {
     ]);
     return Container(
       width: width,
-      height: 150,
+      height: 100,
+      foregroundDecoration: BoxDecoration(
+        borderRadius: BorderRadius.horizontal(),
+        border: Border.all(
+          width: 1,
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(

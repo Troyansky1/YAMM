@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/pages/add_Transaction.dart';
 import 'package:yamm_app/transactions_list.dart';
-import 'package:yamm_app/widgets/home_page_list_show.dart';
+import 'package:yamm_app/widgets/home_page_main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(
@@ -24,6 +24,7 @@ class _MyHomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Home page"),
       ),
       body: SingleChildScrollView(
           child: Column(

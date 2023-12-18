@@ -33,8 +33,15 @@ class _TransactionsListCardsState extends State<TransactionsListCards> {
         physics: const ClampingScrollPhysics(),
         slivers: <Widget>[
           SliverToBoxAdapter(
-            child: Align(
-              alignment: Alignment.topLeft,
+            child: Container(
+              alignment: Alignment.bottomLeft,
+              height: 30,
+              foregroundDecoration: BoxDecoration(
+                borderRadius: BorderRadius.horizontal(),
+                border: Border.all(
+                  width: 1,
+                ),
+              ),
               child: Text(
                 ' $day.$month',
                 style: const TextStyle(
