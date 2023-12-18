@@ -21,7 +21,7 @@ class TransactionControllers {
   List<bool> incomeOutcome = [false, true];
 
   void initControllers() {
-    amountCont.text = "0";
+    amountCont.text = "";
     titleCont.text = "";
     //isOutcomeCont.text = "";
     dateCont.text = DateFormat(presentDateFormat).format(DateTime.now());

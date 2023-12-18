@@ -26,7 +26,7 @@ class _AmountEntryState extends State<AmountEntry> {
       child: TextFormField(
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
-          hintText: 'Amount widget',
+          labelText: 'Amount',
           contentPadding: EdgeInsets.symmetric(vertical: 2),
         ),
         keyboardType: TextInputType.number,
