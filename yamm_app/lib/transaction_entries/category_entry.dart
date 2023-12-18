@@ -32,7 +32,6 @@ class _CategoryEntryState extends State<CategoryEntry> {
             width: 150,
             child: DropdownButton2<TransactionCategory>(
               value: widget.controllers.categoryValue,
-              style: const TextStyle(color: Colors.deepPurple),
               alignment: AlignmentDirectional.center,
               items: categoryOptionsEntries,
               onChanged: (TransactionCategory? value) {

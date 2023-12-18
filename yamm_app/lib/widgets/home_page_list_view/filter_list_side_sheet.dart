@@ -29,7 +29,6 @@ class _filterSideSheetState extends State<filterSideSheet> {
           TransactionCategory category = TransactionCategory.values[index];
           return Container(
             alignment: Alignment.center,
-            color: Colors.lightBlue,
             child: SwitchListTile(
               value: categoryFilters[category]!,
               title: Text(category.name),
@@ -54,7 +53,6 @@ class _filterSideSheetState extends State<filterSideSheet> {
           String label = labelsFilters.keys.toList()[index];
           return Container(
             alignment: Alignment.center,
-            color: Colors.lightBlue,
             child: SwitchListTile(
               value: labelsFilters[label]!,
               title: Text(label),
@@ -87,7 +85,6 @@ class _filterSideSheetState extends State<filterSideSheet> {
         ),
         SliverToBoxAdapter(
           child: Container(
-            color: Colors.lightBlueAccent,
             alignment: Alignment.topLeft,
             height: 30,
             child: const Padding(
@@ -99,7 +96,6 @@ class _filterSideSheetState extends State<filterSideSheet> {
         createCategoriesListView(context, widget.transactionsListsNotifier),
         SliverToBoxAdapter(
           child: Container(
-            color: Colors.lightBlueAccent,
             alignment: Alignment.topLeft,
             height: 30,
             child: const Padding(

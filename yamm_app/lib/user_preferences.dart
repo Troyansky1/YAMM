@@ -5,5 +5,7 @@ Currency defaultCurrency = Currency.ils;
 TransactionCategory defaultCategory = TransactionCategory.others;
 
 DateTime defaultStartYear = DateTime(2000);
-DateTime defaultEendYear = DateTime(2150);
+DateTime defaultEndYear = DateTime(2150);
 int defaultMaxLabels = 6;
+String transactionDateFormat = 'yyyy-MM-dd HH:mm:ss';
+String presentDateFormat = 'dd MMM yy HH:mm';

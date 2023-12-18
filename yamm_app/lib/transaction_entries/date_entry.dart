@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction_controllers.dart';
+import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
+import 'package:yamm_app/user_preferences.dart';
 
 class DateEntry extends StatefulWidget {
   final TransactionControllers controllers;
@@ -11,6 +13,28 @@ class DateEntry extends StatefulWidget {
 }
 
 class _DateEntryState extends State<DateEntry> {
+  dateTimePickerWidget(
+      BuildContext context, TransactionControllers controllers) {
+    return DatePicker.showDatePicker(
+      context,
+      dateFormat: transactionDateFormat,
+      initialDateTime: DateTime.now(),
+      minDateTime: defaultStartYear,
+      maxDateTime: defaultEndYear,
+      minuteDivider: 10,
+      onConfirm: (
+        dateTime,
+        List<int> index,
+      ) {
+        DateTime selectdate = dateTime;
+        controllers.dateCont.text =
+            DateFormat(presentDateFormat).format(selectdate);
+        controllers.dateVal =
+            DateFormat(transactionDateFormat).format(selectdate);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -18,26 +42,12 @@ class _DateEntryState extends State<DateEntry> {
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         icon: Icon(Icons.calendar_today),
-        labelText: 'Date',
+        labelText: 'Time',
         contentPadding: EdgeInsets.symmetric(vertical: 1.0),
       ),
       readOnly: true,
       onTap: () async {
-        DateTime? pickedDate = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2125)); //end date
-
-        if (pickedDate != null) {
-          //pickedDate output format => 2021-03-10 00:00:00.000
-          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-          //formatted date output using intl package =>  2021-03-16
-          setState(() {
-            widget.controllers.dateCont.text =
-                formattedDate; //set output date to TextField value.
-          });
-        } else {}
+        dateTimePickerWidget(context, widget.controllers);
       },
     );
   }

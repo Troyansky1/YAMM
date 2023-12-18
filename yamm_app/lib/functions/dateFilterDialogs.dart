@@ -15,7 +15,7 @@ Future<void> showCustomDatePickerDialog(
             context: context,
             initialDate: DateTime.now(),
             firstDate: defaultStartYear,
-            lastDate: defaultEendYear)
+            lastDate: defaultEndYear)
         .then((pickedDate) => {
               if (pickedDate?.year != null)
                 {transactionsListsNotifier.year.value = pickedDate!.year},
@@ -44,7 +44,7 @@ Future<void> showCustomDatePickerDialog(
                   transactionsListsNotifier: transactionsListsNotifier,
                   initialYear: currentDate.year,
                   startYear: defaultStartYear.year,
-                  endYear: defaultEendYear.year,
+                  endYear: defaultEndYear.year,
                   pickMonth: true),
             ),
           ),
@@ -69,7 +69,7 @@ Future<void> showCustomDatePickerDialog(
                   transactionsListsNotifier: transactionsListsNotifier,
                   initialYear: currentDate.year,
                   startYear: defaultStartYear.year,
-                  endYear: defaultEendYear.year,
+                  endYear: defaultEndYear.year,
                   pickMonth: false),
             ),
           ),

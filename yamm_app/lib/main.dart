@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color.fromARGB(255, 0, 0, 0),
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
         ),
         useMaterial3: true,
         textTheme: TextTheme(
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           // ···
-          titleLarge: GoogleFonts.oswald(
+          titleLarge: GoogleFonts.abel(
             fontSize: 30,
             fontStyle: FontStyle.italic,
           ),

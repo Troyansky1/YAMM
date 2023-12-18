@@ -32,7 +32,6 @@ class _LableEntryState extends State<LableEntry> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setModalState) {
             return Container(
-              color: const Color.fromARGB(255, 195, 221, 215),
               child: Center(
                 child: Column(
                   children: <Widget>[

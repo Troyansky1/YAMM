@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction_fields/transaction_field.dart';
+import 'package:yamm_app/user_preferences.dart';
 
 class DateField extends TransactionField {
   @override
@@ -16,7 +17,7 @@ class DateField extends TransactionField {
 
   @override
   String converToString(dynamic val) {
-    String formattedDate = DateFormat('yyyy-MM-dd').format(val);
+    String formattedDate = DateFormat(transactionDateFormat).format(val);
     return formattedDate;
   }
 

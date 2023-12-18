@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction.dart';
+import 'package:yamm_app/user_preferences.dart';
 
 class BuildListItems {
   BuildListItems();
@@ -45,7 +46,7 @@ class BuildListItems {
 
   static Row buildDateRow(Transaction transaction) {
     DateTime date = transaction.getDate();
-    String formattedDate = DateFormat('dd-MM-yy').format(date);
+    String formattedDate = DateFormat(transactionDateFormat).format(date);
     Row dateRow = Row(children: <Widget>[Text(formattedDate)]);
     return dateRow;
   }
