@@ -16,8 +16,7 @@ addLabel(String label) async {
   List<String> labels = (prefs.getStringList('labels') ?? []);
   if (!labels.contains(label)) {
     labels.add(label);
-    await prefs.remove('labels');
-    await prefs.setStringList('labels', labels);
+    prefs.setStringList('labels', labels);
   }
 }
 

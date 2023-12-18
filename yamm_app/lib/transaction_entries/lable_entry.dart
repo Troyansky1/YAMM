@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/functions/preferences.dart';
 import 'dart:async';
+import 'package:yamm_app/user_preferences.dart';
 
 class LableEntry extends StatefulWidget {
   //final Widget child;
@@ -39,9 +40,6 @@ class _LableEntryState extends State<LableEntry> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ChipsInput<String>(
                         values: widget.controllers.labels,
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.local_pizza_rounded),
-                        ),
                         strutStyle: const StrutStyle(fontSize: 15),
                         onChanged: (List<String> data) {
                           _onChanged(data, setModalState);
@@ -129,8 +127,12 @@ class _LableEntryState extends State<LableEntry> {
       chosenLabels.add(chip);
     }
     chosenLabels.add(ElevatedButton(
-      onPressed: () {
-        _showModalSheet();
+      onPressed: () async {
+        List<String> labels = await _labels;
+        _suggestions =
+            getSuggestionsWithoutChosen(labels, widget.controllers.labels);
+
+        await _showModalSheet();
       },
       child: const Text("Add labels"),
     ));
@@ -140,9 +142,8 @@ class _LableEntryState extends State<LableEntry> {
   Future<void> _onSearchChanged(String value, StateSetter setModalState) async {
     final List<String> results = await _suggestionCallback(value);
     setModalState(() {
-      _suggestions = results
-          .where((String lable) => !widget.controllers.labels.contains(lable))
-          .toList();
+      _suggestions =
+          getSuggestionsWithoutChosen(results, widget.controllers.labels);
     });
   }
 
@@ -159,46 +160,53 @@ class _LableEntryState extends State<LableEntry> {
     );
   }
 
-  void _selectSuggestion(String lable, StateSetter setModalState) {
-    setModalState(() {
-      widget.controllers.labels.add(lable);
-      _suggestions = <String>[];
-    });
-    setState(() {
-      widget.controllers.labels = widget.controllers.labels;
-    });
-  }
-
-  void _onChipTapped(String lable, StateSetter setModalState) {}
-
-  void _onChipDeleted(String lable, StateSetter setModalState) {
-    setModalState(() {
-      widget.controllers.labels.remove(lable);
-    });
-    setState(() {
-      widget.controllers.labels = widget.controllers.labels;
-    });
-  }
-
-  void _onSubmitted(String text, StateSetter setModalState) {
-    if (text.trim().isNotEmpty) {
+  void _selectSuggestion(String lable, StateSetter setModalState) async {
+    List<String> labels = await _labels;
+    if (widget.controllers.labels.length < defaultMaxLabels) {
       setModalState(() {
-        widget.controllers.labels = <String>[
-          ...widget.controllers.labels,
-          text.trim()
-        ];
-      });
-      setState(() {
-        widget.controllers.labels = widget.controllers.labels;
-      });
-    } else {
-      setModalState(() {
-        _suggestions = <String>[];
+        widget.controllers.labels.add(lable);
+        _suggestions =
+            getSuggestionsWithoutChosen(labels, widget.controllers.labels);
       });
       setState(() {
         widget.controllers.labels = widget.controllers.labels;
       });
     }
+  }
+
+  void _onChipTapped(String lable, StateSetter setModalState) async {}
+
+  void _onChipDeleted(String lable, StateSetter setModalState) async {
+    List<String> labels = await _labels;
+    setModalState(() {
+      widget.controllers.labels.remove(lable);
+      _suggestions =
+          getSuggestionsWithoutChosen(labels, widget.controllers.labels);
+    });
+    setState(() {
+      widget.controllers.labels = widget.controllers.labels;
+    });
+  }
+
+  void _onSubmitted(String text, StateSetter setModalState) async {
+    List<String> labels = await _labels;
+    if (widget.controllers.labels.length < defaultMaxLabels) {
+      if (text.trim().isNotEmpty) {
+        setModalState(() {
+          widget.controllers.labels = <String>[
+            ...widget.controllers.labels,
+            text.trim()
+          ];
+        });
+      }
+      setModalState(() {
+        _suggestions =
+            getSuggestionsWithoutChosen(labels, widget.controllers.labels);
+      });
+      setState(() {
+        widget.controllers.labels = widget.controllers.labels;
+      });
+    } else {}
   }
 
   void _onChanged(List<String> data, StateSetter setModalState) {
@@ -210,12 +218,19 @@ class _LableEntryState extends State<LableEntry> {
 
   FutureOr<List<String>> _suggestionCallback(String text) async {
     List<String> labels = await _labels;
-    if (text.isNotEmpty) {
+    if (text.isNotEmpty || text.trim() != "") {
       return labels.where((String lable) {
         return lable.toLowerCase().contains(text.toLowerCase());
       }).toList();
     }
     return labels;
+  }
+
+  List<String> getSuggestionsWithoutChosen(
+      List<String> allLabels, List<String> chosenLabels) {
+    return allLabels
+        .where((String lable) => !chosenLabels.contains(lable))
+        .toList();
   }
 }
 
@@ -424,9 +439,7 @@ class ToppingInputChip extends StatelessWidget {
       child: InputChip(
         key: ObjectKey(lable),
         label: Text(lable),
-        avatar: CircleAvatar(
-          child: Text(lable[0].toUpperCase()),
-        ),
+        //avatar: CircleAvatar(child: Text(lable[0].toUpperCase()),),
         onDeleted: () => onDeleted(lable),
         onSelected: (bool value) => onSelected(lable),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

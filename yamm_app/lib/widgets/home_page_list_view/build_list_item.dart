@@ -50,35 +50,40 @@ class BuildListItems {
     return dateRow;
   }
 
-  static Row buildCategoryRow(Transaction transaction) {
+  static Flexible buildCategoryRow(Transaction transaction) {
     String categoryName = transaction.getCategory().name;
     List<String> labels = transaction.getLabels();
-    List<Text> textLabels = labels
-        .map((label) => label != "" ? Text(" #$label") : const Text(""))
-        .toList();
-    textLabels.insert(
-        0,
-        Text(
-          categoryName,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ));
-    Row categoryRow = Row(children: textLabels);
-    return categoryRow;
+    List<String> strLabels =
+        labels.map((label) => label != "" ? " #$label" : "").toList();
+
+    Text txt = Text(
+      "$categoryName ${strLabels.join()}",
+      overflow: TextOverflow.clip,
+    );
+
+    Flexible categoryContainer = Flexible(
+      child: txt,
+    );
+
+    return categoryContainer;
   }
 
-  static Column buildEditColumn(Transaction transaction) {
-    Column editColumn = const Column(children: <Widget>[
-      Row(
+  static Container buildEditContainer(Transaction transaction, double width) {
+    Container editColumn = Container(
+      width: width * 0.15,
+      alignment: Alignment.centerRight,
+      child: const Row(
         children: <Widget>[
           Icon(Icons.edit_note_rounded),
           Icon(Icons.delete_outlined)
         ],
-      )
-    ]);
+      ),
+    );
+
     return editColumn;
   }
 
-  static Column buildDataColumn(Transaction transaction) {
+  static Container buildDataContainer(Transaction transaction, double width) {
     List<Widget> rows = List<Widget>.empty(growable: true);
     rows.addAll([
       buildAmountRow(transaction),
@@ -86,16 +91,26 @@ class BuildListItems {
       buildDateRow(transaction),
       buildCategoryRow(transaction)
     ]);
-    Column dataColumn =
-        Column(mainAxisAlignment: MainAxisAlignment.start, children: rows);
-    return dataColumn;
+    return Container(
+      width: width * 0.75,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: rows,
+      ),
+    );
   }
 
-  static Widget buildListItem(Transaction transaction) {
+  static Widget buildListItem(Transaction transaction, double width) {
     List<Widget> columns = List<Widget>.empty(growable: true);
-    columns
-        .addAll([buildDataColumn(transaction), buildEditColumn(transaction)]);
-    return Card(
+    columns.addAll([
+      buildDataContainer(transaction, width),
+      buildEditContainer(transaction, width)
+    ]);
+    return Container(
+      width: width,
+      height: 150,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(

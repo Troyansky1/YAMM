@@ -26,6 +26,7 @@ class _TransactionsListCardsState extends State<TransactionsListCards> {
   Widget build(BuildContext context) {
     int day = widget.day;
     int month = widget.month;
+    double width = MediaQuery.of(context).size.width;
     if (widget.transactionList.isNotEmpty) {
       return CustomScrollView(
         shrinkWrap: true,
@@ -46,7 +47,7 @@ class _TransactionsListCardsState extends State<TransactionsListCards> {
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return BuildListItems.buildListItem(
-                    widget.transactionList[index]);
+                    widget.transactionList[index], width);
               },
               childCount: widget.transactionList.length,
             ),

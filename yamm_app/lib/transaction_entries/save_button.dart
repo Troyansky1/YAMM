@@ -34,7 +34,10 @@ class _SaveEntryState extends State<SaveEntry> {
       List<dynamic> transactionListItem;
       transactionListItem =
           widget.controllers.buildTransactionListItem(transaction);
-      updateLabels(widget.controllers.labels);
+      updateLabels(widget.controllers.labels).then((value) {
+        widget.transactionsListsNotifier.setLabelsMap();
+      });
+
       appendItemToCsv(transactionListItem);
       widget.transactionsListsNotifier.addTransaction(transaction);
 

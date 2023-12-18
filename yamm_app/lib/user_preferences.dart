@@ -6,3 +6,4 @@ TransactionCategory defaultCategory = TransactionCategory.others;
 
 DateTime defaultStartYear = DateTime(2000);
 DateTime defaultEendYear = DateTime(2150);
+int defaultMaxLabels = 6;
