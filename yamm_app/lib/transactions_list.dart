@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:yamm_app/filters.dart';
 import 'package:yamm_app/functions/preferences.dart';
@@ -11,6 +13,10 @@ enum DateFrames { year, month, day }
 class TransactionsListsNotifier with ChangeNotifier {
   late ValueNotifier<List<Transaction>> transactionsList =
       ValueNotifier<List<Transaction>>(List<Transaction>.empty(growable: true));
+  late ValueNotifier<List<Transaction>> dateFilteredTransactionsList =
+      ValueNotifier<List<Transaction>>(List<Transaction>.empty(growable: true));
+  late ValueNotifier<List<Transaction>> fieldFilteredTransactionsList =
+      ValueNotifier<List<Transaction>>(List<Transaction>.empty(growable: true));
   late ValueNotifier<List<Transaction>> filteredTransactionsList =
       ValueNotifier<List<Transaction>>(List<Transaction>.empty(growable: true));
   late ValueNotifier<int> transactionsListId = ValueNotifier<int>(0);
@@ -18,13 +24,15 @@ class TransactionsListsNotifier with ChangeNotifier {
 
   late ValueNotifier<DateFrames> dateFrame =
       ValueNotifier<DateFrames>(DateFrames.year);
-  late ValueNotifier<int> year = ValueNotifier<int>(DateTime.now().year);
-  late ValueNotifier<int> month = ValueNotifier<int>(DateTime.now().month);
-  late ValueNotifier<int> day = ValueNotifier<int>(DateTime.now().day);
+  //late ValueNotifier<int> year = ValueNotifier<int>(DateTime.now().year);
+  //late ValueNotifier<int> month = ValueNotifier<int>(DateTime.now().month);
+  //late ValueNotifier<int> day = ValueNotifier<int>(DateTime.now().day);
 
   void setList(List<Transaction> lst) {
     transactionsList.value = lst;
     filteredTransactionsList.value = lst;
+    dateFilteredTransactionsList.value = lst;
+    fieldFilteredTransactionsList.value = lst;
     transactionsListId.value = getLastID(transactionsList.value);
     notifyListeners();
   }
@@ -42,29 +50,44 @@ class TransactionsListsNotifier with ChangeNotifier {
 
   void editListItem(int id, Transaction transaction) {}
 
-  void filterListDate() {
-    if (dateFrame.value == DateFrames.year) {
-      filteredTransactionsList.value =
-          filterListYear(transactionsList.value, year.value);
-    } else if (dateFrame.value == DateFrames.month) {
-      filteredTransactionsList.value =
-          filterListYear(transactionsList.value, year.value);
-      filteredTransactionsList.value =
-          filterListMonth(filteredTransactionsList.value, month.value);
-    } else if (dateFrame.value == DateFrames.day) {
-      filteredTransactionsList.value =
-          filterListYear(transactionsList.value, year.value);
-      filteredTransactionsList.value =
-          filterListMonth(filteredTransactionsList.value, month.value);
-      filteredTransactionsList.value =
-          filterListDay(filteredTransactionsList.value, day.value);
+  void _filterListDate(List<Transaction> lst) {
+    dateFilteredTransactionsList.value =
+        filterListYear(lst, filters.value.yearFilter);
+    if (dateFrame.value == DateFrames.month) {
+      dateFilteredTransactionsList.value =
+          filterListMonth(lst, filters.value.monthFilter);
+      if (dateFrame.value == DateFrames.day) {
+        dateFilteredTransactionsList.value =
+            filterListDay(lst, filters.value.dayFilter);
+      }
+    }
+    notifyListeners();
+  }
+
+  void _filterListFields(List<Transaction> lst) {
+    fieldFilteredTransactionsList.value =
+        filterListCategories(lst, filters.value.categoryFilters);
+    fieldFilteredTransactionsList.value = filterListLabels(
+        fieldFilteredTransactionsList.value, filters.value.labelsFilters);
+    fieldFilteredTransactionsList.value = fieldFilteredTransactionsList.value;
+    notifyListeners();
+  }
+
+  void updateFilters({bool date = false, bool fields = false}) {
+    if (date) {
+      _filterListDate(transactionsList.value);
+      _filterListFields(dateFilteredTransactionsList.value);
+      filteredTransactionsList.value = fieldFilteredTransactionsList.value;
+    } else if (fields) {
+      _filterListFields(dateFilteredTransactionsList.value);
+      filteredTransactionsList.value = fieldFilteredTransactionsList.value;
     }
     notifyListeners();
   }
 
   void setCategoryMap() {
     for (TransactionCategory category in TransactionCategory.values) {
-      filters.value.categoryFilters[category] = false;
+      filters.value.categoryFilters[category] = true;
     }
     notifyListeners();
   }
@@ -78,7 +101,7 @@ class TransactionsListsNotifier with ChangeNotifier {
   void setLabelsMap() async {
     getLabels().then((labels) => {
           for (String label in labels)
-            {filters.value.labelsFilters[label] = false}
+            {filters.value.labelsFilters[label] = true}
         });
     notifyListeners();
   }

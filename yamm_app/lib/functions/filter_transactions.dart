@@ -1,4 +1,24 @@
+import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/transaction.dart';
+
+List<Transaction> filterListCategories(
+    List<Transaction> lst, Map<TransactionCategory, bool> categoryFilters) {
+  List<TransactionCategory> categories =
+      categoryFilters.keys.where((e) => categoryFilters[e] == true).toList();
+  List<Transaction> categoriesFilteredList =
+      lst.where((e) => categories.contains(e.getCategory())).toList();
+  return categoriesFilteredList;
+}
+
+List<Transaction> filterListLabels(
+    List<Transaction> lst, Map<String, bool> labelFilters) {
+  Set<String> labels =
+      labelFilters.keys.where((e) => labelFilters[e] == true).toSet();
+  List<Transaction> labelsFilteredList = lst
+      .where((e) => labels.intersection(e.getLabels().toSet()).isNotEmpty)
+      .toList();
+  return labelsFilteredList;
+}
 
 List<Transaction> filterListYear(List<Transaction> lst, int year) {
   var yearList = lst.where((e) => e.getDate().year == year);

@@ -18,11 +18,20 @@ Future<void> showCustomDatePickerDialog(
             lastDate: defaultEndYear)
         .then((pickedDate) => {
               if (pickedDate?.year != null)
-                {transactionsListsNotifier.year.value = pickedDate!.year},
+                {
+                  transactionsListsNotifier.filters.value.yearFilter =
+                      pickedDate!.year
+                },
               if (pickedDate?.month != null)
-                {transactionsListsNotifier.month.value = pickedDate!.month},
+                {
+                  transactionsListsNotifier.filters.value.monthFilter =
+                      pickedDate!.month
+                },
               if (pickedDate?.day != null)
-                {transactionsListsNotifier.day.value = pickedDate!.day}
+                {
+                  transactionsListsNotifier.filters.value.dayFilter =
+                      pickedDate!.day
+                }
             });
     transactionsListsNotifier.dateFrame.value =
         transactionsListsNotifier.dateFrame.value;

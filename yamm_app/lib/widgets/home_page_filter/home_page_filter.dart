@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:side_sheet/side_sheet.dart';
 import 'package:yamm_app/functions/dateFilterDialogs.dart';
 import 'package:yamm_app/transactions_list.dart';
-import 'package:yamm_app/widgets/home_page_list_view/filter_list_side_sheet.dart';
+import 'package:yamm_app/widgets/home_page_filter/filter_list_side_sheet.dart';
 
 class HomePageFilters extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;
@@ -31,9 +31,9 @@ class _HomePageFiltersState extends State<HomePageFilters> {
   Widget showDatesRange(TransactionsListsNotifier transactionsListsNotifier) {
     Text text;
     DateFrames dateFrame = transactionsListsNotifier.dateFrame.value;
-    int year = transactionsListsNotifier.year.value;
-    int month = transactionsListsNotifier.month.value;
-    int day = transactionsListsNotifier.day.value;
+    int year = transactionsListsNotifier.filters.value.yearFilter;
+    int month = transactionsListsNotifier.filters.value.monthFilter;
+    int day = transactionsListsNotifier.filters.value.dayFilter;
     if (dateFrame == DateFrames.year) {
       text = Text(year.toString());
     } else if (dateFrame == DateFrames.month) {
@@ -82,7 +82,7 @@ class _HomePageFiltersState extends State<HomePageFilters> {
                                   widget.transactionsListsNotifier.dateFrame
                                       .value = value;
                                   widget.transactionsListsNotifier
-                                      .filterListDate();
+                                      .updateFilters(date: true);
                                 }));
                       }),
                   ValueListenableBuilder(

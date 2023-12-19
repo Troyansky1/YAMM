@@ -66,8 +66,8 @@ class _YearMonthPickerState extends State<YearMonthPicker> {
         ),
       );
     }
-    selectedMonth = widget.transactionsListsNotifier.month.value;
-    selectedYear = widget.transactionsListsNotifier.year.value;
+    selectedMonth = widget.transactionsListsNotifier.filters.value.monthFilter;
+    selectedYear = widget.transactionsListsNotifier.filters.value.yearFilter;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         selectedMonthStr =
@@ -142,8 +142,9 @@ class _YearMonthPickerState extends State<YearMonthPicker> {
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   onPressed: () {
-                    widget.transactionsListsNotifier.year.value = selectedYear;
-                    widget.transactionsListsNotifier.month.value =
+                    widget.transactionsListsNotifier.filters.value.yearFilter =
+                        selectedYear;
+                    widget.transactionsListsNotifier.filters.value.monthFilter =
                         selectedMonth;
                     Navigator.pop(
                       context,

@@ -35,6 +35,7 @@ class _filterSideSheetState extends State<filterSideSheet> {
               onChanged: (bool? value) {
                 setState(() {
                   transactionsListsNotifier.toggleCategoryFilterVal(category);
+                  transactionsListsNotifier.updateFilters(fields: true);
                 });
               },
             ),
@@ -59,6 +60,7 @@ class _filterSideSheetState extends State<filterSideSheet> {
               onChanged: (bool? value) {
                 setState(() {
                   transactionsListsNotifier.toggleLabelFilterVal(label);
+                  transactionsListsNotifier.updateFilters(fields: true);
                 });
               },
             ),
