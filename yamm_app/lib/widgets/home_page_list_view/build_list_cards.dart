@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
-import 'package:yamm_app/widgets/home_page_list_view/build_list_item.dart';
+import 'package:yamm_app/widgets/home_page_list_view/build_transaction_list_item.dart';
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
+
+//TODO: Make this widgets a class
 
 Widget createTransactionsListYear(
     BuildContext context,
@@ -136,7 +138,8 @@ Widget createTransactionsListDayItem(
     controller: controller,
     duration: const Duration(microseconds: 1),
     builder: (BuildContext context, transaction, int index) {
-      return BuildListItems.buildListItem(transactionListDay[index], context);
+      return BuildTransactionListItems.buildListItem(
+          transactionListDay[index], context);
     },
   );
 }

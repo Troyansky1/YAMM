@@ -1,9 +1,8 @@
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 import 'package:flutter/material.dart';
-import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/transactions_list.dart';
-import 'package:yamm_app/widgets/home_page_list_view/build_list_cards_month.dart';
+import 'package:yamm_app/widgets/home_page_list_view/build_list_cards.dart';
 
 class TransactionsListView extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;
@@ -32,14 +31,17 @@ class _TransactionsListViewState extends State<TransactionsListView> {
     List<Transaction> lst =
         widget.transactionsListsNotifier.filteredTransactionsList.value;
     if (lst.isEmpty) {
+      //Generates a message to let the user know that the list is empty
       String dateFrameStr = dateFrame.name.toString();
       return Text("No transactions in this $dateFrameStr");
     } else if (dateFrame == DateFrames.year) {
+      //Shows a list of transactions inside a list of days inside a list of months from the given year.
       ExpandableSliverListController<List<Transaction>> controller =
           ExpandableSliverListController<List<Transaction>>(
               initialStatus: ExpandableSliverListStatus.expanded);
       return createTransactionsListYear(context, lst, controller);
     } else if (dateFrame == DateFrames.month) {
+      //Shows a list of transactions inside a list of days from the given month.
       ExpandableSliverListController<List<Transaction>> controller =
           ExpandableSliverListController<List<Transaction>>(
               initialStatus: ExpandableSliverListStatus.expanded);
@@ -47,6 +49,7 @@ class _TransactionsListViewState extends State<TransactionsListView> {
       return createTransactionsListMonth(
           context, lst, controller, false, month);
     } else if (dateFrame == DateFrames.day) {
+      //Shows a list of transactions from the given day.
       ExpandableSliverListController<Transaction> controller =
           ExpandableSliverListController<Transaction>(
               initialStatus: ExpandableSliverListStatus.expanded);

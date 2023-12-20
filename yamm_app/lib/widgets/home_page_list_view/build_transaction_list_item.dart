@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/user_preferences.dart';
 
-class BuildListItems {
-  BuildListItems();
+class BuildTransactionListItems {
+  BuildTransactionListItems();
 
   static Row buildAmountRow(Transaction transaction) {
     String amount = transaction.getAmountString();
