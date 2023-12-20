@@ -94,7 +94,7 @@ Widget filterSwitch(VoidCallback onChanged, bool value, String titleVar,
         subtitle: subtitleVar == ""
             ? null
             : Text(
-                "View only $subtitleVar?",
+                "View only $subtitleVar",
                 softWrap: true,
                 style: const TextStyle(fontSize: 12),
               ),

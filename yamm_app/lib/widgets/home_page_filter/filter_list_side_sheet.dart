@@ -43,6 +43,7 @@ class _filterSideSheetState extends State<filterSideSheet> {
   Widget build(BuildContext context) {
     void filterCategoriesSwitchCallback() {
       widget.transactionsListsNotifier.toggleFilterCategories();
+      widget.transactionsListsNotifier.updateFilters(fields: true);
       setState(() {
         updateController(filters.filterCategories, categoriesExpandController);
       });
@@ -50,6 +51,7 @@ class _filterSideSheetState extends State<filterSideSheet> {
 
     void filterLabelsSwitchCallback() {
       widget.transactionsListsNotifier.toggleFilterLabels();
+      widget.transactionsListsNotifier.updateFilters(fields: true);
       setState(() {
         updateController(filters.filterLabels, labelsExpandController);
       });

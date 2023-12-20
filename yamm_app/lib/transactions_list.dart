@@ -62,11 +62,13 @@ class TransactionsListsNotifier with ChangeNotifier {
   }
 
   void _filterListFields(List<Transaction> lst) {
-    fieldFilteredTransactionsList.value =
-        filterListCategories(lst, filters.value.categoryFilters);
-    fieldFilteredTransactionsList.value = filterListLabels(
-        fieldFilteredTransactionsList.value, filters.value.labelsFilters);
-    fieldFilteredTransactionsList.value = fieldFilteredTransactionsList.value;
+    if (filters.value.filterCategories) {
+      lst = filterListCategories(lst, filters.value.categoryFilters);
+    }
+    if (filters.value.filterLabels) {
+      lst = filterListLabels(lst, filters.value.labelsFilters);
+    }
+    fieldFilteredTransactionsList.value = lst;
     notifyListeners();
   }
 
