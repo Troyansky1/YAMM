@@ -109,7 +109,8 @@ class BuildListItems {
     );
   }
 
-  static Widget buildListItem(Transaction transaction, BuildContext context) {
+  static Container buildListItem(
+      Transaction transaction, BuildContext context) {
     List<Widget> columns = List<Widget>.empty(growable: true);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;

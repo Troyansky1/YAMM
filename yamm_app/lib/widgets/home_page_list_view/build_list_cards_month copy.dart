@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/widgets/home_page_list_view/build_list_item.dart';
 
-class TransactionsListCards extends StatefulWidget {
+class TransactionsListMonthCards extends StatefulWidget {
   final List<Transaction> transactionList;
   final int day;
   final int month;
-  const TransactionsListCards(
+  const TransactionsListMonthCards(
       {super.key,
       required this.transactionList,
       required this.day,
       required this.month});
 
   @override
-  State<TransactionsListCards> createState() => _TransactionsListCardsState();
+  State<TransactionsListMonthCards> createState() =>
+      _TransactionsListMonthCardsState();
 }
 
-class _TransactionsListCardsState extends State<TransactionsListCards> {
+class _TransactionsListMonthCardsState
+    extends State<TransactionsListMonthCards> {
   @override
   void initState() {
     super.initState();
