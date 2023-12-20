@@ -27,7 +27,7 @@ class _HomePageStatsState extends State<HomePageStats> {
   @override
   Widget build(BuildContext context) {
     List<Transaction> lst =
-        widget.transactionsListsNotifier.transactionsList.value;
+        widget.transactionsListsNotifier.filteredTransactionsList.value;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
