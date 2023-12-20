@@ -55,3 +55,14 @@ List<List<Transaction>> genListPerDay(List<Transaction> lst) {
   }
   return listOfLists;
 }
+
+List<List<Transaction>> genListPerMonth(List<Transaction> lst) {
+  lst = sortList(lst);
+  List<List<Transaction>> listOfLists =
+      List<List<Transaction>>.empty(growable: true);
+  for (int month = 0; month <= 12; month++) {
+    List<Transaction> monthList = filterListMonth(lst, month);
+    listOfLists.add(monthList);
+  }
+  return listOfLists;
+}

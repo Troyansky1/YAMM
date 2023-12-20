@@ -34,22 +34,23 @@ class _TransactionsListViewState extends State<TransactionsListView> {
     if (lst.isEmpty) {
       String dateFrameStr = dateFrame.name.toString();
       return Text("No transactions in this $dateFrameStr");
+    } else if (dateFrame == DateFrames.year) {
+      ExpandableSliverListController<List<Transaction>> controller =
+          ExpandableSliverListController<List<Transaction>>(
+              initialStatus: ExpandableSliverListStatus.expanded);
+      return createTransactionsListYear(context, lst, controller);
     } else if (dateFrame == DateFrames.month) {
-      List<List<Transaction>> listOfDays = genListPerDay(
-          widget.transactionsListsNotifier.filteredTransactionsList.value);
       ExpandableSliverListController<List<Transaction>> controller =
           ExpandableSliverListController<List<Transaction>>(
               initialStatus: ExpandableSliverListStatus.expanded);
       int month = widget.transactionsListsNotifier.filters.value.monthFilter;
       return createTransactionsListMonth(
-          context, listOfDays, month, controller);
+          context, lst, controller, false, month);
     } else if (dateFrame == DateFrames.day) {
       ExpandableSliverListController<Transaction> controller =
           ExpandableSliverListController<Transaction>(
               initialStatus: ExpandableSliverListStatus.expanded);
-      int month = widget.transactionsListsNotifier.filters.value.monthFilter;
-      int day = widget.transactionsListsNotifier.filters.value.dayFilter;
-      return createTransactionsListDay(context, lst, day, month, controller);
+      return createTransactionsListDay(context, lst, controller, false);
     } else {
       return const Text("Error");
     }

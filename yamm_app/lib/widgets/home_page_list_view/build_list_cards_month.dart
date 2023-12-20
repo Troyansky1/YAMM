@@ -1,43 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/widgets/home_page_list_view/build_list_item.dart';
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 
+Widget createTransactionsListYear(
+    BuildContext context,
+    List<Transaction> transactionListYear,
+    ExpandableSliverListController<List<Transaction>> controller) {
+  if (transactionListYear.isNotEmpty) {
+    return CustomScrollView(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          createTransactionsListYearItem(
+              context, transactionListYear, controller)
+        ]);
+  } else {
+    return const SizedBox();
+  }
+}
+
+Widget createTransactionsListYearItem(
+    BuildContext context,
+    List<Transaction> transactionListYear,
+    ExpandableSliverListController<List<Transaction>> controller) {
+  var monthControllers = genControllersPerMonth();
+  var transactionsListPerMonth = genListPerMonth(transactionListYear);
+  return ExpandableSliverList<List<Transaction>>(
+      initialItems: transactionsListPerMonth.toSet(),
+      controller: controller,
+      duration: const Duration(microseconds: 1),
+      builder: (BuildContext context, transaction, int index) {
+        return createTransactionsListMonth(
+            context,
+            transactionsListPerMonth[index],
+            monthControllers[index],
+            true,
+            index);
+      });
+}
+
 Widget createTransactionsListMonth(
     BuildContext context,
-    List<List<Transaction>> transactionListMonth,
-    int month,
-    ExpandableSliverListController<List<Transaction>> controller) {
+    List<Transaction> transactionListMonth,
+    ExpandableSliverListController<List<Transaction>> controller,
+    bool useSwitch,
+    int month) {
   String monthName = DateFormat('MMMM').format(DateTime(0, month));
-  return CustomScrollView(
-      shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
-      slivers: [
-        timeSwitch(controller, monthName),
-        createTransactionsListMonthItem(
-            context, transactionListMonth, month, controller)
-      ]);
+  if (transactionListMonth.isNotEmpty) {
+    return CustomScrollView(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          if (useSwitch) timeSwitch(controller, monthName),
+          createTransactionsListMonthItem(
+              context, transactionListMonth, controller, month)
+        ]);
+  } else {
+    return const SizedBox();
+  }
 }
 
 Widget createTransactionsListMonthItem(
     BuildContext context,
-    List<List<Transaction>> transactionListMonth,
-    int month,
-    ExpandableSliverListController<List<Transaction>> controller) {
-  if (transactionListMonth.isNotEmpty) {
-    var dayControllers = genControllersPerDay();
-    return ExpandableSliverList<List<Transaction>>(
-        initialItems: transactionListMonth.toSet(),
-        controller: controller,
-        duration: const Duration(microseconds: 1),
-        builder: (BuildContext context, transaction, int index) {
-          return createTransactionsListDay(context, transactionListMonth[index],
-              index, month, dayControllers[index]);
-        });
-  } else {
-    return const SliverAppBar(); // Do not generate an empty list
-  }
+    List<Transaction> transactionListMonth,
+    ExpandableSliverListController<List<Transaction>> controller,
+    int month) {
+  var dayControllers = genControllersPerDay();
+  var transactionsListPerDay = genListPerDay(transactionListMonth);
+  return ExpandableSliverList<List<Transaction>>(
+      initialItems: transactionsListPerDay.toSet(),
+      controller: controller,
+      duration: const Duration(microseconds: 1),
+      builder: (BuildContext context, transaction, int index) {
+        return createTransactionsListDay(
+          context,
+          transactionsListPerDay[index],
+          dayControllers[index],
+          true,
+          day: index,
+          month: month,
+        );
+      });
 }
 
 Widget timeSwitch(ExpandableSliverListController controller, String titleVar,
@@ -61,17 +107,19 @@ Widget timeSwitch(ExpandableSliverListController controller, String titleVar,
 }
 
 Widget createTransactionsListDay(
-    BuildContext context,
-    List<Transaction> transactionListDay,
-    int day,
-    int month,
-    ExpandableSliverListController<Transaction> controller) {
+  BuildContext context,
+  List<Transaction> transactionListDay,
+  ExpandableSliverListController<Transaction> controller,
+  bool useSwitch, {
+  int day = 0,
+  int month = 0,
+}) {
   if (transactionListDay.isNotEmpty) {
     return CustomScrollView(
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         slivers: [
-          timeSwitch(controller, "$day.$month"),
+          if (useSwitch) timeSwitch(controller, "$day.$month"),
           createTransactionsListDayItem(context, transactionListDay, controller)
         ]);
   } else {
@@ -99,6 +147,18 @@ List<ExpandableSliverListController<Transaction>> genControllersPerDay() {
       List<ExpandableSliverListController<Transaction>>.empty(growable: true);
   for (int day = 0; day <= 31; day++) {
     controllersList.add(ExpandableSliverListController<Transaction>(
+        initialStatus: ExpandableSliverListStatus.expanded));
+  }
+  return controllersList;
+}
+
+List<ExpandableSliverListController<List<Transaction>>>
+    genControllersPerMonth() {
+  List<ExpandableSliverListController<List<Transaction>>> controllersList =
+      List<ExpandableSliverListController<List<Transaction>>>.empty(
+          growable: true);
+  for (int day = 0; day <= 12; day++) {
+    controllersList.add(ExpandableSliverListController<List<Transaction>>(
         initialStatus: ExpandableSliverListStatus.expanded));
   }
   return controllersList;
