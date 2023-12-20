@@ -24,9 +24,6 @@ class TransactionsListsNotifier with ChangeNotifier {
 
   late ValueNotifier<DateFrames> dateFrame =
       ValueNotifier<DateFrames>(DateFrames.year);
-  //late ValueNotifier<int> year = ValueNotifier<int>(DateTime.now().year);
-  //late ValueNotifier<int> month = ValueNotifier<int>(DateTime.now().month);
-  //late ValueNotifier<int> day = ValueNotifier<int>(DateTime.now().day);
 
   void setList(List<Transaction> lst) {
     transactionsList.value = lst;
@@ -87,8 +84,18 @@ class TransactionsListsNotifier with ChangeNotifier {
 
   void setCategoryMap() {
     for (TransactionCategory category in TransactionCategory.values) {
-      filters.value.categoryFilters[category] = true;
+      filters.value.categoryFilters[category] = false;
     }
+    notifyListeners();
+  }
+
+  void toggleFilterCategories() {
+    filters.value.filterCategories = !filters.value.filterCategories;
+    notifyListeners();
+  }
+
+  void toggleFilterLabels() {
+    filters.value.filterLabels = !filters.value.filterLabels;
     notifyListeners();
   }
 
@@ -101,7 +108,7 @@ class TransactionsListsNotifier with ChangeNotifier {
   void setLabelsMap() async {
     getLabels().then((labels) => {
           for (String label in labels)
-            {filters.value.labelsFilters[label] = true}
+            {filters.value.labelsFilters[label] = false}
         });
     notifyListeners();
   }

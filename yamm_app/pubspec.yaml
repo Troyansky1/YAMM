@@ -48,7 +48,9 @@ dependencies:
   shared_preferences: ^2.2.2
   side_sheet: ^1.0.4
   google_fonts: ^6.1.0
+  expandable_sliver_list: ^4.1.1
   flutter_cupertino_datetime_picker: ^3.0.0
+  
   #chips_choice_null_safety: ^2.0.6 
   
   #path_provider: ^0.4.0

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/filters.dart';
 import 'package:yamm_app/transactions_list.dart';
+import 'package:yamm_app/widgets/home_page_filter/filter%20_list_widgets.dart';
+import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 
 class filterSideSheet extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;
@@ -11,102 +14,61 @@ class filterSideSheet extends StatefulWidget {
 }
 
 class _filterSideSheetState extends State<filterSideSheet> {
+  ExpandableSliverListController<TransactionCategory>
+      categoriesExpandController = ExpandableSliverListController();
+  ExpandableSliverListController<String> labelsExpandController =
+      ExpandableSliverListController();
+  Filters filters = Filters();
+
+  void updateController(bool value, ExpandableSliverListController controller) {
+    if (value) {
+      controller.expand();
+    } else {
+      controller.collapse();
+    }
+  }
+
   @override
   void initState() {
+    filters = widget.transactionsListsNotifier.filters.value;
     widget.transactionsListsNotifier
         .addListener(() => mounted ? setState(() {}) : null);
+    updateController(filters.filterCategories, categoriesExpandController);
+    updateController(filters.filterLabels, labelsExpandController);
+
     super.initState();
-  }
-
-  Widget createCategoriesListView(BuildContext context,
-      TransactionsListsNotifier transactionsListsNotifier) {
-    Map<TransactionCategory, bool> categoryFilters =
-        transactionsListsNotifier.filters.value.categoryFilters;
-
-    return SliverList.builder(
-        itemCount: categoryFilters.length,
-        itemBuilder: (BuildContext context, int index) {
-          TransactionCategory category = TransactionCategory.values[index];
-          return Container(
-            alignment: Alignment.center,
-            child: SwitchListTile(
-              value: categoryFilters[category]!,
-              title: Text(category.name),
-              onChanged: (bool? value) {
-                setState(() {
-                  transactionsListsNotifier.toggleCategoryFilterVal(category);
-                  transactionsListsNotifier.updateFilters(fields: true);
-                });
-              },
-            ),
-          );
-        });
-  }
-
-  Widget createLabelsListView(BuildContext context,
-      TransactionsListsNotifier transactionsListsNotifier) {
-    Map<String, bool> labelsFilters =
-        transactionsListsNotifier.filters.value.labelsFilters;
-
-    return SliverList.builder(
-        itemCount: labelsFilters.length,
-        itemBuilder: (BuildContext context, int index) {
-          String label = labelsFilters.keys.toList()[index];
-          return Container(
-            alignment: Alignment.center,
-            child: SwitchListTile(
-              value: labelsFilters[label]!,
-              title: Text(label),
-              onChanged: (bool? value) {
-                setState(() {
-                  transactionsListsNotifier.toggleLabelFilterVal(label);
-                  transactionsListsNotifier.updateFilters(fields: true);
-                });
-              },
-            ),
-          );
-        });
   }
 
   @override
   Widget build(BuildContext context) {
+    void filterCategoriesSwitchCallback() {
+      widget.transactionsListsNotifier.toggleFilterCategories();
+      setState(() {
+        updateController(filters.filterCategories, categoriesExpandController);
+      });
+    }
+
+    void filterLabelsSwitchCallback() {
+      widget.transactionsListsNotifier.toggleFilterLabels();
+      setState(() {
+        updateController(filters.filterLabels, labelsExpandController);
+      });
+    }
+
     return CustomScrollView(
       shrinkWrap: true,
-      scrollBehavior: ScrollBehavior(),
-      slivers: <Widget>[
-        const SliverAppBar(
-          pinned: true,
-          floating: false,
-          snap: false,
-          forceElevated: true,
-          expandedHeight: 50.0,
-          flexibleSpace: FlexibleSpaceBar(
-            title:
-                Text('Filter options', style: TextStyle(color: Colors.black)),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            alignment: Alignment.topLeft,
-            height: 30,
-            child: const Padding(
-              padding: EdgeInsets.all(5),
-              child: Text("Categories"),
-            ),
-          ),
-        ),
-        createCategoriesListView(context, widget.transactionsListsNotifier),
-        SliverToBoxAdapter(
-          child: Container(
-            alignment: Alignment.topLeft,
-            height: 30,
-            child: const Padding(
-              padding: EdgeInsets.all(5),
-              child: Text("Labels"),
-            ),
-          ),
-        ),
-        createLabelsListView(context, widget.transactionsListsNotifier),
+      scrollBehavior: const ScrollBehavior(),
+      slivers: [
+        filterAppBar(),
+        filterSwitch(filterCategoriesSwitchCallback, filters.filterCategories,
+            "categories",
+            subtitleVar: "one category"),
+        createCategoriesListView(context, widget.transactionsListsNotifier,
+            setState, categoriesExpandController),
+        filterSwitch(filterLabelsSwitchCallback, filters.filterLabels, "labels",
+            subtitleVar: "some labels"),
+        createLabelsListView(context, widget.transactionsListsNotifier,
+            setState, labelsExpandController),
       ],
     );
   }
