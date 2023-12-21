@@ -23,7 +23,7 @@ class TransactionsListsNotifier with ChangeNotifier {
   late ValueNotifier<Filters> filters = ValueNotifier<Filters>(Filters());
 
   late ValueNotifier<DateFrames> dateFrame =
-      ValueNotifier<DateFrames>(DateFrames.year);
+      ValueNotifier<DateFrames>(DateFrames.month);
 
   void setList(List<Transaction> lst) {
     transactionsList.value = lst;

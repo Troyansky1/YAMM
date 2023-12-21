@@ -26,13 +26,8 @@ class _MyHomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text("Home page"),
       ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: <Widget>[
-          HomePageList(
-              transactionsListsNotifier: widget.transactionsListNotifier)
-        ],
-      )),
+      body: HomePageList(
+          transactionsListsNotifier: widget.transactionsListNotifier),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

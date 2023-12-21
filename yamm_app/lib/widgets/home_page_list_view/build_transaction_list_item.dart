@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/user_preferences.dart';
+import 'dart:developer';
 
 class BuildTransactionListItems {
   BuildTransactionListItems();
@@ -118,6 +119,7 @@ class BuildTransactionListItems {
       buildDataContainer(transaction, width),
       buildEditContainer(transaction, width)
     ]);
+    log("Building a list item");
     return Container(
       width: width,
       height: height / 7,
