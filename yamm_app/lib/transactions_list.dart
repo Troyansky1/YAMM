@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:yamm_app/filters.dart';
 import 'package:yamm_app/functions/preferences.dart';
@@ -7,6 +5,7 @@ import 'package:yamm_app/functions/save_and_load_csv.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/user_preferences.dart';
 
 enum DateFrames { year, month, day }
 
@@ -22,14 +21,14 @@ class TransactionsListsNotifier with ChangeNotifier {
   late ValueNotifier<int> transactionsListId = ValueNotifier<int>(0);
   late ValueNotifier<Filters> filters = ValueNotifier<Filters>(Filters());
 
-  late ValueNotifier<DateFrames> dateFrame =
-      ValueNotifier<DateFrames>(DateFrames.month);
+  ValueNotifier<DateFrames> dateFrame =
+      ValueNotifier<DateFrames>(defaultDateFrame);
 
   void setList(List<Transaction> lst) {
     transactionsList.value = lst;
     filteredTransactionsList.value = lst;
-    dateFilteredTransactionsList.value = lst;
-    fieldFilteredTransactionsList.value = lst;
+    _filterListDate(lst);
+    _filterListFields(lst);
     transactionsListId.value = getLastID(transactionsList.value);
     notifyListeners();
   }
@@ -48,15 +47,28 @@ class TransactionsListsNotifier with ChangeNotifier {
   void editListItem(int id, Transaction transaction) {}
 
   void _filterListDate(List<Transaction> lst) {
-    dateFilteredTransactionsList.value =
-        filterListYear(lst, filters.value.yearFilter);
-    if (dateFrame.value == DateFrames.month) {
-      dateFilteredTransactionsList.value =
-          filterListMonth(lst, filters.value.monthFilter);
-      if (dateFrame.value == DateFrames.day) {
-        dateFilteredTransactionsList.value =
-            filterListDay(lst, filters.value.dayFilter);
-      }
+    switch (dateFrame.value) {
+      case (DateFrames.year):
+        {
+          dateFilteredTransactionsList.value =
+              filterListYear(lst, filters.value.yearFilter);
+        }
+      case (DateFrames.month):
+        {
+          dateFilteredTransactionsList.value =
+              filterListYear(transactionsList.value, filters.value.yearFilter);
+          dateFilteredTransactionsList.value = filterListMonth(
+              dateFilteredTransactionsList.value, filters.value.monthFilter);
+        }
+      case (DateFrames.day):
+        {
+          dateFilteredTransactionsList.value =
+              filterListYear(lst, filters.value.yearFilter);
+          dateFilteredTransactionsList.value = filterListMonth(
+              dateFilteredTransactionsList.value, filters.value.monthFilter);
+          dateFilteredTransactionsList.value = filterListDay(
+              dateFilteredTransactionsList.value, filters.value.dayFilter);
+        }
     }
     notifyListeners();
   }

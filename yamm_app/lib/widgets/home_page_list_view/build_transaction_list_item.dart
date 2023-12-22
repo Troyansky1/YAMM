@@ -119,7 +119,7 @@ class BuildTransactionListItems {
       buildDataContainer(transaction, width),
       buildEditContainer(transaction, width)
     ]);
-    log("Building a list item");
+    //log("Building a list item");
     return Container(
       width: width,
       height: height / 7,

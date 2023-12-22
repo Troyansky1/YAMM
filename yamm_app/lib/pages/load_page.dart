@@ -46,12 +46,14 @@ class _MyLoadPageState extends State<LoadPage> {
     if (!hasOpened) {
       await initCsv();
       lists.setList(await readListFromCsv());
+      lists.updateFilters();
       setState(() {
         isLoading = false;
       });
       prefs.setBool('hasOpened', true);
     } else {
       lists.setList(await readListFromCsv());
+      lists.updateFilters();
       setState(() {
         isLoading = false;
       });
