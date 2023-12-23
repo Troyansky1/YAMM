@@ -58,7 +58,7 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
   Widget createMonthScrollView() {
     return CustomScrollView(
         shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         slivers: [createDaySliverItems()]);
   }
 
@@ -84,7 +84,7 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
           slivers: [
-            timeSwitch(controller, "$day.${widget.month}"),
+            timeSwitchSliver(controller, "$day.${widget.month}"),
             createTransactionsExpandableSliverListItem(
                 transactionListDay, controller)
           ]);
@@ -118,13 +118,11 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
     }
   }
 
-  Widget timeSwitch(ExpandableSliverListController controller, String titleVar,
+  Widget timeSwitchSliver(
+      ExpandableSliverListController controller, String titleVar,
       {String subtitleVar = ""}) {
     return SliverAppBar(
-        floating: false,
-        snap: false,
         pinned: true,
-        expandedHeight: 20.0,
         title: Text(titleVar.toString()),
         actions: <Widget>[
           IconButton(
