@@ -3,6 +3,7 @@ import 'package:yamm_app/filters.dart';
 import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/transactions_list.dart';
+import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/widgets/home_page_list_view/build_transaction_list_item.dart';
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 
@@ -100,7 +101,7 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
       initialItems: transactionListDay.toSet(),
       controller: controller,
       expandOnInitialInsertion: true,
-      duration: duration,
+      duration: defaultExpandDuration,
       builder: (BuildContext context, transaction, int index) {
         return BuildTransactionListItems.buildListItem(transaction, context);
       },
@@ -119,17 +120,24 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
 
   Widget timeSwitch(ExpandableSliverListController controller, String titleVar,
       {String subtitleVar = ""}) {
-    return SliverAppBar(title: Text(titleVar.toString()), actions: <Widget>[
-      IconButton(
-        icon: const Icon(Icons.expand_less),
-        isSelected: controller.isCollapsed(),
-        selectedIcon: const Icon(Icons.expand_more),
-        onPressed: () {
-          _toggleController(controller);
-          WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
-        },
-      )
-    ]);
+    return SliverAppBar(
+        floating: false,
+        snap: false,
+        pinned: true,
+        expandedHeight: 20.0,
+        title: Text(titleVar.toString()),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.expand_less),
+            isSelected: controller.isCollapsed(),
+            selectedIcon: const Icon(Icons.expand_more),
+            onPressed: () {
+              _toggleController(controller);
+              WidgetsBinding.instance
+                  .addPostFrameCallback((_) => setState(() {}));
+            },
+          )
+        ]);
   }
 
 // An horrific function that generates a list of controllers for each day of a month

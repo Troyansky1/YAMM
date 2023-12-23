@@ -4,6 +4,7 @@ import 'package:yamm_app/filters.dart';
 import 'package:yamm_app/functions/filter_transactions.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/transactions_list.dart';
+import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/widgets/home_page_list_view/build_transaction_list_item.dart';
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 
@@ -23,7 +24,6 @@ class BuildListCardsYear extends StatefulWidget {
 }
 
 class _BuildListCardsYearState extends State<BuildListCardsYear> {
-  Duration duration = const Duration(microseconds: 1);
   late List<ExpandableSliverListController<List<Transaction>>> monthControllers;
 
   @override
@@ -34,6 +34,9 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
 
   @override
   void dispose() {
+    for (var controller in monthControllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -42,11 +45,11 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         slivers: [
-          createMonthExpandableSliverListItems(),
+          createMonthSliverListItems(),
         ]);
   }
 
-  Widget createMonthExpandableSliverListItems() {
+  Widget createMonthSliverListItems() {
     var transactionsListPerMonth = genListPerMonth(widget.transactionsList);
     return SliverList.builder(
         itemCount: transactionsListPerMonth.length,
@@ -68,26 +71,33 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
           physics: const ClampingScrollPhysics(),
           slivers: [
             timeSwitchSliver(controller, monthName),
-            createDaySliverItems(transactionListMonth, controller, month)
+            createDayExpandableSliverListItem(
+                transactionListMonth, controller, month)
           ]);
     } else {
       return Container();
     }
   }
 
-  Widget createDaySliverItems(List<Transaction> transactionListMonth,
-      ExpandableSliverListController<List<Transaction>> controller, int month) {
+  Widget createDayExpandableSliverListItem(
+      List<Transaction> transactionListMonth,
+      ExpandableSliverListController<List<Transaction>> controller,
+      int month) {
     var transactionsListPerDay = genListPerDay(transactionListMonth);
 
-    return SliverList.builder(
-        itemCount: transactionsListPerDay.length,
-        itemBuilder: (BuildContext context, int index) {
-          return createDayScrollView(
-            transactionsListPerDay[index],
-            day: index,
-            month: month,
-          );
-        });
+    ExpandableSliverList<List<Transaction>> monthSliverList =
+        ExpandableSliverList<List<Transaction>>(
+      initialItems: transactionsListPerDay.toSet(),
+      controller: controller,
+      expandOnInitialInsertion: true,
+      duration: defaultExpandDuration,
+      builder: (BuildContext context, transactionsListDay, int index) {
+        return createDayScrollView(transactionsListDay,
+            day: index, month: month);
+      },
+    );
+
+    return monthSliverList;
   }
 
   Widget createDayScrollView(
@@ -100,8 +110,7 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
           slivers: [
-            Text("$day.$month",
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            //Text("$day.$month", style: const TextStyle(fontWeight: FontWeight.bold)),
             createTransactionsSliverItem(transactionListDay)
           ]);
     } else {
@@ -113,6 +122,7 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
     List<Transaction> transactionListDay,
   ) {
     return SliverList.builder(
+      itemCount: transactionListDay.length,
       itemBuilder: (BuildContext context, int index) {
         return BuildTransactionListItems.buildListItem(
             transactionListDay[index], context);

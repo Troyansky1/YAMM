@@ -11,3 +11,4 @@ int defaultMaxLabels = 6;
 String transactionDateFormat = 'yyyy-MM-dd HH:mm:ss';
 String presentDateFormat = 'dd MMM yyyy HH:mm';
 DateFrames defaultDateFrame = DateFrames.month;
+Duration defaultExpandDuration = const Duration(microseconds: 500);
