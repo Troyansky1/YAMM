@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:yamm_app/transaction_controllers.dart';
+import 'package:yamm_app/transaction_entries/custom_dropdown.dart';
 import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/currency_enum.dart';
 
@@ -22,34 +23,45 @@ class _CurrencyEntryState extends State<CurrencyEntry> {
         <DropdownMenuItem<Currency>>[];
     for (final Currency currency in Currency.values) {
       String symbolPath = currency.symbolPath;
-      currencyOptionsEntries.add(
-        DropdownMenuItem<Currency>(
-            value: currency,
-            child: Image(
-              image: AssetImage(symbolPath),
-              height: 14,
-              width: 14,
-            )),
-      );
+      currencyOptionsEntries.add(DropdownMenuItem<Currency>(
+        value: currency,
+        child: Image(
+          image: AssetImage(symbolPath),
+          height: 15,
+          width: 15,
+          fit: BoxFit.cover,
+        ),
+      ));
     }
 
-    return Column(
-      children: <Widget>[
-        SizedBox(
-            height: 50,
-            width: 70,
-            child: DropdownButton2<Currency>(
-              value: widget.controllers.currencyValue,
-              style: const TextStyle(color: Colors.deepPurple),
-              alignment: AlignmentDirectional.center,
-              items: currencyOptionsEntries,
-              onChanged: (Currency? value) {
-                setState(() {
-                  widget.controllers.currencyValue = value!;
-                });
-              },
-            ))
-      ],
-    );
+    return Column(children: <Widget>[
+      Container(
+          height: 30,
+          width: 45,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: DropdownButtonHideUnderline(
+              child: DropdownButton2(
+            //isExpanded: true,
+            value: widget.controllers.currencyValue,
+            buttonStyleData: const ButtonStyleData(
+                width: 35,
+                height: 30,
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+            dropdownStyleData: const DropdownStyleData(
+              width: 45,
+              maxHeight: 200,
+              padding: EdgeInsets.only(),
+              isOverButton: true,
+            ),
+            items: currencyOptionsEntries,
+            onChanged: (Currency? value) {
+              setState(() {
+                widget.controllers.currencyValue = value!;
+              });
+            },
+          )))
+    ]);
   }
 }

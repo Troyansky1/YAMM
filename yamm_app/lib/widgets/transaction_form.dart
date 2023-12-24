@@ -50,7 +50,8 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
         children: <Widget>[
           Row(
             crossAxisAlignment:
-                CrossAxisAlignment.start, // Aligns children to the top
+                CrossAxisAlignment.center, // Aligns children to the top
+
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Padding(
@@ -58,11 +59,12 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
               ),
               AmountEntry(controllers: controllers),
               CurrencyEntry(controllers: controllers),
+              Text(controllers.paymentMethods[0]),
               BottomSheetChipSelect(
-                  chosenItemsList: controllers.labels,
+                  chosenItemsList: controllers.paymentMethods,
                   optionsListName: 'paymentMethods',
                   button: const Icon(Icons.edit),
-                  maxSelect: defaultMaxLabels),
+                  maxSelect: 1),
             ],
           ),
 

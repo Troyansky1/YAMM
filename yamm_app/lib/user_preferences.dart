@@ -43,3 +43,4 @@ List<String> defaultPaymentMethods = [
   'Bit',
   'Gift card'
 ];
+String defaultPaymentMethod = defaultPaymentMethods[0];

@@ -16,7 +16,7 @@ class TransactionControllers {
   var endDateCont = TextEditingController();
   // var lableCont = SingleValueDropDownController();
   List<String> labels = List.empty(growable: true);
-  List<String> paymentMethods = List.empty(growable: true);
+  List<String> paymentMethods = [defaultPaymentMethod];
   Currency currencyValue = defaultCurrency;
   TransactionCategory categoryValue = defaultCategory;
   List<bool> incomeOutcome = [false, true];

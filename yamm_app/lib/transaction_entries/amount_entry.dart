@@ -20,8 +20,8 @@ class _AmountEntryState extends State<AmountEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
+    return Container(
+      //height: 100,
       width: 100,
       child: TextFormField(
         decoration: const InputDecoration(
