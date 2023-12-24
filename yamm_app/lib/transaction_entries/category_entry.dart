@@ -25,22 +25,15 @@ class _CategoryEntryState extends State<CategoryEntry> {
       );
     }
 
-    return Column(
-      children: <Widget>[
-        SizedBox(
-            height: 50,
-            width: 150,
-            child: DropdownButton2<TransactionCategory>(
-              value: widget.controllers.categoryValue,
-              alignment: AlignmentDirectional.center,
-              items: categoryOptionsEntries,
-              onChanged: (TransactionCategory? value) {
-                setState(() {
-                  widget.controllers.categoryValue = value!;
-                });
-              },
-            ))
-      ],
+    return DropdownButton2<TransactionCategory>(
+      value: widget.controllers.categoryValue,
+      alignment: AlignmentDirectional.center,
+      items: categoryOptionsEntries,
+      onChanged: (TransactionCategory? value) {
+        setState(() {
+          widget.controllers.categoryValue = value!;
+        });
+      },
     );
   }
 }

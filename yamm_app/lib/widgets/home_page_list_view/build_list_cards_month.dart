@@ -58,7 +58,7 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
   Widget createMonthScrollView() {
     return CustomScrollView(
         shrinkWrap: true,
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         slivers: [createDaySliverItems()]);
   }
 

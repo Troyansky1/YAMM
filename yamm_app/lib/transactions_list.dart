@@ -120,7 +120,7 @@ class TransactionsListsNotifier with ChangeNotifier {
   }
 
   void setLabelsMap() async {
-    getLabels().then((labels) => {
+    getPreferencesList('labels').then((labels) => {
           for (String label in labels)
             {filters.value.labelsFilters[label] = false}
         });

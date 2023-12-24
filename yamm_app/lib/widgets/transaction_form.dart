@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/transaction_entries/transaction_entries.dart';
 import 'package:yamm_app/transactions_list.dart';
+import 'package:yamm_app/user_preferences.dart';
 
 // Create a Form widget.
 class TransactionEntryForm extends StatefulWidget {
@@ -57,6 +58,11 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
               ),
               AmountEntry(controllers: controllers),
               CurrencyEntry(controllers: controllers),
+              BottomSheetChipSelect(
+                  chosenItemsList: controllers.labels,
+                  optionsListName: 'paymentMethods',
+                  button: const Icon(Icons.edit),
+                  maxSelect: defaultMaxLabels),
             ],
           ),
 
@@ -67,8 +73,25 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
           //Does not have internal logic, but design is a thing.
           //repeatEntry(controllers: controllers),
           IncomeOutcomeEntry(controllers: controllers),
-          CategoryEntry(controllers: controllers),
-          LableEntry(controllers: controllers),
+
+          //LableEntry(controllers: controllers),
+          Row(
+            crossAxisAlignment:
+                CrossAxisAlignment.start, // Aligns children to the top
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.all(5.0),
+              ),
+              CategoryEntry(controllers: controllers),
+              BottomSheetChipSelect(
+                  chosenItemsList: controllers.labels,
+                  optionsListName: 'labels',
+                  button: const Text("Add labels"),
+                  maxSelect: defaultMaxLabels),
+            ],
+          ),
+
           const EntriesPadding(),
           SaveEntry(
             controllers: controllers,

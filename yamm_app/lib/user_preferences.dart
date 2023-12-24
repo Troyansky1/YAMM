@@ -12,3 +12,34 @@ String transactionDateFormat = 'yyyy-MM-dd HH:mm:ss';
 String presentDateFormat = 'dd MMM yyyy HH:mm';
 DateFrames defaultDateFrame = DateFrames.month;
 Duration defaultExpandDuration = const Duration(microseconds: 500);
+List<String> defaultLabelsList = [
+  'Car',
+  'Food',
+  'Drinks',
+  'Medicine',
+  'Health',
+  'Beauty',
+  'Clothes',
+  'Shoes',
+  'Parties',
+  'Beauty',
+  'Transportation',
+  'Gas',
+  'Furnitures',
+  'House',
+  'Sport',
+  'Music',
+  'Hobbies',
+  'Alcohol'
+];
+
+List<String> defaultPaymentMethods = [
+  'Credit card',
+  'Cash',
+  'Bank transfer',
+  'Google Pay',
+  'Apple Pay',
+  'Paybox',
+  'Bit',
+  'Gift card'
+];

@@ -16,6 +16,7 @@ class TransactionControllers {
   var endDateCont = TextEditingController();
   // var lableCont = SingleValueDropDownController();
   List<String> labels = List.empty(growable: true);
+  List<String> paymentMethods = List.empty(growable: true);
   Currency currencyValue = defaultCurrency;
   TransactionCategory categoryValue = defaultCategory;
   List<bool> incomeOutcome = [false, true];
@@ -50,8 +51,12 @@ class TransactionControllers {
     return transaction;
   }
 
+  updateLists() {
+    updateList(labels, 'labels');
+    updateList(paymentMethods, 'paymentMethods');
+  }
+
   List<dynamic> buildTransactionListItem(Transaction transaction) {
-    updateLabels(labels);
     return transaction.convertToListItem();
   }
 }

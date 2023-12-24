@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/functions/preferences.dart';
 import 'package:yamm_app/transaction_entries/chip_input.dart';
 import 'package:yamm_app/transaction_entries/chip_input_editin_controller.dart';
 import 'dart:async';
 import 'package:yamm_app/user_preferences.dart';
 
-class LableEntry extends StatefulWidget {
+class BottomSheetChipSelect extends StatefulWidget {
   //final Widget child;
-  final TransactionControllers controllers;
-  const LableEntry({super.key, required this.controllers});
+  late List<String> chosenItemsList;
+
+  final String optionsListName;
+  final Widget button;
+  final int maxSelect;
+  BottomSheetChipSelect(
+      {super.key,
+      required this.chosenItemsList,
+      required this.optionsListName,
+      required this.button,
+      required this.maxSelect});
 
   @override
-  State<LableEntry> createState() => _LableEntryState();
+  State<BottomSheetChipSelect> createState() => _BottomSheetChipSelectState();
 }
 
-class _LableEntryState extends State<LableEntry> {
+class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
   final FocusNode _chipFocusNode = FocusNode();
 
-  late FutureOr<List<String>> _labels;
+  late FutureOr<List<String>> _optionslist;
   List<String> _suggestions = <String>[];
 
   @override
   void initState() {
     super.initState();
-    _labels = getPreferencesList('labels');
+    _optionslist = getPreferencesList(widget.optionsListName);
   }
 
   _showModalSheet() {
@@ -40,7 +48,7 @@ class _LableEntryState extends State<LableEntry> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ChipsInput<String>(
-                        values: widget.controllers.labels,
+                        values: widget.chosenItemsList,
                         strutStyle: const StrutStyle(fontSize: 15),
                         onChanged: (List<String> data) {
                           _onChanged(data, setModalState);
@@ -71,16 +79,16 @@ class _LableEntryState extends State<LableEntry> {
             );
           });
         });
-    return widget.controllers.labels;
+    return widget.chosenItemsList;
   }
 
   List<Widget> getSuggstions(List<String> lst, StateSetter setModalState) {
     List<ActionChip> suggestions = List<ActionChip>.empty(growable: true);
-    for (String lable in lst) {
+    for (String item in lst) {
       ActionChip chip = ActionChip(
-        label: Text(lable),
+        label: Text(item),
         onPressed: () {
-          _selectSuggestion(lable, setModalState);
+          _selectSuggestion(item, setModalState);
         },
       );
       suggestions.add(chip);
@@ -90,68 +98,41 @@ class _LableEntryState extends State<LableEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      width: 500,
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 200,
-            child: Wrap(
-                spacing: 1,
-                runSpacing: 0.0,
-                children: getChosenLabels(widget.controllers.labels)),
-          ),
-        ],
-      ),
-    );
+    return addItemButton(widget.button);
   }
 
-  List<Widget> getChosenLabels(List<String> lst) {
-    List<Widget> chosenLabels = List<Widget>.empty(growable: true);
+  void openSheetCallback() async {
+    List<String> items = await _optionslist;
+    _suggestions = getSuggestionsWithoutChosen(items, widget.chosenItemsList);
 
-    for (String lable in lst) {
-      InputChip chip = InputChip(
-        label: Text('#$lable'),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-          side: const BorderSide(color: Colors.transparent),
-        ),
-        labelPadding: EdgeInsets.all(1),
-        onDeleted: () {
-          _onChipDeleted(lable, setState);
-        },
-        onSelected: (bool True) {
-          _onChipTapped(lable, setState);
-        },
-      );
-      chosenLabels.add(chip);
-    }
-    chosenLabels.add(ElevatedButton(
+    await _showModalSheet();
+  }
+
+  Widget addItemButton(Widget button) {
+    return TextButton(
       onPressed: () async {
-        List<String> labels = await _labels;
+        List<String> items = await _optionslist;
         _suggestions =
-            getSuggestionsWithoutChosen(labels, widget.controllers.labels);
+            getSuggestionsWithoutChosen(items, widget.chosenItemsList);
 
         await _showModalSheet();
       },
-      child: const Text("Add labels"),
-    ));
-    return chosenLabels;
+      child: button,
+    );
   }
 
   Future<void> _onSearchChanged(String value, StateSetter setModalState) async {
     final List<String> results = await _suggestionCallback(value);
     setModalState(() {
       _suggestions =
-          getSuggestionsWithoutChosen(results, widget.controllers.labels);
+          getSuggestionsWithoutChosen(results, widget.chosenItemsList);
     });
   }
 
   Widget _chipBuilder(
-      BuildContext context, String lable, StateSetter setModalState) {
+      BuildContext context, String item, StateSetter setModalState) {
     return ToppingInputChip(
-      item: lable,
+      item: item,
       onDeleted: (String str) {
         _onChipDeleted(str, setModalState);
       },
@@ -161,76 +142,75 @@ class _LableEntryState extends State<LableEntry> {
     );
   }
 
-  void _selectSuggestion(String lable, StateSetter setModalState) async {
-    List<String> labels = await _labels;
-    if (widget.controllers.labels.length < defaultMaxLabels) {
+  void _selectSuggestion(String item, StateSetter setModalState) async {
+    List<String> items = await _optionslist;
+    if (widget.chosenItemsList.length < widget.maxSelect) {
       setModalState(() {
-        widget.controllers.labels.add(lable);
+        widget.chosenItemsList.add(item);
         _suggestions =
-            getSuggestionsWithoutChosen(labels, widget.controllers.labels);
+            getSuggestionsWithoutChosen(items, widget.chosenItemsList);
       });
       setState(() {
-        widget.controllers.labels = widget.controllers.labels;
+        widget.chosenItemsList = widget.chosenItemsList;
       });
     }
   }
 
-  void _onChipTapped(String lable, StateSetter setModalState) async {}
+  void _onChipTapped(String item, StateSetter setModalState) async {}
 
-  void _onChipDeleted(String lable, StateSetter setModalState) async {
-    List<String> labels = await _labels;
+  void _onChipDeleted(String item, StateSetter setModalState) async {
+    List<String> items = await _optionslist;
     setModalState(() {
-      widget.controllers.labels.remove(lable);
-      _suggestions =
-          getSuggestionsWithoutChosen(labels, widget.controllers.labels);
+      widget.chosenItemsList.remove(item);
+      _suggestions = getSuggestionsWithoutChosen(items, widget.chosenItemsList);
     });
     setState(() {
-      widget.controllers.labels = widget.controllers.labels;
+      widget.chosenItemsList = widget.chosenItemsList;
     });
   }
 
   void _onSubmitted(String text, StateSetter setModalState) async {
-    List<String> labels = await _labels;
-    if (widget.controllers.labels.length < defaultMaxLabels) {
+    List<String> items = await _optionslist;
+    if (widget.chosenItemsList.length < defaultMaxLabels) {
       if (text.trim().isNotEmpty) {
         setModalState(() {
-          widget.controllers.labels = <String>[
-            ...widget.controllers.labels,
+          widget.chosenItemsList = <String>[
+            ...widget.chosenItemsList,
             text.trim()
           ];
         });
       }
       setModalState(() {
         _suggestions =
-            getSuggestionsWithoutChosen(labels, widget.controllers.labels);
+            getSuggestionsWithoutChosen(items, widget.chosenItemsList);
       });
       setState(() {
-        widget.controllers.labels = widget.controllers.labels;
+        widget.chosenItemsList = widget.chosenItemsList;
       });
     } else {}
   }
 
   void _onChanged(List<String> data, StateSetter setModalState) {
     setModalState(() {
-      widget.controllers.labels = data;
+      widget.chosenItemsList = data;
       _chipFocusNode.unfocus();
     });
   }
 
   FutureOr<List<String>> _suggestionCallback(String text) async {
-    List<String> labels = await _labels;
+    List<String> items = await _optionslist;
     if (text.isNotEmpty || text.trim() != "") {
-      return labels.where((String lable) {
-        return lable.toLowerCase().contains(text.toLowerCase());
+      return items.where((String item) {
+        return item.toLowerCase().contains(text.toLowerCase());
       }).toList();
     }
-    return labels;
+    return items;
   }
 
   List<String> getSuggestionsWithoutChosen(
-      List<String> allLabels, List<String> chosenLabels) {
-    return allLabels
-        .where((String lable) => !chosenLabels.contains(lable))
+      List<String> allItems, List<String> chosenItems) {
+    return allItems
+        .where((String item) => !chosenItems.contains(item))
         .toList();
   }
 }
