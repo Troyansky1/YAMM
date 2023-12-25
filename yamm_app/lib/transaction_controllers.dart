@@ -17,7 +17,9 @@ class TransactionControllers with ChangeNotifier {
   // var lableCont = SingleValueDropDownController();
   ValueNotifier<List<String>> labels =
       ValueNotifier<List<String>>(List<String>.empty(growable: true));
-  List<String> paymentMethods = [defaultPaymentMethod];
+  ValueNotifier<List<String>> paymentMethods =
+      ValueNotifier<List<String>>([defaultPaymentMethod]);
+
   Currency currencyValue = defaultCurrency;
   TransactionCategory categoryValue = defaultCategory;
   List<bool> incomeOutcome = [false, true];
@@ -37,7 +39,7 @@ class TransactionControllers with ChangeNotifier {
     return false;
   }
 
-  void action() {
+  void notify() {
     notifyListeners();
   }
 
@@ -57,7 +59,7 @@ class TransactionControllers with ChangeNotifier {
 
   updateLists() {
     updateList(labels.value, 'labels');
-    updateList(paymentMethods, 'paymentMethods');
+    updateList(paymentMethods.value, 'paymentMethods');
   }
 
   List<dynamic> buildTransactionListItem(Transaction transaction) {

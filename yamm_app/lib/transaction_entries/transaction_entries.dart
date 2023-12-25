@@ -4,7 +4,7 @@ export 'income_outcome_entry.dart';
 export 'save_button.dart';
 export 'repeat_entry.dart';
 export 'service_provider_entry.dart';
-export 'padding_between_entries.dart';
+export '../add_transaction_fields_view/padding_between_entries.dart';
 export 'currency_entry.dart';
 export 'category_entry.dart';
 export 'bottom_sheet_chip_select.dart';

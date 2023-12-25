@@ -13,11 +13,15 @@ class ServiceProviderEntry extends StatefulWidget {
 
 class _ServiceProviderEntryState extends State<ServiceProviderEntry> {
   bool isValidStr(String str) {
-    String strippedStr = blacklist(str, ' ,.');
-    if (isAlpha(strippedStr)) {
-      return true;
+    if (str == null || str.isEmpty) {
+      return false;
+    } else {
+      String strippedStr = blacklist(str, ' ,.');
+      if (isAlpha(strippedStr)) {
+        return true;
+      }
+      return false;
     }
-    return false;
   }
 
   @override
@@ -25,19 +29,11 @@ class _ServiceProviderEntryState extends State<ServiceProviderEntry> {
     return TextFormField(
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Service provider',
+        labelText: ' Service provider',
         contentPadding: EdgeInsets.symmetric(vertical: 1.0),
       ),
       controller: widget.controllers.serviceProviderCont,
       autovalidateMode: AutovalidateMode.disabled,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return '';
-        } else if (!isValidStr(value)) {
-          return '';
-        }
-        return null;
-      },
     );
   }
 }

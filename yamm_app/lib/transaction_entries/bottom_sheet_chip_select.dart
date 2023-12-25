@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/functions/preferences.dart';
 import 'package:yamm_app/transaction_entries/chip_input.dart';
-import 'package:yamm_app/transaction_entries/chip_input_editin_controller.dart';
+import 'package:yamm_app/transaction_entries/chip_input_editing_controller.dart';
 import 'dart:async';
 import 'package:yamm_app/user_preferences.dart';
 
@@ -76,8 +76,8 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
                         child: Wrap(
                             spacing: 1,
                             runSpacing: 0.0,
-                            children: getSuggstions(_suggestions, setModalState,
-                                widget.replaceWhenEnterNew)),
+                            children: getSuggstionsChips(_suggestions,
+                                setModalState, widget.replaceWhenEnterNew)),
                       ),
                   ],
                 ),
@@ -88,11 +88,9 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
     return widget.chosenItemsList;
   }
 
-  List<Widget> getSuggstions(
+  List<Widget> getSuggstionsChips(
       List<String> lst, StateSetter setModalState, bool oneChoice) {
     if (oneChoice) {
-      List<ChoiceChip> suggestions = List<ChoiceChip>.empty(growable: true);
-
       return List<Widget>.generate(
         lst.length,
         (int index) {
@@ -100,10 +98,10 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
             label: Text(lst[index]),
             selected: widget.chosenItemsList.value[0] == lst[index],
             onSelected: (bool selected) {
-              widget.chosenItemsList.value[0] = lst[index];
+              widget.chosenItemsList.value.first = lst[index];
               widget.updatevalue();
               setModalState(() {
-                widget.chosenItemsList.value = [lst[index]];
+                widget.chosenItemsList.value = widget.chosenItemsList.value;
               });
             },
           );
@@ -126,16 +124,14 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
 
   @override
   Widget build(BuildContext context) {
-    return addItemButton(widget.button);
+    return addItemButton(widget.button, widget.replaceWhenEnterNew);
   }
 
-  Widget addItemButton(Widget button) {
+  Widget addItemButton(Widget button, bool replace) {
     return TextButton(
       onPressed: () async {
         List<String> items = await _optionslist;
-        _suggestions =
-            getSuggestionsWithoutChosen(items, widget.chosenItemsList.value);
-
+        _suggestions = getSuggestions(items);
         _showModalSheet();
       },
       child: button,
@@ -145,8 +141,7 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
   Future<void> _onSearchChanged(String value, StateSetter setModalState) async {
     final List<String> results = await _suggestionCallback(value);
     setModalState(() {
-      _suggestions =
-          getSuggestionsWithoutChosen(results, widget.chosenItemsList.value);
+      _suggestions = getSuggestions(results);
     });
   }
 
@@ -168,8 +163,7 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
     if (widget.chosenItemsList.value.length < widget.maxSelect) {
       setModalState(() {
         widget.chosenItemsList.value.add(item);
-        _suggestions =
-            getSuggestionsWithoutChosen(items, widget.chosenItemsList.value);
+        _suggestions = getSuggestions(items);
       });
       widget.updatevalue();
     }
@@ -181,8 +175,7 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
     List<String> items = await _optionslist;
     setModalState(() {
       widget.chosenItemsList.value.remove(item);
-      _suggestions =
-          getSuggestionsWithoutChosen(items, widget.chosenItemsList.value);
+      _suggestions = getSuggestions(items);
     });
     widget.updatevalue();
   }
@@ -199,8 +192,7 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
         });
       }
       setModalState(() {
-        _suggestions =
-            getSuggestionsWithoutChosen(items, widget.chosenItemsList.value);
+        _suggestions = getSuggestions(items);
       });
       widget.updatevalue();
     } else {}
@@ -223,10 +215,14 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
     return items;
   }
 
-  List<String> getSuggestionsWithoutChosen(
-      List<String> allItems, List<String> chosenItems) {
-    return allItems
-        .where((String item) => !chosenItems.contains(item))
-        .toList();
+  List<String> getSuggestions(List<String> allItems) {
+    List<String> chosenItems = widget.chosenItemsList.value;
+    if (!widget.replaceWhenEnterNew) {
+      return allItems
+          .where((String item) => !chosenItems.contains(item))
+          .toList();
+    } else {
+      return allItems;
+    }
   }
 }

@@ -18,7 +18,7 @@ class _DateEntryState extends State<DateEntry> {
     return DatePicker.showDatePicker(
       context,
       dateFormat: presentDateFormat,
-      initialDateTime: DateTime.now(),
+      initialDateTime: DateTime.parse(controllers.dateVal),
       minDateTime: defaultStartYear,
       maxDateTime: defaultEndYear,
       minuteDivider: 10,
@@ -29,6 +29,7 @@ class _DateEntryState extends State<DateEntry> {
         DateTime selectdate = dateTime;
         controllers.dateCont.text =
             DateFormat(presentDateFormat).format(selectdate);
+        controllers.notify();
         controllers.dateVal =
             DateFormat(transactionDateFormat).format(selectdate);
       },
@@ -37,18 +38,10 @@ class _DateEntryState extends State<DateEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controllers.dateCont,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        icon: Icon(Icons.calendar_today),
-        labelText: 'Time',
-        contentPadding: EdgeInsets.symmetric(vertical: 1.0),
-      ),
-      readOnly: true,
-      onTap: () async {
-        dateTimePickerWidget(context, widget.controllers);
-      },
-    );
+    return IconButton(
+        onPressed: () async {
+          dateTimePickerWidget(context, widget.controllers);
+        },
+        icon: const Icon(Icons.calendar_today));
   }
 }

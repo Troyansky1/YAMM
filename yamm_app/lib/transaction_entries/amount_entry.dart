@@ -18,33 +18,30 @@ class _AmountEntryState extends State<AmountEntry> {
     return double.tryParse(s);
   }
 
+  bool validNum(String? value) {
+    var amount = toNum(value);
+    if (amount == null) {
+      return false;
+    } else if (amount == 0) {
+      return false;
+    } else if (amount > 1000000) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //height: 100,
-      width: 100,
-      child: TextFormField(
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Amount',
-          contentPadding: EdgeInsets.symmetric(vertical: 2),
-        ),
-        keyboardType: TextInputType.number,
-        controller: widget.controllers.amountCont,
-        validator: (String? value) {
-          var amount = toNum(value);
-          if (amount == null) {
-            return '';
-          } else if (amount == 0) {
-            return "";
-          } else if (amount > 1000000) {
-            return '';
-          } else {
-            return null;
-          }
-        },
-        onSaved: (String? value) {},
+    return TextFormField(
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: ' Amount',
+        contentPadding: EdgeInsets.symmetric(vertical: 1),
       ),
+      keyboardType: TextInputType.number,
+      controller: widget.controllers.amountCont,
+      onSaved: (String? value) {},
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:yamm_app/add_transaction_fields_view/view_date.dart';
+import 'package:yamm_app/add_transaction_fields_view/view_payment_method.dart';
 import 'package:yamm_app/transaction_controllers.dart';
-import 'package:yamm_app/transaction_entries/show_labels.dart';
+import 'package:yamm_app/add_transaction_fields_view/view_labels.dart';
 import 'package:yamm_app/transaction_entries/transaction_entries.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
@@ -44,71 +46,81 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Form(
-      autovalidateMode: AutovalidateMode.always,
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            crossAxisAlignment:
-                CrossAxisAlignment.center, // Aligns children to the top
-
-            //crossAxisAlignment: CrossAxisAlignment.start,
+        autovalidateMode: AutovalidateMode.always,
+        key: _formKey,
+        child: Padding(
+          padding: EdgeInsetsDirectional.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(5.0),
-              ),
-              AmountEntry(controllers: controllers),
-              CurrencyEntry(controllers: controllers),
-              Text(controllers
-                  .paymentMethods[controllers.paymentMethods.length - 1]),
+              Row(
+                crossAxisAlignment:
+                    CrossAxisAlignment.center, // Aligns children to the top
 
-              /*BottomSheetChipSelect(
-                  chosenItemsList: controllers.paymentMethods,
-                  replaceWhenEnterNew: true,
-                  optionsListName: 'paymentMethods',
-                  button: const Icon(Icons.edit),
-                  maxSelect: 1),*/
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                    width: 100,
+                    child: AmountEntry(controllers: controllers),
+                  ),
+                  CurrencyEntry(controllers: controllers),
+                  SizedBox(
+                    height: 50,
+                    width: 40,
+                    child: BottomSheetChipSelect(
+                        chosenItemsList: controllers.paymentMethods,
+                        updatevalue: controllers.notify,
+                        replaceWhenEnterNew: true,
+                        optionsListName: 'paymentMethods',
+                        button: const Icon(Icons.edit),
+                        maxSelect: 1),
+                  ),
+                  PaymentMethodChoice(transactionControllers: controllers),
+                ],
+              ),
+
+              ServiceProviderEntry(controllers: controllers),
+              Row(
+                children: <Widget>[
+                  DateEntry(controllers: controllers),
+                  ViewDate(controllers: controllers),
+                ],
+              ),
+              //const EntriesPadding(),
+              //Does not have internal logic, but design is a thing.
+              //repeatEntry(controllers: controllers),
+              IncomeOutcomeEntry(controllers: controllers),
+
+              //LableEntry(controllers: controllers),
+              Row(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Aligns children to the top
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.all(5.0),
+                  ),
+                  CategoryEntry(controllers: controllers),
+                  BottomSheetChipSelect(
+                      chosenItemsList: controllers.labels,
+                      updatevalue: controllers.notify,
+                      replaceWhenEnterNew: false,
+                      optionsListName: 'labels',
+                      button: const Text("Add labels"),
+                      maxSelect: defaultMaxLabels),
+                ],
+              ),
+              ShowChosenLabels(transactionControllers: controllers),
+              const EntriesPadding(),
+              SaveEntry(
+                controllers: controllers,
+                id: widget.id,
+                formKey: _formKey,
+                transactionsListsNotifier: widget.transactionsListsNotifier,
+              )
             ],
           ),
-
-          ServiceProviderEntry(controllers: controllers),
-          const EntriesPadding(),
-          DateEntry(controllers: controllers),
-          //const EntriesPadding(),
-          //Does not have internal logic, but design is a thing.
-          //repeatEntry(controllers: controllers),
-          IncomeOutcomeEntry(controllers: controllers),
-
-          //LableEntry(controllers: controllers),
-          Row(
-            crossAxisAlignment:
-                CrossAxisAlignment.start, // Aligns children to the top
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(5.0),
-              ),
-              CategoryEntry(controllers: controllers),
-              BottomSheetChipSelect(
-                  chosenItemsList: controllers.labels,
-                  updatevalue: controllers.action,
-                  replaceWhenEnterNew: false,
-                  optionsListName: 'labels',
-                  button: const Text("Add labels"),
-                  maxSelect: defaultMaxLabels),
-            ],
-          ),
-          ShowChosenLabels(transactionControllers: controllers),
-          const EntriesPadding(),
-          SaveEntry(
-            controllers: controllers,
-            id: widget.id,
-            formKey: _formKey,
-            transactionsListsNotifier: widget.transactionsListsNotifier,
-          )
-        ],
-      ),
-    );
+        ));
   }
 }

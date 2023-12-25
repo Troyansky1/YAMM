@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/transaction_entries/chip_input_editin_controller.dart';
+import 'package:yamm_app/transaction_entries/chip_input_editing_controller.dart';
 
 class ChipsInput<T> extends StatefulWidget {
   const ChipsInput({

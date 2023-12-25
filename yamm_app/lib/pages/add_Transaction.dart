@@ -40,11 +40,6 @@ class _AddTransactionState extends State<AddTransaction> {
                 child: const Text('Go back'),
               ),
             ),
-            Text(
-              'Enter a transaction',
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
             ValueListenableBuilder(
                 valueListenable:
                     widget.transactionsListsNotifier.transactionsListId,
