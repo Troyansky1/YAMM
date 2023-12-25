@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:yamm_app/transaction_controllers.dart';
-import 'package:yamm_app/transaction_entries/custom_dropdown.dart';
 import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/currency_enum.dart';
 
@@ -34,34 +33,30 @@ class _CurrencyEntryState extends State<CurrencyEntry> {
       ));
     }
 
-    return Column(children: <Widget>[
-      Container(
-          height: 30,
-          width: 45,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+    return Container(
+        height: 30,
+        width: 45,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: DropdownButtonHideUnderline(
+            child: DropdownButton2(
+          //isExpanded: true,
+          value: widget.controllers.currencyValue,
+          buttonStyleData: const ButtonStyleData(
+              width: 35, height: 30, padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+          dropdownStyleData: const DropdownStyleData(
+            width: 45,
+            maxHeight: 200,
+            padding: EdgeInsets.only(),
+            isOverButton: true,
           ),
-          child: DropdownButtonHideUnderline(
-              child: DropdownButton2(
-            //isExpanded: true,
-            value: widget.controllers.currencyValue,
-            buttonStyleData: const ButtonStyleData(
-                width: 35,
-                height: 30,
-                padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-            dropdownStyleData: const DropdownStyleData(
-              width: 45,
-              maxHeight: 200,
-              padding: EdgeInsets.only(),
-              isOverButton: true,
-            ),
-            items: currencyOptionsEntries,
-            onChanged: (Currency? value) {
-              setState(() {
-                widget.controllers.currencyValue = value!;
-              });
-            },
-          )))
-    ]);
+          items: currencyOptionsEntries,
+          onChanged: (Currency? value) {
+            setState(() {
+              widget.controllers.currencyValue = value!;
+            });
+          },
+        )));
   }
 }

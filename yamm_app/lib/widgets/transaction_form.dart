@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
+import 'package:yamm_app/transaction_entries/show_labels.dart';
 import 'package:yamm_app/transaction_entries/transaction_entries.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
@@ -59,12 +60,15 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
               ),
               AmountEntry(controllers: controllers),
               CurrencyEntry(controllers: controllers),
-              Text(controllers.paymentMethods[0]),
-              BottomSheetChipSelect(
+              Text(controllers
+                  .paymentMethods[controllers.paymentMethods.length - 1]),
+
+              /*BottomSheetChipSelect(
                   chosenItemsList: controllers.paymentMethods,
+                  replaceWhenEnterNew: true,
                   optionsListName: 'paymentMethods',
                   button: const Icon(Icons.edit),
-                  maxSelect: 1),
+                  maxSelect: 1),*/
             ],
           ),
 
@@ -88,12 +92,14 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
               CategoryEntry(controllers: controllers),
               BottomSheetChipSelect(
                   chosenItemsList: controllers.labels,
+                  updatevalue: controllers.action,
+                  replaceWhenEnterNew: false,
                   optionsListName: 'labels',
                   button: const Text("Add labels"),
                   maxSelect: defaultMaxLabels),
             ],
           ),
-
+          ShowChosenLabels(transactionControllers: controllers),
           const EntriesPadding(),
           SaveEntry(
             controllers: controllers,

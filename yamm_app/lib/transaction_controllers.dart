@@ -6,7 +6,7 @@ import 'package:yamm_app/currency_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/functions/preferences.dart';
 
-class TransactionControllers {
+class TransactionControllers with ChangeNotifier {
   var amountCont = TextEditingController();
   var titleCont = TextEditingController();
   String dateVal = "";
@@ -15,7 +15,8 @@ class TransactionControllers {
   var repeatOptionCont = TextEditingController();
   var endDateCont = TextEditingController();
   // var lableCont = SingleValueDropDownController();
-  List<String> labels = List.empty(growable: true);
+  ValueNotifier<List<String>> labels =
+      ValueNotifier<List<String>>(List<String>.empty(growable: true));
   List<String> paymentMethods = [defaultPaymentMethod];
   Currency currencyValue = defaultCurrency;
   TransactionCategory categoryValue = defaultCategory;
@@ -30,11 +31,14 @@ class TransactionControllers {
     serviceProviderCont.text = "";
     repeatOptionCont.text = "";
     endDateCont.text = "";
-    labels = <String>[];
   }
 
   bool fieldsVarified() {
     return false;
+  }
+
+  void action() {
+    notifyListeners();
   }
 
   Transaction setTransaction(int id) {
@@ -46,13 +50,13 @@ class TransactionControllers {
     transaction.setCategory(categoryValue);
     transaction.setIsOutcome(incomeOutcome[1]);
     transaction.setServiceProvider(serviceProviderCont.text);
-    transaction.setLabels(labels);
+    transaction.setLabels(labels.value);
 
     return transaction;
   }
 
   updateLists() {
-    updateList(labels, 'labels');
+    updateList(labels.value, 'labels');
     updateList(paymentMethods, 'paymentMethods');
   }
 

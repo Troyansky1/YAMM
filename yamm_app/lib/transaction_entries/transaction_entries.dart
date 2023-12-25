@@ -7,5 +7,4 @@ export 'service_provider_entry.dart';
 export 'padding_between_entries.dart';
 export 'currency_entry.dart';
 export 'category_entry.dart';
-export 'lable_entry.dart';
 export 'bottom_sheet_chip_select.dart';

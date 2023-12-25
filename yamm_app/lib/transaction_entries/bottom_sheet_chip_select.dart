@@ -7,14 +7,17 @@ import 'package:yamm_app/user_preferences.dart';
 
 class BottomSheetChipSelect extends StatefulWidget {
   //final Widget child;
-  late List<String> chosenItemsList;
-
+  late ValueNotifier<List<String>> chosenItemsList;
+  late Function updatevalue;
+  late bool replaceWhenEnterNew;
   final String optionsListName;
   final Widget button;
   final int maxSelect;
   BottomSheetChipSelect(
       {super.key,
       required this.chosenItemsList,
+      required this.updatevalue,
+      required this.replaceWhenEnterNew,
       required this.optionsListName,
       required this.button,
       required this.maxSelect});
@@ -45,33 +48,36 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
               child: Center(
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ChipsInput<String>(
-                        values: widget.chosenItemsList,
-                        strutStyle: const StrutStyle(fontSize: 15),
-                        onChanged: (List<String> data) {
-                          _onChanged(data, setModalState);
-                        },
-                        onSubmitted: (String data) {
-                          _onSubmitted(data, setModalState);
-                        },
-                        chipBuilder: (BuildContext context, String str) {
-                          return _chipBuilder(context, str, setModalState);
-                        },
-                        onTextChanged: (String data) {
-                          _onSearchChanged(data, setModalState);
-                        },
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                    if (!widget.replaceWhenEnterNew)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: ChipsInput<String>(
+                          values: widget.chosenItemsList.value,
+                          strutStyle: const StrutStyle(fontSize: 15),
+                          onChanged: (List<String> data) {
+                            _onChanged(data, setModalState);
+                          },
+                          onSubmitted: (String data) {
+                            _onSubmitted(data, setModalState);
+                          },
+                          chipBuilder: (BuildContext context, String str) {
+                            return _chipBuilder(context, str, setModalState);
+                          },
+                          onTextChanged: (String data) {
+                            _onSearchChanged(data, setModalState);
+                          },
+                        ),
                       ),
-                    ),
                     if (_suggestions.isNotEmpty)
                       SizedBox(
-                        height: 200,
+                        width: MediaQuery.of(context).size.width - 40,
+                        height: MediaQuery.of(context).size.height * 0.15,
                         child: Wrap(
                             spacing: 1,
                             runSpacing: 0.0,
-                            children:
-                                getSuggstions(_suggestions, setModalState)),
+                            children: getSuggstions(_suggestions, setModalState,
+                                widget.replaceWhenEnterNew)),
                       ),
                   ],
                 ),
@@ -82,18 +88,41 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
     return widget.chosenItemsList;
   }
 
-  List<Widget> getSuggstions(List<String> lst, StateSetter setModalState) {
-    List<ActionChip> suggestions = List<ActionChip>.empty(growable: true);
-    for (String item in lst) {
-      ActionChip chip = ActionChip(
-        label: Text(item),
-        onPressed: () {
-          _selectSuggestion(item, setModalState);
+  List<Widget> getSuggstions(
+      List<String> lst, StateSetter setModalState, bool oneChoice) {
+    if (oneChoice) {
+      List<ChoiceChip> suggestions = List<ChoiceChip>.empty(growable: true);
+
+      return List<Widget>.generate(
+        lst.length,
+        (int index) {
+          return ChoiceChip(
+            label: Text(lst[index]),
+            selected: widget.chosenItemsList.value[0] == lst[index],
+            onSelected: (bool selected) {
+              setState(() {
+                widget.chosenItemsList.value[0] = lst[index];
+              });
+              setModalState(() {
+                widget.chosenItemsList.value = [lst[index]];
+              });
+            },
+          );
         },
-      );
-      suggestions.add(chip);
+      ).toList();
+    } else {
+      List<ActionChip> suggestions = List<ActionChip>.empty(growable: true);
+      for (String item in lst) {
+        ActionChip chip = ActionChip(
+          label: Text(item),
+          onPressed: () {
+            _selectSuggestion(item, setModalState);
+          },
+        );
+        suggestions.add(chip);
+      }
+      return suggestions;
     }
-    return suggestions;
   }
 
   @override
@@ -101,21 +130,14 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
     return addItemButton(widget.button);
   }
 
-  void openSheetCallback() async {
-    List<String> items = await _optionslist;
-    _suggestions = getSuggestionsWithoutChosen(items, widget.chosenItemsList);
-
-    await _showModalSheet();
-  }
-
   Widget addItemButton(Widget button) {
     return TextButton(
       onPressed: () async {
         List<String> items = await _optionslist;
         _suggestions =
-            getSuggestionsWithoutChosen(items, widget.chosenItemsList);
+            getSuggestionsWithoutChosen(items, widget.chosenItemsList.value);
 
-        await _showModalSheet();
+        _showModalSheet();
       },
       child: button,
     );
@@ -125,7 +147,7 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
     final List<String> results = await _suggestionCallback(value);
     setModalState(() {
       _suggestions =
-          getSuggestionsWithoutChosen(results, widget.chosenItemsList);
+          getSuggestionsWithoutChosen(results, widget.chosenItemsList.value);
     });
   }
 
@@ -144,15 +166,13 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
 
   void _selectSuggestion(String item, StateSetter setModalState) async {
     List<String> items = await _optionslist;
-    if (widget.chosenItemsList.length < widget.maxSelect) {
+    if (widget.chosenItemsList.value.length < widget.maxSelect) {
       setModalState(() {
-        widget.chosenItemsList.add(item);
+        widget.chosenItemsList.value.add(item);
         _suggestions =
-            getSuggestionsWithoutChosen(items, widget.chosenItemsList);
+            getSuggestionsWithoutChosen(items, widget.chosenItemsList.value);
       });
-      setState(() {
-        widget.chosenItemsList = widget.chosenItemsList;
-      });
+      widget.updatevalue();
     }
   }
 
@@ -161,38 +181,35 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
   void _onChipDeleted(String item, StateSetter setModalState) async {
     List<String> items = await _optionslist;
     setModalState(() {
-      widget.chosenItemsList.remove(item);
-      _suggestions = getSuggestionsWithoutChosen(items, widget.chosenItemsList);
+      widget.chosenItemsList.value.remove(item);
+      _suggestions =
+          getSuggestionsWithoutChosen(items, widget.chosenItemsList.value);
     });
-    setState(() {
-      widget.chosenItemsList = widget.chosenItemsList;
-    });
+    widget.updatevalue();
   }
 
   void _onSubmitted(String text, StateSetter setModalState) async {
     List<String> items = await _optionslist;
-    if (widget.chosenItemsList.length < defaultMaxLabels) {
+    if (widget.chosenItemsList.value.length < defaultMaxLabels) {
       if (text.trim().isNotEmpty) {
         setModalState(() {
-          widget.chosenItemsList = <String>[
-            ...widget.chosenItemsList,
+          widget.chosenItemsList.value = <String>[
+            ...widget.chosenItemsList.value,
             text.trim()
           ];
         });
       }
       setModalState(() {
         _suggestions =
-            getSuggestionsWithoutChosen(items, widget.chosenItemsList);
+            getSuggestionsWithoutChosen(items, widget.chosenItemsList.value);
       });
-      setState(() {
-        widget.chosenItemsList = widget.chosenItemsList;
-      });
+      widget.updatevalue();
     } else {}
   }
 
   void _onChanged(List<String> data, StateSetter setModalState) {
     setModalState(() {
-      widget.chosenItemsList = data;
+      widget.chosenItemsList.value = data;
       _chipFocusNode.unfocus();
     });
   }

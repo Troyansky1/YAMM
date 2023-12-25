@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:yamm_app/transaction_controllers.dart';
 
 class ShowChosenLabels extends StatefulWidget {
-  late List<String> outputList;
-  ShowChosenLabels({super.key, required this.outputList});
+  late TransactionControllers transactionControllers;
+  ShowChosenLabels({super.key, required this.transactionControllers});
 
   @override
   State<ShowChosenLabels> createState() => _ShowChosenLabelsState();
 }
 
 class _ShowChosenLabelsState extends State<ShowChosenLabels> {
+  void initState() {
+    super.initState();
+
+    widget.transactionControllers
+        .addListener(() => mounted ? setState(() {}) : null);
+  }
+
   List<Widget> getChosenItems(List<String> lst) {
     List<Widget> chosenItems = List<Widget>.empty(growable: true);
 
@@ -22,8 +30,9 @@ class _ShowChosenLabelsState extends State<ShowChosenLabels> {
         labelPadding: const EdgeInsets.all(1),
         onDeleted: () {
           setState(() {
-            widget.outputList.remove(item);
-            widget.outputList = widget.outputList;
+            widget.transactionControllers.labels.value.remove(item);
+            widget.transactionControllers.labels.value =
+                widget.transactionControllers.labels.value;
           });
         },
       );
@@ -34,20 +43,15 @@ class _ShowChosenLabelsState extends State<ShowChosenLabels> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      width: 500,
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 200,
-            child: Wrap(
-                spacing: 1,
-                runSpacing: 0.0,
-                children: getChosenItems(widget.outputList)),
-          ),
-        ],
-      ),
+    return ValueListenableBuilder<List<String>>(
+      builder: (BuildContext context, List<String> value, Widget? child) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.15,
+          child: Wrap(
+              spacing: 0, runSpacing: 0.0, children: getChosenItems(value)),
+        );
+      },
+      valueListenable: widget.transactionControllers.labels,
     );
   }
 }
