@@ -3,7 +3,6 @@ import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/functions/save_and_load_csv.dart';
 import 'package:yamm_app/transactions_list.dart';
-import 'package:yamm_app/functions/preferences.dart';
 
 class SaveEntry extends StatefulWidget {
   //final Widget child;

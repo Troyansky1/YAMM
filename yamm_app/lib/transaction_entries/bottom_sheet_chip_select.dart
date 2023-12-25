@@ -100,9 +100,8 @@ class _BottomSheetChipSelectState extends State<BottomSheetChipSelect> {
             label: Text(lst[index]),
             selected: widget.chosenItemsList.value[0] == lst[index],
             onSelected: (bool selected) {
-              setState(() {
-                widget.chosenItemsList.value[0] = lst[index];
-              });
+              widget.chosenItemsList.value[0] = lst[index];
+              widget.updatevalue();
               setModalState(() {
                 widget.chosenItemsList.value = [lst[index]];
               });

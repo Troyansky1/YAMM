@@ -34,11 +34,11 @@ class _AmountEntryState extends State<AmountEntry> {
         validator: (String? value) {
           var amount = toNum(value);
           if (amount == null) {
-            return 'Enter a valid amount';
+            return '';
           } else if (amount == 0) {
-            return 'Amount must be\nbigger than 0';
+            return "";
           } else if (amount > 1000000) {
-            return 'Amount is too big';
+            return '';
           } else {
             return null;
           }

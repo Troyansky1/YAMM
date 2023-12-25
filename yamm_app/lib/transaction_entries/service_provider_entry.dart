@@ -32,9 +32,9 @@ class _ServiceProviderEntryState extends State<ServiceProviderEntry> {
       autovalidateMode: AutovalidateMode.disabled,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter a service provider.';
+          return '';
         } else if (!isValidStr(value)) {
-          return 'Please use letters of the alphabet only.';
+          return '';
         }
         return null;
       },
