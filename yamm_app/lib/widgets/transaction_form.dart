@@ -49,7 +49,7 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
         autovalidateMode: AutovalidateMode.always,
         key: _formKey,
         child: Padding(
-          padding: EdgeInsetsDirectional.all(10),
+          padding: const EdgeInsetsDirectional.all(5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -59,9 +59,12 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
 
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(10, 70, 0, 0),
+                  ),
                   SizedBox(
                     height: 50,
-                    width: 100,
+                    width: 70,
                     child: AmountEntry(controllers: controllers),
                   ),
                   CurrencyEntry(controllers: controllers),
@@ -79,18 +82,40 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
                   PaymentMethodChoice(transactionControllers: controllers),
                 ],
               ),
-
-              ServiceProviderEntry(controllers: controllers),
               Row(
+                crossAxisAlignment:
+                    CrossAxisAlignment.center, // Aligns children to the top
+                //crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  DateEntry(controllers: controllers),
+                  const Padding(padding: EdgeInsets.fromLTRB(10, 70, 0, 0)),
+                  SizedBox(
+                    height: 50,
+                    width: 250,
+                    child: ServiceProviderEntry(controllers: controllers),
+                  ),
+                ],
+              ),
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const Padding(padding: EdgeInsets.fromLTRB(10, 40, 0, 0)),
                   ViewDate(controllers: controllers),
+                  DateEntry(controllers: controllers),
                 ],
               ),
               //const EntriesPadding(),
               //Does not have internal logic, but design is a thing.
               //repeatEntry(controllers: controllers),
-              IncomeOutcomeEntry(controllers: controllers),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const Padding(padding: EdgeInsets.fromLTRB(10, 50, 0, 0)),
+                  IncomeOutcomeEntry(controllers: controllers),
+                ],
+              ),
 
               //LableEntry(controllers: controllers),
               Row(
@@ -99,16 +124,26 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const Padding(
-                    padding: EdgeInsets.all(5.0),
+                    padding: EdgeInsets.fromLTRB(5, 70, 0, 0),
                   ),
-                  CategoryEntry(controllers: controllers),
-                  BottomSheetChipSelect(
-                      chosenItemsList: controllers.labels,
-                      updatevalue: controllers.notify,
-                      replaceWhenEnterNew: false,
-                      optionsListName: 'labels',
-                      button: const Text("Add labels"),
-                      maxSelect: defaultMaxLabels),
+                  Container(
+                    height: 50,
+                    width: 115,
+                    alignment: Alignment.centerLeft,
+                    child: CategoryEntry(controllers: controllers),
+                  ),
+                  Container(
+                    height: 50,
+                    width: 115,
+                    alignment: Alignment.centerLeft,
+                    child: BottomSheetChipSelect(
+                        chosenItemsList: controllers.labels,
+                        updatevalue: controllers.notify,
+                        replaceWhenEnterNew: false,
+                        optionsListName: 'labels',
+                        button: const Text("Add labels"),
+                        maxSelect: defaultMaxLabels),
+                  ),
                 ],
               ),
               ShowChosenLabels(transactionControllers: controllers),

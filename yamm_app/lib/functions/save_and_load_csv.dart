@@ -69,7 +69,7 @@ List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
   for (List<dynamic> textTransaction in lst) {
     Transaction transaction = Transaction(0);
     transaction.setId(textTransaction[0]);
-    transaction.setIsOutcome(textTransaction[1]);
+    transaction.setTransactionType(textTransaction[1]);
     transaction.setAmount(textTransaction[2]);
     transaction.setServiceProvider(textTransaction[3]);
     transaction.setDate(textTransaction[4]);

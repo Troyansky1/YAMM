@@ -42,6 +42,6 @@ class _DateEntryState extends State<DateEntry> {
         onPressed: () async {
           dateTimePickerWidget(context, widget.controllers);
         },
-        icon: const Icon(Icons.calendar_today));
+        icon: const Icon(Icons.edit));
   }
 }

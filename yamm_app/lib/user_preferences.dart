@@ -1,9 +1,11 @@
 import 'package:yamm_app/currency_enum.dart';
 import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/transaction_type_enum.dart';
 import 'package:yamm_app/transactions_list.dart';
 
 Currency defaultCurrency = Currency.ils;
 TransactionCategory defaultCategory = TransactionCategory.others;
+TransactionType defaultTransactionType = TransactionType.outcome;
 
 DateTime defaultStartYear = DateTime(2000);
 DateTime defaultEndYear = DateTime(2150);

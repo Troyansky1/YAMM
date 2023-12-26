@@ -12,7 +12,7 @@ class ServiceProviderEntry extends StatefulWidget {
 }
 
 class _ServiceProviderEntryState extends State<ServiceProviderEntry> {
-  bool isValidStr(String str) {
+  bool isValidStr(String? str) {
     if (str == null || str.isEmpty) {
       return false;
     } else {
@@ -28,7 +28,6 @@ class _ServiceProviderEntryState extends State<ServiceProviderEntry> {
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: const InputDecoration(
-        border: OutlineInputBorder(),
         labelText: ' Service provider',
         contentPadding: EdgeInsets.symmetric(vertical: 1.0),
       ),

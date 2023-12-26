@@ -21,7 +21,10 @@ class _ViewDateState extends State<ViewDate> {
     String date = widget.controllers.dateCont.text;
     return ValueListenableBuilder<TextEditingValue>(
       builder: (BuildContext context, TextEditingValue value, Widget? child) {
-        return Text(date);
+        return Text(
+          date,
+          style: TextStyle(fontSize: 16),
+        );
       },
       valueListenable: widget.controllers.dateCont,
     );

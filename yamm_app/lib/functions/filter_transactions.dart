@@ -36,7 +36,7 @@ List<Transaction> filterListDay(List<Transaction> lst, int day) {
 }
 
 List<Transaction> filterIncomeOutcome(List<Transaction> lst, bool outcome) {
-  var inOutList = lst.where((e) => e.getIsOutcome() == outcome);
+  var inOutList = lst.where((e) => e.getTransactionType() == outcome);
   return inOutList.toList();
 }
 

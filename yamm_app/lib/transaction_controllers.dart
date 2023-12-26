@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/currency_enum.dart';
+import 'package:yamm_app/transaction_type_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/functions/preferences.dart';
 
@@ -22,7 +23,7 @@ class TransactionControllers with ChangeNotifier {
 
   Currency currencyValue = defaultCurrency;
   TransactionCategory categoryValue = defaultCategory;
-  List<bool> incomeOutcome = [false, true];
+  TransactionType transactionType = defaultTransactionType;
 
   void initControllers() {
     amountCont.text = "";
@@ -50,7 +51,7 @@ class TransactionControllers with ChangeNotifier {
     transaction.setDate(dateVal);
     transaction.setCurrency(currencyValue);
     transaction.setCategory(categoryValue);
-    transaction.setIsOutcome(incomeOutcome[1]);
+    transaction.setTransactionType(transactionType);
     transaction.setServiceProvider(serviceProviderCont.text);
     transaction.setLabels(labels.value);
 

@@ -7,7 +7,6 @@ import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/widgets/home_page_list_view/build_transaction_list_item.dart';
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
-import 'package:yamm_app/widgets/home_page_list_view/controller_switch_header.dart';
 
 class BuildListCardsYear extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;

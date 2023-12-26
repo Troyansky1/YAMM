@@ -27,7 +27,16 @@ class _CategoryEntryState extends State<CategoryEntry> {
 
     return DropdownButton2<TransactionCategory>(
       value: widget.controllers.categoryValue,
-      alignment: AlignmentDirectional.center,
+      isExpanded: false,
+      alignment: Alignment.bottomCenter,
+      buttonStyleData: const ButtonStyleData(width: 110, height: 25),
+      dropdownStyleData: const DropdownStyleData(
+        width: 110,
+        scrollPadding: EdgeInsets.all(0),
+        maxHeight: 250,
+        padding: EdgeInsets.only(),
+        isOverButton: true,
+      ),
       items: categoryOptionsEntries,
       onChanged: (TransactionCategory? value) {
         setState(() {

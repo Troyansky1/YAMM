@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction.dart';
+
+import 'package:yamm_app/transaction_type_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
-import 'dart:developer';
 
 class BuildTransactionListItems {
   BuildTransactionListItems();
@@ -10,7 +11,7 @@ class BuildTransactionListItems {
   static Row buildAmountRow(Transaction transaction) {
     String amount = transaction.getAmountString();
     TextStyle amountStyle = const TextStyle();
-    bool outcome = transaction.getIsOutcome();
+    TransactionType transactionType = transaction.getTransactionType();
     String amountPrefix = "";
     String currencySymbolPath = transaction.getCurrency().symbolPath;
     Image currencySymbol = Image(
@@ -19,12 +20,12 @@ class BuildTransactionListItems {
       width: 10,
     );
 
-    if (outcome) {
-      amountPrefix = ' ';
-      amountStyle = TextStyle(color: Colors.grey[800]);
-    } else {
+    if (transactionType == TransactionType.income) {
       amountPrefix = '+';
       amountStyle = TextStyle(color: Colors.green[700]);
+    } else {
+      amountPrefix = ' ';
+      amountStyle = TextStyle(color: Colors.grey[800]);
     }
     Row amountRow = Row(children: <Widget>[
       Text(

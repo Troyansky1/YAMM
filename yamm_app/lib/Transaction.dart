@@ -1,6 +1,7 @@
 import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/currency_enum.dart';
 import 'package:yamm_app/transaction_fields/transaction_fields.dart';
+import 'package:yamm_app/transaction_type_enum.dart';
 
 class Transaction {
   int minAmount = 0;
@@ -8,7 +9,8 @@ class Transaction {
   final int _id;
   final IdField _idField = IdField();
   final AmountField _amountField = AmountField();
-  final IsOutcomeField _isOutcomeField = IsOutcomeField();
+
+  final TransactionTypeField _transactionTypeField = TransactionTypeField();
   final ServiceProviderField _serviceProviderField = ServiceProviderField();
   final DateField _dateField = DateField();
   final CurrencyField _currencyField = CurrencyField();
@@ -27,7 +29,7 @@ class Transaction {
     fieldsList = [
       _idField,
       _amountField,
-      _isOutcomeField,
+      _transactionTypeField,
       _dateField,
       _currencyField,
       _serviceProviderField
@@ -43,7 +45,7 @@ class Transaction {
   void initMapFromList(List<String> lst) {
     transactionMap.addAll({
       'id': _idField.getStrValue(),
-      'isOutcome': _isOutcomeField.getStrValue,
+      'transactionType': _transactionTypeField.getStrValue,
       'amount': _amountField.getStrValue(),
       'serviceProvider': _serviceProviderField.getStrValue(),
       'date': _dateField.getStrValue(),
@@ -56,7 +58,7 @@ class Transaction {
   void initMap() {
     transactionMap.addAll({
       'id': _idField.getStrValue(),
-      'isOutcome': _isOutcomeField.getStrValue(),
+      'transactionType': _transactionTypeField.getStrValue(),
       'amount': _amountField.getStrValue(),
       'serviceProvider': _serviceProviderField.getStrValue(),
       'date': _dateField.getStrValue(),
@@ -83,13 +85,13 @@ class Transaction {
     return _amountField.getValue();
   }
 
-  bool setIsOutcome(dynamic enteredIsOutcome) {
-    _isOutcomeField.setValue(enteredIsOutcome);
+  bool setTransactionType(dynamic enteredTransactionType) {
+    _transactionTypeField.setValue(enteredTransactionType);
     return true;
   }
 
-  bool getIsOutcome() {
-    return _isOutcomeField.getValue();
+  TransactionType getTransactionType() {
+    return _transactionTypeField.getValue();
   }
 
   bool setDate(dynamic date) {

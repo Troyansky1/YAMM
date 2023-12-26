@@ -35,7 +35,6 @@ class _AmountEntryState extends State<AmountEntry> {
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: const InputDecoration(
-        border: OutlineInputBorder(),
         labelText: ' Amount',
         contentPadding: EdgeInsets.symmetric(vertical: 1),
       ),

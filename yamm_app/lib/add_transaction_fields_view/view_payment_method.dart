@@ -26,7 +26,7 @@ class _PaymentMethodChoiceState extends State<PaymentMethodChoice> {
           paymentMethod = value.first;
         }
         return SizedBox(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: MediaQuery.of(context).size.width * 0.25,
           child: Wrap(
               spacing: 0,
               runSpacing: 0.0,
