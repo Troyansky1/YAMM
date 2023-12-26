@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/user_preferences.dart';
 
 class CategoryEntry extends StatefulWidget {
   //final Widget child;
@@ -13,36 +15,56 @@ class CategoryEntry extends StatefulWidget {
 }
 
 class _CategoryEntryState extends State<CategoryEntry> {
+  void initState() {
+    super.initState();
+
+    widget.controllers.addListener(() => mounted ? setState(() {}) : null);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuItem<TransactionCategory>> categoryOptionsEntries =
-        <DropdownMenuItem<TransactionCategory>>[];
-    for (final TransactionCategory category in TransactionCategory.values) {
-      String name = category.name;
-      categoryOptionsEntries.add(
-        DropdownMenuItem<TransactionCategory>(
-            value: category, child: Text(name)),
-      );
-    }
+    return ValueListenableBuilder<TransactionType>(
+        valueListenable: widget.controllers.transactionType,
+        builder: (BuildContext context, TransactionType type, Widget? child) {
+          final List<DropdownMenuItem<TransactionCategory>>
+              categoryOptionsEntries =
+              <DropdownMenuItem<TransactionCategory>>[];
+          for (final TransactionCategory category
+              in TransactionCategory.values) {
+            if (category.transactionTypes.contains(type)) {
+              String name = category.name;
+              categoryOptionsEntries.add(
+                DropdownMenuItem<TransactionCategory>(
+                    value: category, child: Text(name)),
+              );
+            }
+          }
 
-    return DropdownButton2<TransactionCategory>(
-      value: widget.controllers.categoryValue,
-      isExpanded: false,
-      alignment: Alignment.bottomCenter,
-      buttonStyleData: const ButtonStyleData(width: 110, height: 25),
-      dropdownStyleData: const DropdownStyleData(
-        width: 110,
-        scrollPadding: EdgeInsets.all(0),
-        maxHeight: 250,
-        padding: EdgeInsets.only(),
-        isOverButton: true,
-      ),
-      items: categoryOptionsEntries,
-      onChanged: (TransactionCategory? value) {
-        setState(() {
-          widget.controllers.categoryValue = value!;
+          if (!widget.controllers.categoryValue.transactionTypes
+              .contains(type)) {
+            widget.controllers.categoryValue = defaultCategory;
+          }
+
+          return DropdownButton2<TransactionCategory>(
+            value: widget.controllers.categoryValue,
+            isExpanded: false,
+            alignment: Alignment.bottomLeft,
+            buttonStyleData: const ButtonStyleData(
+                width: 110, height: 25, padding: EdgeInsets.only(left: 5)),
+            dropdownStyleData: const DropdownStyleData(
+              width: 110,
+              scrollPadding: EdgeInsets.all(0),
+              maxHeight: 250,
+              padding: EdgeInsets.only(left: 5),
+              isOverButton: true,
+            ),
+            items: categoryOptionsEntries,
+            onChanged: (TransactionCategory? value) {
+              setState(() {
+                widget.controllers.categoryValue = value!;
+              });
+            },
+          );
         });
-      },
-    );
   }
 }

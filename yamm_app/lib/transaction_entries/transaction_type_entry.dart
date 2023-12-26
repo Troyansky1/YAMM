@@ -14,15 +14,16 @@ class IncomeOutcomeEntry extends StatefulWidget {
 class _IncomeOutcomeEntryState extends State<IncomeOutcomeEntry> {
   @override
   Widget build(BuildContext context) {
-    String buttonText = widget.controllers.transactionType.name;
+    String buttonText = widget.controllers.transactionType.value.name;
     return TextButton.icon(
         icon: const Icon(Icons.repeat),
         label: Text(buttonText),
         onPressed: () {
           setState(() {
-            widget.controllers.transactionType =
-                TransactionType.getNext(widget.controllers.transactionType);
-            buttonText = widget.controllers.transactionType.name;
+            widget.controllers.transactionType.value = TransactionType.getNext(
+                widget.controllers.transactionType.value);
+            buttonText = widget.controllers.transactionType.value.name;
+            widget.controllers.notify();
           });
         });
   }

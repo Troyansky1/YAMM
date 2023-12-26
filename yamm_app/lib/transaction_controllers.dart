@@ -23,7 +23,8 @@ class TransactionControllers with ChangeNotifier {
 
   Currency currencyValue = defaultCurrency;
   TransactionCategory categoryValue = defaultCategory;
-  TransactionType transactionType = defaultTransactionType;
+  ValueNotifier<TransactionType> transactionType =
+      ValueNotifier<TransactionType>(defaultTransactionType);
 
   void initControllers() {
     amountCont.text = "";
@@ -51,7 +52,7 @@ class TransactionControllers with ChangeNotifier {
     transaction.setDate(dateVal);
     transaction.setCurrency(currencyValue);
     transaction.setCategory(categoryValue);
-    transaction.setTransactionType(transactionType);
+    transaction.setTransactionType(transactionType.value);
     transaction.setServiceProvider(serviceProviderCont.text);
     transaction.setLabels(labels.value);
 
