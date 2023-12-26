@@ -18,6 +18,18 @@ class _IncomeOutcomeEntryState extends State<IncomeOutcomeEntry> {
     return TextButton.icon(
         icon: const Icon(Icons.repeat),
         label: Text(buttonText),
+        style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+              const EdgeInsets.only(
+                  left: 0, right: 10), // Adjust the left padding as needed
+            ),
+            alignment: Alignment.centerLeft,
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                const RoundedRectangleBorder(
+              borderRadius: BorderRadius.horizontal(
+                  left: Radius.elliptical(10, 10),
+                  right: Radius.elliptical(10, 10)),
+            ))),
         onPressed: () {
           setState(() {
             widget.controllers.transactionType.value = TransactionType.getNext(

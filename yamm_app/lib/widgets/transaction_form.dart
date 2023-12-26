@@ -112,8 +112,11 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  const Padding(padding: EdgeInsets.fromLTRB(10, 50, 0, 0)),
-                  IncomeOutcomeEntry(controllers: controllers),
+                  const Padding(padding: EdgeInsets.fromLTRB(5, 50, 0, 0)),
+                  SizedBox(
+                    width: 100,
+                    child: IncomeOutcomeEntry(controllers: controllers),
+                  )
                 ],
               ),
 
