@@ -31,19 +31,23 @@ class _HomePageFiltersState extends State<HomePageFilters> {
   Widget showDatesRange(TransactionsListsNotifier transactionsListsNotifier) {
     Text text;
     DateFrames dateFrame = transactionsListsNotifier.dateFrame.value;
+    String str;
     int year = transactionsListsNotifier.filters.value.yearFilter;
     int month = transactionsListsNotifier.filters.value.monthFilter;
     int day = transactionsListsNotifier.filters.value.dayFilter;
     if (dateFrame == DateFrames.year) {
-      text = Text(year.toString());
+      str = year.toString();
     } else if (dateFrame == DateFrames.month) {
-      text = Text(DateFormat('yMMM').format(DateTime(year, month)));
+      str = DateFormat('yMMM').format(DateTime(year, month));
     } else if (dateFrame == DateFrames.day) {
-      text = Text(DateFormat('yMMMd').format(DateTime(year, month, day)));
+      str = DateFormat('yMMMd').format(DateTime(year, month, day));
     } else {
-      text = Text("error");
+      str = "error";
     }
-    return text;
+    return Text(
+      str,
+      style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+    );
   }
 
   @override
@@ -58,61 +62,77 @@ class _HomePageFiltersState extends State<HomePageFilters> {
         ),
       );
     }
-    return Row(
+    double width = MediaQuery.of(context).size.width;
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: <Widget>[
-                  const Text("Present  "),
-                  DropdownButton<DateFrames>(
-                      items: dateFrameOptionsEntries,
-                      value: widget.transactionsListsNotifier.dateFrame.value,
-                      onChanged: (DateFrames? value) {
-                        showCustomDatePickerDialog(
-                                widget.transactionsListsNotifier,
-                                context,
-                                value!)
-                            .then((a) => setState(() {
-                                  widget.transactionsListsNotifier.dateFrame
-                                      .value = value;
-                                  widget.transactionsListsNotifier
-                                      .updateFilters(date: true);
-                                }));
-                      }),
-                  ValueListenableBuilder(
-                      valueListenable:
-                          widget.transactionsListsNotifier.dateFrame,
-                      builder: (BuildContext context, DateFrames dateFrame,
-                          Widget? child) {
-                        return showDatesRange(widget.transactionsListsNotifier);
-                      }),
-                ],
-              )
-            ],
-          ),
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
+        Row(
           children: [
-            ElevatedButton(
-                onPressed: () => SideSheet.right(
-                    width: MediaQuery.of(context).size.width / 1.4,
-                    body: filterSideSheet(
-                        transactionsListsNotifier:
-                            widget.transactionsListsNotifier),
-                    context: context),
-                child: const Icon(Icons.tune)),
-            const SizedBox(height: 10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: <Widget>[
+                      const Padding(padding: EdgeInsets.fromLTRB(17, 0, 0, 0)),
+                      const Text(
+                        "View by ",
+                      ),
+                      DropdownButton<DateFrames>(
+                          items: dateFrameOptionsEntries,
+                          value:
+                              widget.transactionsListsNotifier.dateFrame.value,
+                          onChanged: (DateFrames? value) {
+                            showCustomDatePickerDialog(
+                                    widget.transactionsListsNotifier,
+                                    context,
+                                    value!)
+                                .then((a) => setState(() {
+                                      widget.transactionsListsNotifier.dateFrame
+                                          .value = value;
+                                      widget.transactionsListsNotifier
+                                          .updateFilters(date: true);
+                                    }));
+                          }),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                    onPressed: () => SideSheet.right(
+                        width: MediaQuery.of(context).size.width / 1.4,
+                        body: filterSideSheet(
+                            transactionsListsNotifier:
+                                widget.transactionsListsNotifier),
+                        context: context),
+                    child: const Icon(Icons.tune)),
+                const SizedBox(height: 10),
+              ],
+            ),
           ],
         ),
+        Row(
+          children: [
+            Container(
+              width: width,
+              alignment: Alignment.center,
+              child: ValueListenableBuilder(
+                  valueListenable: widget.transactionsListsNotifier.dateFrame,
+                  builder: (BuildContext context, DateFrames dateFrame,
+                      Widget? child) {
+                    return showDatesRange(widget.transactionsListsNotifier);
+                  }),
+            )
+          ],
+        )
       ],
     );
   }

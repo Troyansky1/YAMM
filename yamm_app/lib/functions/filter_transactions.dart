@@ -1,5 +1,6 @@
 import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/transaction.dart';
+import 'package:yamm_app/transaction_type_enum.dart';
 
 List<Transaction> filterListCategories(
     List<Transaction> lst, Map<TransactionCategory, bool> categoryFilters) {
@@ -35,8 +36,9 @@ List<Transaction> filterListDay(List<Transaction> lst, int day) {
   return dayList.toList();
 }
 
-List<Transaction> filterIncomeOutcome(List<Transaction> lst, bool outcome) {
-  var inOutList = lst.where((e) => e.getTransactionType() == outcome);
+List<Transaction> filterIncomeOutcome(
+    List<Transaction> lst, TransactionType transactionType) {
+  var inOutList = lst.where((e) => e.getTransactionType() == transactionType);
   return inOutList.toList();
 }
 

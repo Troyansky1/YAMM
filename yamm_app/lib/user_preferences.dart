@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:yamm_app/currency_enum.dart';
 import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/transaction_type_enum.dart';
@@ -9,11 +10,13 @@ TransactionType defaultTransactionType = TransactionType.outcome;
 
 DateTime defaultStartYear = DateTime(2000);
 DateTime defaultEndYear = DateTime(2150);
-int defaultMaxLabels = 6;
+int defaultMaxLabels = 4;
 String transactionDateFormat = 'yyyy-MM-dd HH:mm:ss';
 String presentDateFormat = 'dd MMM yyyy HH:mm';
 DateFrames defaultDateFrame = DateFrames.month;
 Duration defaultExpandDuration = const Duration(microseconds: 500);
+Color defaultIncomeColor = Colors.green[900] as Color;
+Color defaultOutcomeColor = Colors.red[900] as Color;
 List<String> defaultLabelsList = [
   'Car',
   'Food',

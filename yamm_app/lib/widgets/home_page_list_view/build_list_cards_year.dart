@@ -111,8 +111,16 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
           physics: const ClampingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
-              child: Text("$day.$month",
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text("$day.$month",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )),
+                  const Padding(padding: EdgeInsets.only(right: 23)),
+                ],
+              ),
             ),
             createTransactionsSliverItem(transactionListDay)
           ]);
@@ -144,17 +152,23 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
   Widget timeSwitchSliver(
       ExpandableSliverListController controller, String titleVar,
       {String subtitleVar = ""}) {
-    return SliverAppBar(title: Text(titleVar.toString()), actions: <Widget>[
-      IconButton(
-        icon: const Icon(Icons.expand_less),
-        isSelected: controller.isCollapsed(),
-        selectedIcon: const Icon(Icons.expand_more),
-        onPressed: () {
-          _toggleController(controller);
-          WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
-        },
-      )
-    ]);
+    return SliverAppBar(
+        title: Text(
+          titleVar.toString(),
+          style: const TextStyle(fontSize: 27),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.expand_less),
+            isSelected: controller.isCollapsed(),
+            selectedIcon: const Icon(Icons.expand_more),
+            onPressed: () {
+              _toggleController(controller);
+              WidgetsBinding.instance
+                  .addPostFrameCallback((_) => setState(() {}));
+            },
+          )
+        ]);
   }
 
   List<ExpandableSliverListController<List<Transaction>>>

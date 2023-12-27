@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           // ···
-          titleLarge: GoogleFonts.abel(
+          titleLarge: GoogleFonts.dosis(
             fontSize: 30,
             fontStyle: FontStyle.italic,
           ),
-          bodyMedium: GoogleFonts.merriweather(),
-          displaySmall: GoogleFonts.pacifico(),
+          bodyMedium: GoogleFonts.dosis(fontSize: 20),
+          displaySmall: GoogleFonts.dosis(),
         ),
       ),
       home: const LoadPage(title: 'Flutter Demo Home Page'),

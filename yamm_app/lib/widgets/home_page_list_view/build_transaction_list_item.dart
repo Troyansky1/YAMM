@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:yamm_app/transaction_type_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
 
@@ -22,10 +22,10 @@ class BuildTransactionListItems {
 
     if (transactionType == TransactionType.income) {
       amountPrefix = '+';
-      amountStyle = TextStyle(color: Colors.green[700]);
+      amountStyle = TextStyle(color: defaultIncomeColor);
     } else {
-      amountPrefix = ' ';
-      amountStyle = TextStyle(color: Colors.grey[800]);
+      amountPrefix = '-';
+      amountStyle = TextStyle(color: defaultOutcomeColor);
     }
     Row amountRow = Row(children: <Widget>[
       Text(
@@ -41,7 +41,11 @@ class BuildTransactionListItems {
   static Row buildServiceProviderRow(Transaction transaction) {
     String serviceProvider = transaction.getServiceProvider();
     Row serviceProviderRow = Row(
-      children: <Widget>[Text(serviceProvider)],
+      children: <Widget>[
+        Text(serviceProvider,
+            style:
+                GoogleFonts.dosis(fontSize: 20, fontWeight: FontWeight.w500)),
+      ],
     );
     return serviceProviderRow;
   }
@@ -62,13 +66,13 @@ class BuildTransactionListItems {
     Text txt = Text(
       strLabels.join(),
       overflow: TextOverflow.clip,
-      style: TextStyle(fontStyle: FontStyle.italic),
+      style: const TextStyle(fontStyle: FontStyle.italic),
     );
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("$categoryName ", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text("$categoryName "),
         Flexible(
           child: txt,
         ),

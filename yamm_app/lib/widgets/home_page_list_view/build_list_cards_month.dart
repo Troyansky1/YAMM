@@ -123,7 +123,10 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
       {String subtitleVar = ""}) {
     return SliverAppBar(
         pinned: true,
-        title: Text(titleVar.toString()),
+        title: Text(
+          titleVar.toString(),
+          style: const TextStyle(fontSize: 27),
+        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.expand_less),
