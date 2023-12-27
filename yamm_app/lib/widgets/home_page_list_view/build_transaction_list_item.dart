@@ -119,7 +119,6 @@ class BuildTransactionListItems {
       Transaction transaction, BuildContext context) {
     List<Widget> columns = List<Widget>.empty(growable: true);
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     columns.addAll([
       buildDataContainer(transaction, width),
       buildEditContainer(transaction, width)
@@ -127,9 +126,8 @@ class BuildTransactionListItems {
     //log("Building a list item");
     return Container(
       width: width,
-      height: height / 7,
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.horizontal(),
+        borderRadius: const BorderRadius.horizontal(),
         border: Border.all(
           width: 1,
         ),
