@@ -21,7 +21,7 @@ class _IncomeOutcomeEntryState extends State<IncomeOutcomeEntry> {
         style: ButtonStyle(
             padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
               const EdgeInsets.only(
-                  left: 0, right: 10), // Adjust the left padding as needed
+                  left: 0, right: 0), // Adjust the left padding as needed
             ),
             alignment: Alignment.centerLeft,
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:side_sheet/side_sheet.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:yamm_app/functions/dateFilterDialogs.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/widgets/home_page_filter/filter_list_side_sheet.dart';
@@ -29,7 +31,6 @@ class _HomePageFiltersState extends State<HomePageFilters> {
   }
 
   Widget showDatesRange(TransactionsListsNotifier transactionsListsNotifier) {
-    Text text;
     DateFrames dateFrame = transactionsListsNotifier.dateFrame.value;
     String str;
     int year = transactionsListsNotifier.filters.value.yearFilter;
@@ -44,10 +45,24 @@ class _HomePageFiltersState extends State<HomePageFilters> {
     } else {
       str = "error";
     }
-    return Text(
-      str,
-      style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-    );
+    return TextButton(
+        onPressed: () {
+          showCustomDatePickerDialog(widget.transactionsListsNotifier, context,
+                  widget.transactionsListsNotifier.dateFrame.value)
+              .then((a) => setState(() {
+                    widget.transactionsListsNotifier.dateFrame.value =
+                        widget.transactionsListsNotifier.dateFrame.value;
+                    widget.transactionsListsNotifier.updateFilters(date: true);
+                  }));
+        },
+        child: Text(
+          str,
+          style: GoogleFonts.dosis(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ));
   }
 
   @override
@@ -80,8 +95,24 @@ class _HomePageFiltersState extends State<HomePageFilters> {
                       const Text(
                         "View by ",
                       ),
-                      DropdownButton<DateFrames>(
+                      DropdownButton2<DateFrames>(
                           items: dateFrameOptionsEntries,
+                          style: GoogleFonts.dosis(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                          alignment: Alignment.topLeft,
+                          buttonStyleData: const ButtonStyleData(
+                              width: 90,
+                              height: 50,
+                              padding: EdgeInsets.only(left: 5, bottom: 2)),
+                          dropdownStyleData: const DropdownStyleData(
+                            width: 90,
+                            scrollPadding: EdgeInsets.all(0),
+                            maxHeight: 150,
+                            padding: EdgeInsets.only(left: 0),
+                            isOverButton: false,
+                          ),
                           value:
                               widget.transactionsListsNotifier.dateFrame.value,
                           onChanged: (DateFrames? value) {

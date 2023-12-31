@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color.fromARGB(255, 0, 0, 0),
           brightness: Brightness.light,
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
           ),
           bodyMedium: GoogleFonts.dosis(fontSize: 20),
           displaySmall: GoogleFonts.dosis(),
+          labelLarge: GoogleFonts.dosis(fontSize: 17),
+          labelMedium: GoogleFonts.dosis(fontSize: 15),
+          labelSmall: GoogleFonts.dosis(fontSize: 20),
+          bodySmall: GoogleFonts.dosis(fontSize: 20),
         ),
       ),
       home: const LoadPage(title: 'Flutter Demo Home Page'),

@@ -40,6 +40,10 @@ class TransactionsListsNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  void notify() {
+    notifyListeners();
+  }
+
   void setyearFromPicker(BuildContext context) async {}
 
   void deleteListItem(int id) {}

@@ -29,7 +29,7 @@ class _HomePageStatsState extends State<HomePageStats> {
   Widget statsBox(String title, int amount, double width, Color numColor) {
     return SizedBox(
       width: width,
-      height: 70,
+      height: 80,
       child: Column(
         children: [
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),

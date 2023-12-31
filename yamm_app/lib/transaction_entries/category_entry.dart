@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/transaction_type_enum.dart';
@@ -48,9 +49,13 @@ class _CategoryEntryState extends State<CategoryEntry> {
           return DropdownButton2<TransactionCategory>(
             value: widget.controllers.categoryValue,
             isExpanded: false,
+            style: GoogleFonts.dosis(
+              fontSize: 17,
+              color: Colors.black,
+            ),
             alignment: Alignment.bottomLeft,
             buttonStyleData: const ButtonStyleData(
-                width: 110, height: 25, padding: EdgeInsets.only(left: 5)),
+                width: 110, height: 40, padding: EdgeInsets.only(left: 5)),
             dropdownStyleData: const DropdownStyleData(
               width: 110,
               scrollPadding: EdgeInsets.all(0),
