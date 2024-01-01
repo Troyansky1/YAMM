@@ -13,6 +13,7 @@ class TransactionControllers with ChangeNotifier {
   String dateVal = "";
   var dateCont = TextEditingController();
   var serviceProviderCont = TextEditingController();
+  var notesCont = TextEditingController();
   var repeatOptionCont = TextEditingController();
   var endDateCont = TextEditingController();
   // var lableCont = SingleValueDropDownController();
@@ -33,6 +34,7 @@ class TransactionControllers with ChangeNotifier {
     dateCont.text = DateFormat(presentDateFormat).format(DateTime.now());
     dateVal = DateFormat(transactionDateFormat).format(DateTime.now());
     serviceProviderCont.text = "";
+    notesCont.text = "";
     repeatOptionCont.text = "";
     endDateCont.text = "";
   }
