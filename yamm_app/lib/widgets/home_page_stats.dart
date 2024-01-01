@@ -31,7 +31,8 @@ class _HomePageStatsState extends State<HomePageStats> {
         width: width,
         height: 80,
         child: Card(
-          elevation: 4,
+          elevation: 1,
+          color: const Color.fromARGB(255, 255, 255, 255),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Column(

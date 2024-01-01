@@ -17,12 +17,12 @@ class HomePageFilters extends StatefulWidget {
 }
 
 class _HomePageFiltersState extends State<HomePageFilters> {
-  List<String> dateFrames = ["Year", "Month", "Day"];
-  late String dateFrame;
+  List<DateFrames> dateFrames = DateFrames.values;
+  late DateFrames dateFrame;
   @override
   void initState() {
     super.initState();
-    dateFrame = dateFrames[2];
+    dateFrame = widget.transactionsListsNotifier.dateFrame.value;
     widget.transactionsListsNotifier
         .addListener(() => mounted ? setState(() {}) : null);
 
@@ -80,68 +80,80 @@ class _HomePageFiltersState extends State<HomePageFilters> {
           children: [
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Padding(padding: EdgeInsets.fromLTRB(17, 0, 0, 0)),
-                      const Text(
-                        "View by ",
+                      SizedBox(
+                        child: Card(
+                          elevation: 0,
+                          child: Row(
+                            children: <Widget>[
+                              const Text(
+                                "View by",
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.55,
+                                child: Wrap(
+                                  spacing: 5.0,
+                                  children: List<Widget>.generate(
+                                    dateFrames.length,
+                                    (int index) {
+                                      return ChoiceChip(
+                                        padding: EdgeInsets.zero,
+                                        label: Text(
+                                          '${dateFrames[index].name}',
+                                        ),
+                                        selected: dateFrame.index == index,
+                                        onSelected: (bool selected) {
+                                          setState(() {
+                                            dateFrame = dateFrames[index];
+                                            widget
+                                                .transactionsListsNotifier
+                                                .dateFrame
+                                                .value = dateFrames[index];
+                                            widget.transactionsListsNotifier
+                                                .updateFilters(date: true);
+                                          });
+                                        },
+                                      );
+                                    },
+                                  ).toList(),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                  child: IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    onPressed: () => SideSheet.right(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.4,
+                                        body: filterSideSheet(
+                                            transactionsListsNotifier: widget
+                                                .transactionsListsNotifier),
+                                        context: context),
+                                    icon: const Icon(Icons.tune),
+                                    iconSize: 30,
+                                  )),
+                            ],
+                          ),
+                        ),
                       ),
-                      DropdownButton2<DateFrames>(
-                          items: dateFrameOptionsEntries,
-                          style: GoogleFonts.dosis(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                          alignment: Alignment.topLeft,
-                          buttonStyleData: const ButtonStyleData(
-                              width: 90,
-                              height: 50,
-                              padding: EdgeInsets.only(left: 5, bottom: 2)),
-                          dropdownStyleData: const DropdownStyleData(
-                            width: 90,
-                            scrollPadding: EdgeInsets.all(0),
-                            maxHeight: 150,
-                            padding: EdgeInsets.only(left: 0),
-                            isOverButton: false,
-                          ),
-                          value:
-                              widget.transactionsListsNotifier.dateFrame.value,
-                          onChanged: (DateFrames? value) {
-                            showCustomDatePickerDialog(
-                                    widget.transactionsListsNotifier,
-                                    context,
-                                    value!)
-                                .then((a) => setState(() {
-                                      widget.transactionsListsNotifier.dateFrame
-                                          .value = value;
-                                      widget.transactionsListsNotifier
-                                          .updateFilters(date: true);
-                                    }));
-                          }),
                     ],
                   ),
                 ],
               ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                    onPressed: () => SideSheet.right(
-                        width: MediaQuery.of(context).size.width / 1.4,
-                        body: filterSideSheet(
-                            transactionsListsNotifier:
-                                widget.transactionsListsNotifier),
-                        context: context),
-                    child: const Icon(Icons.tune)),
-                const SizedBox(height: 10),
-              ],
             ),
           ],
         ),
@@ -156,7 +168,7 @@ class _HomePageFiltersState extends State<HomePageFilters> {
                       Widget? child) {
                     return showDatesRange(widget.transactionsListsNotifier);
                   }),
-            )
+            ),
           ],
         )
       ],
