@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:csv/csv.dart';
 import 'package:yamm_app/transaction.dart';
@@ -10,6 +11,26 @@ getCsvFile() async {
   final path = directory.path;
   File file = File('$path/csv.csv');
   return file;
+}
+
+genFileForExport() async {
+  final DateTime now = DateTime.now();
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final String formatted = formatter.format(now);
+  String? downloadsDirectoryPath =
+      (await DownloadsPath.downloadsDirectory())?.path;
+  return File('$downloadsDirectoryPath/Transactions_$formatted.csv');
+}
+
+exportToDownloads() async {
+  File importFile = await getCsvFile();
+  final input = importFile.openRead();
+  final fields = await input
+      .transform(utf8.decoder)
+      .transform(const CsvToListConverter())
+      .toList();
+  File downloadsFile = await genFileForExport();
+  writeListToCsv(fields, downloadsFile);
 }
 
 initCsv() async {
@@ -23,8 +44,7 @@ initCsv() async {
   );
 }
 
-writeListToCsv(List<List<dynamic>> lst) async {
-  File file = await getCsvFile();
+writeListToCsv(List<List<dynamic>> lst, File file) async {
   file.open(mode: FileMode.append);
   // Added delimiters at the eof
   String valuesCSV = "${const ListToCsvConverter().convert(lst)}\r\n";
@@ -38,7 +58,8 @@ writeListToCsv(List<List<dynamic>> lst) async {
 appendItemToCsv(List<dynamic> item) async {
   List<List<dynamic>> lst = [];
   lst.add(item);
-  writeListToCsv(lst);
+  File file = await getCsvFile();
+  writeListToCsv(lst, file);
 }
 
 deleteCsv() async {
@@ -52,8 +73,6 @@ deleteCsv() async {
 }
 
 Future<List<Transaction>> readListFromCsv() async {
-  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  //print("readListFromCsv");
   File file = await getCsvFile();
   final input = file.openRead();
   final fields = await input

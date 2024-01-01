@@ -58,6 +58,22 @@ class _SettingsState extends State<Settings>
                   )
                 ],
               ),
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.ios_share_outlined),
+                    title: const Text("Export list"),
+                    subtitle: const Text("Export to downloads folder"),
+                    onTap: () {
+                      exportToDownloads();
+                    },
+                  )
+                ],
+              ),
             )
           ],
         ),

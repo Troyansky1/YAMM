@@ -50,6 +50,8 @@ dependencies:
   google_fonts: ^6.1.0
   expandable_sliver_list: ^4.1.1
   flutter_cupertino_datetime_picker: ^3.0.0
+  lecle_downloads_path_provider: ^0.0.2+8
+  
   
   #chips_choice_null_safety: ^2.0.6 
   
