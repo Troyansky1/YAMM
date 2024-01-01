@@ -23,8 +23,9 @@ class _NotesEntryState extends State<NotesEntry> {
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: 2,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: ' Notes',
+        labelStyle: Theme.of(context).textTheme.titleMedium,
         contentPadding: EdgeInsets.symmetric(vertical: 1.0),
       ),
       controller: widget.controllers.notesCont,

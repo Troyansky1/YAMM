@@ -4,6 +4,7 @@ import 'package:yamm_app/transaction_controllers.dart';
 
 class ServiceProviderEntry extends StatefulWidget {
   //final Widget child;
+
   final TransactionControllers controllers;
   const ServiceProviderEntry({super.key, required this.controllers});
 
@@ -27,8 +28,9 @@ class _ServiceProviderEntryState extends State<ServiceProviderEntry> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: const InputDecoration(
-        labelText: ' Service provider',
+      decoration: InputDecoration(
+        labelText: ' Title',
+        labelStyle: Theme.of(context).textTheme.titleMedium,
         contentPadding: EdgeInsets.symmetric(vertical: 1.0),
       ),
       controller: widget.controllers.serviceProviderCont,

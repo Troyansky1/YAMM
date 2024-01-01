@@ -3,6 +3,7 @@ import 'package:yamm_app/transaction_controllers.dart';
 
 class AmountEntry extends StatefulWidget {
   //final Widget child;
+
   final TransactionControllers controllers;
   const AmountEntry({super.key, required this.controllers});
 
@@ -34,8 +35,9 @@ class _AmountEntryState extends State<AmountEntry> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: ' Amount',
+        labelStyle: Theme.of(context).textTheme.titleMedium,
         contentPadding: EdgeInsets.symmetric(vertical: 1),
       ),
       keyboardType: TextInputType.number,

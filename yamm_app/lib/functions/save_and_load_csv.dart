@@ -79,7 +79,6 @@ Future<List<Transaction>> readListFromCsv() async {
       .transform(utf8.decoder)
       .transform(const CsvToListConverter())
       .toList();
-  print("fields from csv: $fields");
 
   return buildTransactionItemFromCsv(fields);
 }
@@ -96,6 +95,7 @@ List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
     transaction.setCurrency(textTransaction[5]);
     transaction.setCategory(textTransaction[6]);
     transaction.setLabels(textTransaction[7]);
+    transaction.setNotes(textTransaction[8]);
 
     transactionsList.add(transaction);
   }

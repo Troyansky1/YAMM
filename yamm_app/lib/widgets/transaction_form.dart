@@ -3,6 +3,7 @@ import 'package:yamm_app/add_transaction_fields_view/view_date.dart';
 import 'package:yamm_app/add_transaction_fields_view/view_payment_method.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/add_transaction_fields_view/view_labels.dart';
+import 'package:yamm_app/transaction_entries/notes_entry.dart';
 import 'package:yamm_app/transaction_entries/transaction_entries.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
@@ -63,13 +64,13 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
                     padding: EdgeInsets.fromLTRB(10, 70, 0, 0),
                   ),
                   SizedBox(
-                    height: 50,
-                    width: 70,
+                    height: MediaQuery.of(context).size.height / 15,
+                    width: 80,
                     child: AmountEntry(controllers: controllers),
                   ),
                   CurrencyEntry(controllers: controllers),
                   SizedBox(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height / 15,
                     width: 40,
                     child: BottomSheetChipSelect(
                         chosenItemsList: controllers.paymentMethods,
@@ -89,13 +90,25 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
                 children: <Widget>[
                   const Padding(padding: EdgeInsets.fromLTRB(10, 70, 0, 0)),
                   SizedBox(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height / 15,
                     width: 250,
                     child: ServiceProviderEntry(controllers: controllers),
                   ),
                 ],
               ),
-
+              Row(
+                crossAxisAlignment:
+                    CrossAxisAlignment.center, // Aligns children to the top
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Padding(padding: EdgeInsets.fromLTRB(10, 70, 0, 0)),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 15,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: NotesEntry(controllers: controllers),
+                  ),
+                ],
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -130,13 +143,13 @@ class TransactionEntryFormState extends State<TransactionEntryForm> {
                     padding: EdgeInsets.fromLTRB(5, 70, 0, 0),
                   ),
                   Container(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height / 15,
                     width: 115,
                     alignment: Alignment.centerLeft,
                     child: CategoryEntry(controllers: controllers),
                   ),
                   Container(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height / 15,
                     width: 115,
                     alignment: Alignment.centerLeft,
                     child: BottomSheetChipSelect(

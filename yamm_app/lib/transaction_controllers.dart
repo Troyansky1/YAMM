@@ -57,6 +57,7 @@ class TransactionControllers with ChangeNotifier {
     transaction.setTransactionType(transactionType.value);
     transaction.setServiceProvider(serviceProviderCont.text);
     transaction.setLabels(labels.value);
+    transaction.setNotes(notesCont.value);
 
     return transaction;
   }

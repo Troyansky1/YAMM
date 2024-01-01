@@ -55,11 +55,16 @@ class _MyLoadPageState extends State<LoadPage> {
       });
       prefs.setBool('hasOpened', true);
     } else {
-      lists.setList(await readListFromCsv());
-      lists.updateFilters(date: true);
-      setState(() {
-        isLoading = false;
-      });
+      try {
+        lists.setList(await readListFromCsv());
+        lists.updateFilters(date: true);
+        setState(() {
+          isLoading = false;
+        });
+      } catch (e) {
+        exportToDownloads();
+        deleteCsv();
+      }
     }
   }
 

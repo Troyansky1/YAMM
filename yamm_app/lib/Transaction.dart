@@ -1,5 +1,6 @@
 import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/currency_enum.dart';
+import 'package:yamm_app/transaction_fields/notes_transaction_field.dart';
 import 'package:yamm_app/transaction_fields/transaction_fields.dart';
 import 'package:yamm_app/transaction_type_enum.dart';
 
@@ -12,6 +13,7 @@ class Transaction {
 
   final TransactionTypeField _transactionTypeField = TransactionTypeField();
   final ServiceProviderField _serviceProviderField = ServiceProviderField();
+  final NotesField _notesField = NotesField();
   final DateField _dateField = DateField();
   final CurrencyField _currencyField = CurrencyField();
   final CategoryField _categoryField = CategoryField();
@@ -32,7 +34,8 @@ class Transaction {
       _transactionTypeField,
       _dateField,
       _currencyField,
-      _serviceProviderField
+      _serviceProviderField,
+      _notesField
     ];
   }
 
@@ -52,6 +55,7 @@ class Transaction {
       'currency': _currencyField.getStrValue(),
       'category': _currencyField.getStrValue(),
       'lables': _lableField.getStrValue(),
+      'notes': _notesField.getStrValue()
     });
   }
 
@@ -65,6 +69,7 @@ class Transaction {
       'currency': _currencyField.getStrValue(),
       'category': _categoryField.getStrValue(),
       'lables': _lableField.getStrValue(),
+      'notes': _notesField.getStrValue()
     });
   }
 
@@ -140,6 +145,18 @@ class Transaction {
 
   String getServiceProvider() {
     return _serviceProviderField.getStrValue();
+  }
+
+  bool setNotes(notes) {
+    if (notes != "") {
+      _notesField.setValue(notes);
+      return true;
+    }
+    return false;
+  }
+
+  String getNotes() {
+    return _notesField.getStrValue();
   }
 
   int getId() {
