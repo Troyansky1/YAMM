@@ -28,19 +28,23 @@ class _HomePageStatsState extends State<HomePageStats> {
 
   Widget statsBox(String title, int amount, double width, Color numColor) {
     return SizedBox(
-      width: width,
-      height: 80,
-      child: Column(
-        children: [
-          const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-          Text(title),
-          Text(
-            amount.toString(),
-            style: TextStyle(color: numColor),
+        width: width,
+        height: 80,
+        child: Card(
+          elevation: 4,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          child: Column(
+            children: [
+              const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+              Text(title),
+              Text(
+                amount.toString(),
+                style: TextStyle(color: numColor),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   @override
@@ -51,14 +55,19 @@ class _HomePageStatsState extends State<HomePageStats> {
     int balance = calcBalance(lst);
     int income = calcIncomesOutcomes(lst, TransactionType.income);
     int outcome = calcIncomesOutcomes(lst, TransactionType.outcome);
-
+    Color balanceColor;
+    if (balance >= 0) {
+      balanceColor = defaultIncomeColor;
+    } else {
+      balanceColor = defaultOutcomeColor;
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            statsBox("Total balance", balance, width, Colors.black),
+            statsBox("Total balance", balance, width, balanceColor),
             statsBox("Income", income, width, defaultIncomeColor),
             statsBox("Outcome", outcome, width, defaultOutcomeColor),
           ],
