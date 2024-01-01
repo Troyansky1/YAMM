@@ -8,7 +8,7 @@ import 'package:yamm_app/user_preferences.dart';
 class BuildTransactionListItems {
   BuildTransactionListItems();
 
-  static Row buildAmountRow(Transaction transaction) {
+  static Container buildAmountContainer(Transaction transaction, double width) {
     String amount = transaction.getAmountString();
     TextStyle amountStyle = const TextStyle();
     TransactionType transactionType = transaction.getTransactionType();
@@ -27,15 +27,17 @@ class BuildTransactionListItems {
       amountPrefix = '-';
       amountStyle = TextStyle(color: defaultOutcomeColor);
     }
-    Row amountRow = Row(children: <Widget>[
-      Text(
-        "$amountPrefix$amount ",
-        style: amountStyle,
-      ),
-      currencySymbol
-    ]);
+    Container amountContainer = Container(
+        width: width * 0.25,
+        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+          Text(
+            "$amountPrefix$amount ",
+            style: amountStyle,
+          ),
+          currencySymbol
+        ]));
 
-    return amountRow;
+    return amountContainer;
   }
 
   static Row buildServiceProviderRow(Transaction transaction) {
@@ -48,6 +50,18 @@ class BuildTransactionListItems {
       ],
     );
     return serviceProviderRow;
+  }
+
+  static Row buildNotesRow(Transaction transaction) {
+    String notes = transaction.getNotes();
+    Row notesRow = Row(
+      children: <Widget>[
+        Text(notes,
+            style:
+                GoogleFonts.dosis(fontSize: 15, fontWeight: FontWeight.w500)),
+      ],
+    );
+    return notesRow;
   }
 
   static Row buildDateRow(Transaction transaction) {
@@ -95,17 +109,18 @@ class BuildTransactionListItems {
     return editColumn;
   }
 
-  static Container buildDataContainer(Transaction transaction, double width) {
+  static Container buildDetailsContainer(
+      Transaction transaction, double width) {
     List<Widget> rows = List<Widget>.empty(growable: true);
     rows.addAll([
       buildServiceProviderRow(transaction),
-      buildAmountRow(transaction),
 
+      buildNotesRow(transaction),
       //buildDateRow(transaction),
       buildCategoryRow(transaction)
     ]);
     return Container(
-      width: width * 0.75,
+      width: width * 0.7,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,8 +135,9 @@ class BuildTransactionListItems {
     List<Widget> columns = List<Widget>.empty(growable: true);
     double width = MediaQuery.of(context).size.width;
     columns.addAll([
-      buildDataContainer(transaction, width),
-      buildEditContainer(transaction, width)
+      buildDetailsContainer(transaction, width),
+      buildAmountContainer(transaction, width),
+      //buildEditContainer(transaction, width)
     ]);
     //log("Building a list item");
     return Container(
