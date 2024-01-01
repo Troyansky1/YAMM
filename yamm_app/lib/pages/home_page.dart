@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/pages/add_Transaction.dart';
+import 'package:yamm_app/pages/settings.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/widgets/home_page_main.dart';
 
@@ -24,7 +25,18 @@ class _MyHomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Home page"),
+        title: const Text("Y.A.M.M"),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Settings()),
+                );
+              },
+              icon: const Icon(Icons.more_horiz_outlined))
+        ],
       ),
       body: HomePageList(
           transactionsListsNotifier: widget.transactionsListNotifier),

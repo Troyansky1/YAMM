@@ -20,6 +20,7 @@ class _AddTransactionState extends State<AddTransaction> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
