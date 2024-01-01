@@ -29,7 +29,7 @@ class _HomePageStatsState extends State<HomePageStats> {
   Widget statsBox(String title, int amount, double width, Color numColor) {
     return SizedBox(
         width: width,
-        height: 80,
+        height: MediaQuery.of(context).size.height * 0.1,
         child: Card(
           elevation: 1,
           color: const Color.fromARGB(255, 255, 255, 255),

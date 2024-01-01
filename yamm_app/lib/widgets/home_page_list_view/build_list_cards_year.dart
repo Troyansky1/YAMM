@@ -92,7 +92,7 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
       expandOnInitialInsertion: true,
       duration: defaultExpandDuration,
       builder: (BuildContext context, transactionsListDay, int index) {
-        int day = (daysInMonth - index) % daysInMonth;
+        int day = (daysInMonth - index);
         return createDayScrollView(transactionsListDay, day: day, month: month);
       },
     );

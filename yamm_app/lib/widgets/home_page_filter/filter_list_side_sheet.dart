@@ -61,13 +61,14 @@ class _filterSideSheetState extends State<filterSideSheet> {
       shrinkWrap: true,
       scrollBehavior: const ScrollBehavior(),
       slivers: [
-        filterAppBar(),
-        filterSwitch(filterCategoriesSwitchCallback, filters.filterCategories,
-            "categories",
+        filterAppBar(context),
+        filterSwitch(context, filterCategoriesSwitchCallback,
+            filters.filterCategories, "categories",
             subtitleVar: "one category"),
         createCategoriesListView(context, widget.transactionsListsNotifier,
             setState, categoriesExpandController),
-        filterSwitch(filterLabelsSwitchCallback, filters.filterLabels, "labels",
+        filterSwitch(
+            context, filterLabelsSwitchCallback, filters.filterLabels, "labels",
             subtitleVar: "some labels"),
         createLabelsListView(context, widget.transactionsListsNotifier,
             setState, labelsExpandController),

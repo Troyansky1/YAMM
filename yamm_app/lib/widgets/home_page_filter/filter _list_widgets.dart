@@ -23,7 +23,8 @@ Widget createCategoriesListView(
           alignment: Alignment.center,
           child: CheckboxListTile(
             value: categoryFilters[category]!,
-            title: Text(category.name),
+            title: Text(category.name,
+                style: Theme.of(context).textTheme.bodyMedium),
             controlAffinity: ListTileControlAffinity.leading,
             onChanged: (bool? value) {
               setState(() {
@@ -56,7 +57,10 @@ Widget createLabelsListView(
           alignment: Alignment.center,
           child: CheckboxListTile(
             value: labelsFilters[label]!,
-            title: Text(label),
+            title: Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
             controlAffinity: ListTileControlAffinity.leading,
             onChanged: (bool? value) {
               setState(() {
@@ -69,35 +73,34 @@ Widget createLabelsListView(
       });
 }
 
-Widget filterAppBar() {
-  return const SliverAppBar(
-    pinned: true,
-    floating: false,
-    snap: false,
-    forceElevated: true,
-    expandedHeight: 50.0,
+Widget filterAppBar(BuildContext context) {
+  return SliverAppBar(
+    expandedHeight: 30.0,
     flexibleSpace: FlexibleSpaceBar(
-      title: Text('Filter options', style: TextStyle(color: Colors.black)),
+      titlePadding: EdgeInsets.fromLTRB(45, 5, 0, 0),
+      title:
+          Text('Filter options', style: Theme.of(context).textTheme.titleLarge),
     ),
   );
 }
 
-Widget filterSwitch(VoidCallback onChanged, bool value, String titleVar,
+Widget filterSwitch(
+    BuildContext context, VoidCallback onChanged, bool value, String titleVar,
     {String subtitleVar = ""}) {
   return SliverToBoxAdapter(
     child: Container(
       alignment: Alignment.topLeft,
-      height: 60,
+      height: MediaQuery.of(context).size.height * 0.08,
       child: SwitchListTile(
         value: value,
-        title: Text("Filter by $titleVar?"),
+        title: Text(
+          "Filter by $titleVar?",
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         subtitle: subtitleVar == ""
             ? null
-            : Text(
-                "View only $subtitleVar",
-                softWrap: true,
-                style: const TextStyle(fontSize: 12),
-              ),
+            : Text("View only $subtitleVar",
+                softWrap: true, style: Theme.of(context).textTheme.bodySmall),
         onChanged: (bool? value) {
           onChanged();
         },
