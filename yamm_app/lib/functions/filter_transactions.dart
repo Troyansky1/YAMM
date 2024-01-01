@@ -1,6 +1,7 @@
 import 'package:yamm_app/category_enum.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/user_preferences.dart';
 
 List<Transaction> filterListCategories(
     List<Transaction> lst, Map<TransactionCategory, bool> categoryFilters) {
@@ -52,7 +53,7 @@ List<List<Transaction>> genListPerDay(List<Transaction> lst) {
   lst = sortList(lst);
   List<List<Transaction>> listOfLists =
       List<List<Transaction>>.empty(growable: true);
-  for (int day = 0; day <= 31; day++) {
+  for (int day = 0; day <= daysInMonth; day++) {
     listOfLists.add(filterListDay(lst, day));
   }
   return listOfLists;
@@ -62,7 +63,7 @@ List<List<Transaction>> genListPerMonth(List<Transaction> lst) {
   lst = sortList(lst);
   List<List<Transaction>> listOfLists =
       List<List<Transaction>>.empty(growable: true);
-  for (int month = 0; month <= 12; month++) {
+  for (int month = 0; month <= monthsPerYear; month++) {
     List<Transaction> monthList = filterListMonth(lst, month);
     listOfLists.add(monthList);
   }

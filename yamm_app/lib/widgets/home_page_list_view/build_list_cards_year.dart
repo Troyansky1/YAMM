@@ -52,13 +52,14 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
   Widget createMonthSliverListItems() {
     var transactionsListPerMonth = genListPerMonth(widget.transactionsList);
     return SliverList.builder(
-        itemCount: transactionsListPerMonth.length,
+        itemCount: monthsPerYear,
         itemBuilder: (BuildContext context, int index) {
+          int month = (monthsPerYear - index);
           ExpandableSliverListController<List<Transaction>>
-              thisMonthController = monthControllers[index];
-          var thisMonthTransactionList = transactionsListPerMonth[index];
+              thisMonthController = monthControllers[month];
+          var thisMonthTransactionList = transactionsListPerMonth[month];
           return createMonthScrollView(
-              thisMonthTransactionList, thisMonthController, index);
+              thisMonthTransactionList, thisMonthController, month);
         });
   }
 
@@ -87,13 +88,13 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
 
     ExpandableSliverList<List<Transaction>> monthSliverList =
         ExpandableSliverList<List<Transaction>>(
-      initialItems: transactionsListPerDay.toSet(),
+      initialItems: transactionsListPerDay.reversed.toSet(),
       controller: controller,
       expandOnInitialInsertion: true,
       duration: defaultExpandDuration,
       builder: (BuildContext context, transactionsListDay, int index) {
-        return createDayScrollView(transactionsListDay,
-            day: index, month: month);
+        int day = (daysInMonth - index) % daysInMonth;
+        return createDayScrollView(transactionsListDay, day: day, month: month);
       },
     );
 
@@ -176,7 +177,7 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
     List<ExpandableSliverListController<List<Transaction>>> controllersList =
         List<ExpandableSliverListController<List<Transaction>>>.empty(
             growable: true);
-    for (int day = 0; day <= 12; day++) {
+    for (int month = monthsPerYear; month >= 0; month--) {
       controllersList.add(ExpandableSliverListController<List<Transaction>>(
           initialStatus: ExpandableSliverListStatus.expanded));
     }

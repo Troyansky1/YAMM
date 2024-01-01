@@ -64,12 +64,13 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
 
   Widget createDaySliverItems() {
     return SliverList.builder(
-        itemCount: transactionsListPerDay.length,
+        itemCount: daysInMonth,
         itemBuilder: (BuildContext context, int index) {
+          int day = (daysInMonth - index);
           return createDayScrollView(
-            transactionsListPerDay[index],
-            dayControllers[index],
-            day: index,
+            transactionsListPerDay[day],
+            dayControllers[day],
+            day: day,
           );
         });
   }
@@ -145,7 +146,7 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
   List<ExpandableSliverListController<Transaction>> genControllersPerDay() {
     List<ExpandableSliverListController<Transaction>> controllersList =
         List<ExpandableSliverListController<Transaction>>.empty(growable: true);
-    for (int day = 0; day <= 31; day++) {
+    for (int day = daysInMonth; day >= 0; day--) {
       controllersList.add(ExpandableSliverListController<Transaction>(
           initialStatus: ExpandableSliverListStatus.expanded));
     }
