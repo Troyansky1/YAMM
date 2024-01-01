@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showBackDialog(context) {
+void addTransactionBackDialog(context) {
   showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -29,6 +29,37 @@ void showBackDialog(context) {
               Navigator.pop(context);
             },
           ),
+        ],
+      );
+    },
+  );
+}
+
+void uSureBroDialog(context, Text message, Function onPressed) {
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Are you sure?'),
+        content: message,
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Cancel', style: TextStyle(color: Colors.green)),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Yes', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                onPressed();
+              }),
         ],
       );
     },

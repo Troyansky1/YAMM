@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:yamm_app/widgets/transaction_form.dart';
-import 'package:yamm_app/functions/back_dialog.dart';
+import 'package:yamm_app/functions/dialogs.dart';
+import 'package:yamm_app/functions/save_and_load_csv.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -35,10 +34,32 @@ class _SettingsState extends State<Settings>
         title: const Text("Settings"),
         centerTitle: true,
       ),
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[Text("Settings")],
+          children: <Widget>[
+            Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading:
+                        const Icon(Icons.delete_forever, color: Colors.red),
+                    title: const Text("-Debug-"),
+                    subtitle: const Text("Delete database forever"),
+                    onTap: () {
+                      uSureBroDialog(
+                          context,
+                          const Text(
+                              'Are you sure you want to permanently delete the entire database?'),
+                          deleteCsv);
+                    },
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

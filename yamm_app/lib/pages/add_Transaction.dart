@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/widgets/transaction_form.dart';
-import 'package:yamm_app/functions/back_dialog.dart';
+import 'package:yamm_app/functions/dialogs.dart';
 
 class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key, required this.transactionsListsNotifier});
@@ -32,11 +32,11 @@ class _AddTransactionState extends State<AddTransaction> {
                 if (didPop) {
                   return;
                 }
-                showBackDialog(context);
+                addTransactionBackDialog(context);
               },
               child: TextButton(
                 onPressed: () {
-                  showBackDialog(context);
+                  addTransactionBackDialog(context);
                 },
                 child: const Text('Go back'),
               ),
