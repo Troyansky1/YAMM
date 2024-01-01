@@ -30,6 +30,13 @@ class MyApp extends StatelessWidget {
             fontSize: 30,
             fontStyle: FontStyle.italic,
           ),
+          titleMedium: GoogleFonts.dosis(
+            fontSize: 20,
+          ),
+          titleSmall: GoogleFonts.dosis(
+            fontSize: 15,
+          ),
+
           bodyMedium: GoogleFonts.dosis(fontSize: 20),
           displaySmall: GoogleFonts.dosis(),
           labelLarge: GoogleFonts.dosis(fontSize: 17),

@@ -34,11 +34,16 @@ class _SettingsState extends State<Settings>
         title: const Text("Settings"),
         centerTitle: true,
       ),
-      body: Center(
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            const Text("Debug actions"),
             Card(
+              elevation: 4,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               child: Column(
@@ -46,8 +51,11 @@ class _SettingsState extends State<Settings>
                   ListTile(
                     leading:
                         const Icon(Icons.delete_forever, color: Colors.red),
-                    title: const Text("-Debug-"),
-                    subtitle: const Text("Delete database forever"),
+                    title: Text(
+                      "Delete database forever",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    trailing: const Icon(Icons.keyboard_arrow_right),
                     onTap: () {
                       uSureBroDialog(
                           context,
@@ -55,26 +63,31 @@ class _SettingsState extends State<Settings>
                               'Are you sure you want to permanently delete the entire database?'),
                           deleteCsv);
                     },
-                  )
-                ],
-              ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Column(
-                children: <Widget>[
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    width: double.infinity,
+                    height: 1,
+                    color: Colors.grey,
+                  ),
                   ListTile(
                     leading: const Icon(Icons.ios_share_outlined),
-                    title: const Text("Export list"),
-                    subtitle: const Text("Export to downloads folder"),
+                    title: Text(
+                      "Export list",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: Text(
+                      "Export to downloads folder",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    trailing: const Icon(Icons.keyboard_arrow_right),
                     onTap: () {
                       exportToDownloads();
                     },
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

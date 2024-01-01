@@ -24,19 +24,17 @@ class _MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Settings()),
+              );
+            },
+            icon: const Icon(Icons.more_horiz_outlined)),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text("Y.A.M.M"),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Settings()),
-                );
-              },
-              icon: const Icon(Icons.more_horiz_outlined))
-        ],
       ),
       body: HomePageList(
           transactionsListsNotifier: widget.transactionsListNotifier),
