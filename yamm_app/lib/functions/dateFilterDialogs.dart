@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:yamm_app/transactions_list.dart';
@@ -9,15 +7,12 @@ updatePickedDate(
     TransactionsListsNotifier transactionsListsNotifier, DateTime? pickedDate) {
   if (pickedDate?.year != null) {
     transactionsListsNotifier.filters.value.yearFilter = pickedDate!.year;
-    transactionsListsNotifier.notify();
   }
   if (pickedDate?.month != null) {
     transactionsListsNotifier.filters.value.monthFilter = pickedDate!.month;
-    transactionsListsNotifier.notify();
   }
   if (pickedDate?.day != null) {
     transactionsListsNotifier.filters.value.dayFilter = pickedDate!.day;
-    transactionsListsNotifier.notify();
   }
 }
 
@@ -53,6 +48,10 @@ Future<void> showCustomDatePickerDialog(
       List<int> index,
     ) {
       updatePickedDate(transactionsListsNotifier, dateTime);
+      transactionsListsNotifier.notify();
+      transactionsListsNotifier.dateFrame.value =
+          transactionsListsNotifier.dateFrame.value;
+      transactionsListsNotifier.updateFilters(date: true);
     },
   );
 }

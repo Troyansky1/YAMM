@@ -8,12 +8,10 @@ import 'package:yamm_app/widgets/home_page_list_view/build_transaction_list_item
 class BuildListCardsDay extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;
   final BuildContext context;
-  final List<Transaction> transactionsList;
 
   BuildListCardsDay(
       {required this.context,
       required this.transactionsListsNotifier,
-      required this.transactionsList,
       super.key});
 
   @override
@@ -41,11 +39,13 @@ class _BuildListCardsDayState extends State<BuildListCardsDay> {
   }
 
   Widget createTransactionsSliverItem() {
+    List<Transaction> filteredTransactionsList =
+        widget.transactionsListsNotifier.filteredTransactionsList.value;
     return SliverList.builder(
-      itemCount: widget.transactionsList.length,
+      itemCount: filteredTransactionsList.length,
       itemBuilder: (BuildContext context, int index) {
         return BuildTransactionListItems.buildListItem(
-            widget.transactionsList[index], context);
+            filteredTransactionsList[index], context);
       },
     );
   }

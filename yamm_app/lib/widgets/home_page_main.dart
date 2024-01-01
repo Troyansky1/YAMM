@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/functions/save_and_load_csv.dart';
 import 'package:yamm_app/widgets/home_page_stats.dart';
 import 'package:yamm_app/widgets/home_page_list_view/transaction_list_view.dart';
 import 'package:yamm_app/widgets/home_page_filter/home_page_filter.dart';
@@ -38,7 +37,6 @@ class _HomePageListState extends State<HomePageList> {
             child: SingleChildScrollView(
           child: TransactionsListView(
             transactionsListsNotifier: widget.transactionsListsNotifier,
-            month: DateTime.now().month,
           ),
         ))
       ],

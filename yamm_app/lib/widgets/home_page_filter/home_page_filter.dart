@@ -48,12 +48,7 @@ class _HomePageFiltersState extends State<HomePageFilters> {
     return TextButton(
         onPressed: () {
           showCustomDatePickerDialog(widget.transactionsListsNotifier, context,
-                  widget.transactionsListsNotifier.dateFrame.value)
-              .then((a) => setState(() {
-                    widget.transactionsListsNotifier.dateFrame.value =
-                        widget.transactionsListsNotifier.dateFrame.value;
-                    widget.transactionsListsNotifier.updateFilters(date: true);
-                  }));
+              widget.transactionsListsNotifier.dateFrame.value);
         },
         child: Text(
           str,

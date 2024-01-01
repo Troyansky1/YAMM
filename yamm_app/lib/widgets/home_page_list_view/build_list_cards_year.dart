@@ -11,12 +11,10 @@ import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 class BuildListCardsYear extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;
   final BuildContext context;
-  final List<Transaction> transactionsList;
 
   BuildListCardsYear(
       {required this.context,
       required this.transactionsListsNotifier,
-      required this.transactionsList,
       super.key});
 
   @override
@@ -50,7 +48,8 @@ class _BuildListCardsYearState extends State<BuildListCardsYear> {
   }
 
   Widget createMonthSliverListItems() {
-    var transactionsListPerMonth = genListPerMonth(widget.transactionsList);
+    var transactionsListPerMonth = genListPerMonth(
+        widget.transactionsListsNotifier.filteredTransactionsList.value);
     return SliverList.builder(
         itemCount: monthsPerYear,
         itemBuilder: (BuildContext context, int index) {

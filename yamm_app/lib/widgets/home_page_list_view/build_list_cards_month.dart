@@ -157,9 +157,11 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
   Widget build(BuildContext context) {
     transactionsListPerDay = genListPerDay(
         widget.transactionsListsNotifier.filteredTransactionsList.value);
-    return ValueListenableBuilder<Filters>(
-        valueListenable: widget.transactionsListsNotifier.filters,
-        builder: (BuildContext context, Filters filters, Widget? child) {
+    return ValueListenableBuilder<List<Transaction>>(
+        valueListenable:
+            widget.transactionsListsNotifier.filteredTransactionsList,
+        builder: (BuildContext context,
+            List<Transaction> filteredTransactionsList, Widget? child) {
           return createMonthScrollView();
         });
   }

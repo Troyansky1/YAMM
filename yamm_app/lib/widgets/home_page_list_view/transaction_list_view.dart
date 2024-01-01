@@ -9,12 +9,11 @@ import 'package:yamm_app/widgets/home_page_list_view/build_list_cards_year.dart'
 
 class TransactionsListView extends StatefulWidget {
   final TransactionsListsNotifier transactionsListsNotifier;
-  final int month;
 
-  const TransactionsListView(
-      {super.key,
-      required this.transactionsListsNotifier,
-      required this.month});
+  const TransactionsListView({
+    super.key,
+    required this.transactionsListsNotifier,
+  });
 
   @override
   State<TransactionsListView> createState() => _TransactionsListViewState();
@@ -39,14 +38,13 @@ class _TransactionsListViewState extends State<TransactionsListView> {
     super.initState();
   }
 
-  Widget showList(DateFrames dateFrame) {
+  Widget showList(DateFrames dateFrame, List<Transaction> lst) {
     switch (dateFrame) {
       case DateFrames.year:
         {
           return BuildListCardsYear(
             transactionsListsNotifier: widget.transactionsListsNotifier,
             context: context,
-            transactionsList: transactionsList,
           );
         }
 
@@ -62,9 +60,9 @@ class _TransactionsListViewState extends State<TransactionsListView> {
       case DateFrames.day:
         {
           return BuildListCardsDay(
-              context: context,
-              transactionsListsNotifier: widget.transactionsListsNotifier,
-              transactionsList: transactionsList);
+            context: context,
+            transactionsListsNotifier: widget.transactionsListsNotifier,
+          );
         }
       default:
         {
@@ -76,12 +74,11 @@ class _TransactionsListViewState extends State<TransactionsListView> {
   @override
   Widget build(BuildContext context) {
     dateFrame = widget.transactionsListsNotifier.dateFrame.value;
-    filters = widget.transactionsListsNotifier.filters.value;
     transactionsList =
         widget.transactionsListsNotifier.filteredTransactionsList.value;
-
     if (transactionsList.isNotEmpty) {
-      return showList(dateFrame);
+      setState(() {});
+      return showList(dateFrame, transactionsList);
     } else {
       //Generates a message to let the user know that the list is empty
       String dateFrameStr = dateFrame.name.toString();
