@@ -2,7 +2,7 @@ import 'package:yamm_app/transaction_fields/transaction_field.dart';
 
 class LableField extends TransactionField {
   @override
-  int position = 7;
+  int position = 8;
   @override
   Type type = List<String>;
   @override

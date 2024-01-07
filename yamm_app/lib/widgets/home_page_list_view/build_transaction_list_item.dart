@@ -53,7 +53,7 @@ class BuildTransactionListItems {
   }
 
   static Row buildNotesRow(Transaction transaction) {
-    String notes = transaction.getNotes();
+    String notes = transaction.getDetails();
     Row notesRow = Row(
       children: <Widget>[
         Text(notes,
@@ -64,10 +64,12 @@ class BuildTransactionListItems {
     return notesRow;
   }
 
-  static Row buildDateRow(Transaction transaction) {
+  static Row buildDebugRow(Transaction transaction) {
     DateTime date = transaction.getDate();
+    int id = transaction.getId();
     String formattedDate = DateFormat(transactionDateFormat).format(date);
-    Row dateRow = Row(children: <Widget>[Text(formattedDate)]);
+    Row dateRow = Row(
+        children: <Widget>[Text(formattedDate), Text("  ${id.toString()}")]);
     return dateRow;
   }
 
@@ -114,9 +116,8 @@ class BuildTransactionListItems {
     List<Widget> rows = List<Widget>.empty(growable: true);
     rows.addAll([
       buildServiceProviderRow(transaction),
-
       buildNotesRow(transaction),
-      //buildDateRow(transaction),
+      //buildDebugRow(transaction),
       buildCategoryRow(transaction)
     ]);
     return Container(

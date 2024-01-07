@@ -4,7 +4,7 @@ import 'package:yamm_app/user_preferences.dart';
 
 class DateField extends TransactionField {
   @override
-  int position = 3;
+  int position = 4;
   @override
   Type type = DateTime;
   @override

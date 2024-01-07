@@ -2,7 +2,7 @@ import 'package:yamm_app/transaction_fields/transaction_field.dart';
 
 class ServiceProviderField extends TransactionField {
   @override
-  int position = 4;
+  int position = 5;
   @override
   Type type = String;
   @override

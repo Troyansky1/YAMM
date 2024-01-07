@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/functions/save_and_load_csv.dart';
+import 'package:yamm_app/repeat_enum.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/currency_enum.dart';
 import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/functions/preferences.dart';
 
 class TransactionControllers with ChangeNotifier {
+  var id = 0;
   var amountCont = TextEditingController();
   var titleCont = TextEditingController();
   String dateVal = "";
@@ -47,9 +51,14 @@ class TransactionControllers with ChangeNotifier {
     notifyListeners();
   }
 
-  Transaction setTransaction(int id) {
+  setId(int id) {
+    this.id = id;
+  }
+
+  Transaction setTransaction(int id, int subId) {
     Transaction transaction = Transaction(id);
     transaction.setId(id);
+    transaction.setSubId(subId);
     transaction.setAmount(double.parse(amountCont.text));
     transaction.setDate(dateVal);
     transaction.setCurrency(currencyValue);
@@ -57,17 +66,60 @@ class TransactionControllers with ChangeNotifier {
     transaction.setTransactionType(transactionType.value);
     transaction.setServiceProvider(serviceProviderCont.text);
     transaction.setLabels(labels.value);
-    transaction.setNotes(notesCont.text);
+    transaction.setDetails(notesCont.text);
 
     return transaction;
   }
 
-  updateLists() {
+  void updateUserPreferences(
+      TransactionsListsNotifier transactionsListsNotifier) {
     updateList(labels.value, 'labels');
     updateList(paymentMethods.value, 'paymentMethods');
+    transactionsListsNotifier.setLabelsMap();
   }
 
   List<dynamic> buildTransactionListItem(Transaction transaction) {
     return transaction.convertToListItem();
+  }
+
+  onSave(BuildContext context, GlobalKey<FormState> formKey,
+      TransactionsListsNotifier transactionsListsNotifier) {
+    if (formKey.currentState!.validate()) {
+      showSnackbar(context);
+      saveTransaction(transactionsListsNotifier);
+      updateUserPreferences(transactionsListsNotifier);
+      Navigator.pop(context);
+    } else {
+      showSnackbar(context, error: true);
+    }
+  }
+
+  void savetransactions(TransactionsListsNotifier transactionsListsNotifier) {
+    if (repeatOptionCont.text != RepeatOptions.noRepeat.name) {
+    } else {
+      saveTransaction(transactionsListsNotifier);
+    }
+  }
+
+  void saveTransaction(TransactionsListsNotifier transactionsListsNotifier,
+      {int subId = 0}) {
+    Transaction transaction = setTransaction(id, subId);
+    List<dynamic> transactionListItem;
+    transactionListItem = buildTransactionListItem(transaction);
+
+    appendItemToCsv(transactionListItem);
+    transactionsListsNotifier.addTransaction(transaction);
+  }
+
+  void showSnackbar(BuildContext context, {bool error = false}) {
+    if (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Fix the data')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Processing Data')),
+      );
+    }
   }
 }

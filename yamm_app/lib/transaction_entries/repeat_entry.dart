@@ -1,17 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction_controllers.dart';
-
-enum RepeatOptions {
-  noRepeat('Does not repeat'),
-  daily('Day'),
-  weekly('Week'),
-  monthly('Month'),
-  yearly('Year');
-
-  const RepeatOptions(this.label);
-  final String label;
-}
+import 'package:yamm_app/repeat_enum.dart';
 
 class RepeatEntry extends StatefulWidget {
   final TransactionControllers controllers;

@@ -1,22 +1,22 @@
 import 'package:yamm_app/transaction_fields/transaction_field.dart';
 
-class DetailsField extends TransactionField {
+class SubIdField extends TransactionField {
   @override
-  int position = 9;
+  int position = 1;
   @override
-  Type type = String;
+  Type type = int;
   @override
-  String title = "details";
+  String title = "sub id";
   @override
-  dynamic value = "";
+  dynamic value = 0;
   @override
-  String strValue = "";
-  DetailsField() : super();
+  String strValue = "0";
+  SubIdField() : super();
 
   @override
   String converToString(dynamic val) {
-    if (value.runtimeType == type) {
-      return value;
+    if (val.runtimeType == type) {
+      return val.toString();
     } else {
       return "";
     }
@@ -24,6 +24,6 @@ class DetailsField extends TransactionField {
 
   @override
   dynamic converFromString(String val) {
-    return value;
+    return int.parse(val);
   }
 }

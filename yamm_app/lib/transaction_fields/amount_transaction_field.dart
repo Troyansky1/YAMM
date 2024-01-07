@@ -3,7 +3,7 @@ import 'package:yamm_app/transaction_fields/transaction_field.dart';
 
 class AmountField extends TransactionField {
   @override
-  int position = 1;
+  int position = 2;
   @override
   Type type = num;
   @override

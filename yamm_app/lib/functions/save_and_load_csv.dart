@@ -88,14 +88,15 @@ List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
   for (List<dynamic> textTransaction in lst) {
     Transaction transaction = Transaction(0);
     transaction.setId(textTransaction[0]);
-    transaction.setTransactionType(textTransaction[1]);
-    transaction.setAmount(textTransaction[2]);
-    transaction.setServiceProvider(textTransaction[3]);
-    transaction.setDate(textTransaction[4]);
-    transaction.setCurrency(textTransaction[5]);
-    transaction.setCategory(textTransaction[6]);
-    transaction.setLabels(textTransaction[7]);
-    transaction.setNotes(textTransaction[8]);
+    transaction.setSubId(textTransaction[1]);
+    transaction.setTransactionType(textTransaction[2]);
+    transaction.setAmount(textTransaction[3]);
+    transaction.setServiceProvider(textTransaction[4]);
+    transaction.setDate(textTransaction[5]);
+    transaction.setCurrency(textTransaction[6]);
+    transaction.setCategory(textTransaction[7]);
+    transaction.setLabels(textTransaction[8]);
+    transaction.setDetails(textTransaction[9]);
 
     transactionsList.add(transaction);
   }
@@ -107,7 +108,8 @@ int getLastID(List<Transaction> transactionsList) {
   List<Transaction> lst = transactionsList;
   int len = lst.length;
   if (len > 0) {
-    id = lst[len - 1].getId();
+    Transaction lastTransaction = lst[len - 1];
+    id = lastTransaction.getId() + 1;
     return id;
   } else {
     return 0;

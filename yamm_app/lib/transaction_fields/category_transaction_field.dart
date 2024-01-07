@@ -4,7 +4,7 @@ import 'package:yamm_app/user_preferences.dart';
 
 class CategoryField extends TransactionField {
   @override
-  int position = 6;
+  int position = 7;
   @override
   Type type = TransactionCategory;
   @override

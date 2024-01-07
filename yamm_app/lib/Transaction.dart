@@ -9,11 +9,11 @@ class Transaction {
   int maxAmount = 1000000;
   final int _id;
   final IdField _idField = IdField();
+  final SubIdField _subIdField = SubIdField();
   final AmountField _amountField = AmountField();
-
   final TransactionTypeField _transactionTypeField = TransactionTypeField();
   final ServiceProviderField _serviceProviderField = ServiceProviderField();
-  final NotesField _notesField = NotesField();
+  final DetailsField _detailsField = DetailsField();
   final DateField _dateField = DateField();
   final CurrencyField _currencyField = CurrencyField();
   final CategoryField _categoryField = CategoryField();
@@ -35,7 +35,7 @@ class Transaction {
       _dateField,
       _currencyField,
       _serviceProviderField,
-      _notesField
+      _detailsField
     ];
   }
 
@@ -48,6 +48,7 @@ class Transaction {
   void initMapFromList(List<String> lst) {
     transactionMap.addAll({
       'id': _idField.getStrValue(),
+      'subId': _subIdField.getStrValue(),
       'transactionType': _transactionTypeField.getStrValue,
       'amount': _amountField.getStrValue(),
       'serviceProvider': _serviceProviderField.getStrValue(),
@@ -55,13 +56,14 @@ class Transaction {
       'currency': _currencyField.getStrValue(),
       'category': _currencyField.getStrValue(),
       'lables': _lableField.getStrValue(),
-      'notes': _notesField.getStrValue()
+      'notes': _detailsField.getStrValue()
     });
   }
 
   void initMap() {
     transactionMap.addAll({
       'id': _idField.getStrValue(),
+      'subId': _subIdField.getStrValue(),
       'transactionType': _transactionTypeField.getStrValue(),
       'amount': _amountField.getStrValue(),
       'serviceProvider': _serviceProviderField.getStrValue(),
@@ -69,12 +71,24 @@ class Transaction {
       'currency': _currencyField.getStrValue(),
       'category': _categoryField.getStrValue(),
       'lables': _lableField.getStrValue(),
-      'notes': _notesField.getStrValue()
+      'notes': _detailsField.getStrValue()
     });
   }
 
   void setId(dynamic id) {
     _idField.setValue(id);
+  }
+
+  int getId() {
+    return _idField.getValue();
+  }
+
+  void setSubId(dynamic subId) {
+    _subIdField.setValue(subId);
+  }
+
+  int getSubId() {
+    return _subIdField.getValue();
   }
 
   bool setAmount(dynamic enteredAmount) {
@@ -147,20 +161,16 @@ class Transaction {
     return _serviceProviderField.getStrValue();
   }
 
-  bool setNotes(notes) {
+  bool setDetails(notes) {
     if (notes != "") {
-      _notesField.setValue(notes);
+      _detailsField.setValue(notes);
       return true;
     }
     return false;
   }
 
-  String getNotes() {
-    return _notesField.getStrValue();
-  }
-
-  int getId() {
-    return IdField().getValue();
+  String getDetails() {
+    return _detailsField.getStrValue();
   }
 
   List convertToListItem() {
