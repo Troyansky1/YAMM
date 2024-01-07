@@ -31,7 +31,8 @@ class TransactionControllers with ChangeNotifier {
   ValueNotifier<TransactionType> transactionType =
       ValueNotifier<TransactionType>(defaultTransactionType);
 
-  void initControllers() {
+  void initControllers(int id) {
+    this.id = id;
     amountCont.text = "";
     titleCont.text = "";
     //isOutcomeCont.text = "";

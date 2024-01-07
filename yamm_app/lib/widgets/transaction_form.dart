@@ -23,13 +23,14 @@ class TransactionEntryForm extends StatefulWidget {
 
 class TransactionEntryFormState extends State<TransactionEntryForm> {
   TransactionControllers controllers = TransactionControllers();
+
   final _formKey = GlobalKey<FormState>();
 
   late FocusNode myFocusNode;
 
   @override
   void initState() {
-    controllers.initControllers();
+    controllers.initControllers(widget.id);
     super.initState();
 
     myFocusNode = FocusNode();
