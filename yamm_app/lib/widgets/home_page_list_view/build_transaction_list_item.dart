@@ -67,9 +67,12 @@ class BuildTransactionListItems {
   static Row buildDebugRow(Transaction transaction) {
     DateTime date = transaction.getDate();
     int id = transaction.getId();
-    String formattedDate = DateFormat(transactionDateFormat).format(date);
-    Row dateRow = Row(
-        children: <Widget>[Text(formattedDate), Text("  ${id.toString()}")]);
+    int subId = transaction.getSubId();
+    String formattedDate = DateFormat(presentDateFormat).format(date);
+    Row dateRow = Row(children: <Widget>[
+      Text(
+          "date: $formattedDate   id: ${id.toString()}   sub id: ${subId.toString()}")
+    ]);
     return dateRow;
   }
 
@@ -117,7 +120,7 @@ class BuildTransactionListItems {
     rows.addAll([
       buildServiceProviderRow(transaction),
       buildNotesRow(transaction),
-      //buildDebugRow(transaction),
+      buildDebugRow(transaction),
       buildCategoryRow(transaction)
     ]);
     return Container(
