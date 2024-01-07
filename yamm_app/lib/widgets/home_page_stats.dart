@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/functions/calc_stats.dart';
 import 'package:yamm_app/transaction.dart';
-import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/enum_types/transaction_type_enum.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
 

@@ -1,4 +1,4 @@
-import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/enum_types/category_enum.dart';
 import 'package:yamm_app/transaction_fields/transaction_field.dart';
 import 'package:yamm_app/user_preferences.dart';
 

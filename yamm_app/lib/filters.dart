@@ -1,4 +1,4 @@
-import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/enum_types/category_enum.dart';
 
 class Filters {
   int yearFilter = DateTime.now().year;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/enum_types/category_enum.dart';
 import 'package:yamm_app/filters.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/widgets/home_page_filter/filter%20_list_widgets.dart';

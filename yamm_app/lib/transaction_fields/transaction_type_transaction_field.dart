@@ -1,5 +1,5 @@
 import 'package:yamm_app/transaction_fields/transaction_field.dart';
-import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/enum_types/transaction_type_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
 
 class TransactionTypeField extends TransactionField {

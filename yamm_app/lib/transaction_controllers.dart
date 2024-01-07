@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/enum_types/category_enum.dart';
 import 'package:yamm_app/functions/save_and_load_csv.dart';
-import 'package:yamm_app/repeat_enum.dart';
+import 'package:yamm_app/enum_types/repeat_enum.dart';
 import 'package:yamm_app/transaction.dart';
-import 'package:yamm_app/currency_enum.dart';
-import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/enum_types/currency_enum.dart';
+import 'package:yamm_app/enum_types/transaction_type_enum.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
 import 'package:yamm_app/functions/preferences.dart';

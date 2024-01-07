@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:yamm_app/transaction_controllers.dart';
 import 'package:yamm_app/user_preferences.dart';
-import 'package:yamm_app/currency_enum.dart';
+import 'package:yamm_app/enum_types/currency_enum.dart';
 
 class CurrencyEntry extends StatefulWidget {
   //final Widget child;

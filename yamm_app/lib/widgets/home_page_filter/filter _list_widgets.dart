@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/enum_types/category_enum.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 

@@ -1,6 +1,5 @@
-import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/enum_types/enum_types.dart';
 import 'package:yamm_app/transaction.dart';
-import 'package:yamm_app/transaction_type_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
 
 List<Transaction> filterListCategories(

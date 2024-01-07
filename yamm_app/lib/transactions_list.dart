@@ -4,7 +4,7 @@ import 'package:yamm_app/functions/preferences.dart';
 import 'package:yamm_app/functions/save_and_load_csv.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/functions/filter_transactions.dart';
-import 'package:yamm_app/category_enum.dart';
+import 'package:yamm_app/enum_types/category_enum.dart';
 import 'package:yamm_app/user_preferences.dart';
 
 enum DateFrames { year, month, day }

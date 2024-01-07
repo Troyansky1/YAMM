@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yamm_app/transaction_controllers.dart';
-import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/enum_types/transaction_type_enum.dart';
 
 class IncomeOutcomeEntry extends StatefulWidget {
   //final Widget child;

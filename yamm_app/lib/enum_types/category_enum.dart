@@ -1,4 +1,4 @@
-import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/enum_types/transaction_type_enum.dart';
 
 enum TransactionCategory {
   others(

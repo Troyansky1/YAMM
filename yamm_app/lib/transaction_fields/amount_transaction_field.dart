@@ -1,4 +1,4 @@
-import 'package:yamm_app/currency_enum.dart';
+import 'package:yamm_app/enum_types/currency_enum.dart';
 import 'package:yamm_app/transaction_fields/transaction_field.dart';
 
 class AmountField extends TransactionField {

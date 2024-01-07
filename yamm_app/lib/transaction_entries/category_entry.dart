@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yamm_app/transaction_controllers.dart';
-import 'package:yamm_app/category_enum.dart';
-import 'package:yamm_app/transaction_type_enum.dart';
+import 'package:yamm_app/enum_types/enum_types.dart';
 import 'package:yamm_app/user_preferences.dart';
 
 class CategoryEntry extends StatefulWidget {

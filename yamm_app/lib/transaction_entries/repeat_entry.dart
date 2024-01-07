@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction_controllers.dart';
-import 'package:yamm_app/repeat_enum.dart';
+import 'package:yamm_app/enum_types/repeat_enum.dart';
 
 class RepeatEntry extends StatefulWidget {
   final TransactionControllers controllers;
