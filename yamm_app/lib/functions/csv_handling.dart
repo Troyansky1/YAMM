@@ -72,7 +72,16 @@ deleteCsv() async {
   );
 }
 
-Future<List<Transaction>> readListFromCsv() async {
+Future<List<Transaction>> getTransactionsListFromCsv() async {
+  List<List<dynamic>> CsvLst = await getListFromCsv();
+  List<Transaction> transactionsList = List<Transaction>.empty(growable: true);
+  for (List<dynamic> textTransaction in CsvLst) {
+    transactionsList.add(buildTransactionItem(textTransaction));
+  }
+  return transactionsList;
+}
+
+Future<List<List<dynamic>>> getListFromCsv() async {
   File file = await getCsvFile();
   final input = file.openRead();
   final fields = await input
@@ -80,25 +89,20 @@ Future<List<Transaction>> readListFromCsv() async {
       .transform(const CsvToListConverter())
       .toList();
 
-  return buildTransactionItemFromCsv(fields);
+  return fields;
 }
 
-List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
-  List<Transaction> transactionsList = List<Transaction>.empty(growable: true);
-  for (List<dynamic> textTransaction in lst) {
-    Transaction transaction = Transaction(0);
-    transaction.setId(textTransaction[0]);
-    transaction.setSubId(textTransaction[1]);
-    transaction.setTransactionType(textTransaction[2]);
-    transaction.setAmount(textTransaction[3]);
-    transaction.setServiceProvider(textTransaction[4]);
-    transaction.setDate(textTransaction[5]);
-    transaction.setCurrency(textTransaction[6]);
-    transaction.setCategory(textTransaction[7]);
-    transaction.setLabels(textTransaction[8]);
-    transaction.setDetails(textTransaction[9]);
-
-    transactionsList.add(transaction);
-  }
-  return transactionsList;
+buildTransactionItem(List<dynamic> textTransaction) {
+  Transaction transaction = Transaction(0);
+  transaction.setId(textTransaction[0]);
+  transaction.setSubId(textTransaction[1]);
+  transaction.setTransactionType(textTransaction[2]);
+  transaction.setAmount(textTransaction[3]);
+  transaction.setServiceProvider(textTransaction[4]);
+  transaction.setDate(textTransaction[5]);
+  transaction.setCurrency(textTransaction[6]);
+  transaction.setCategory(textTransaction[7]);
+  transaction.setLabels(textTransaction[8]);
+  transaction.setDetails(textTransaction[9]);
+  return transaction;
 }

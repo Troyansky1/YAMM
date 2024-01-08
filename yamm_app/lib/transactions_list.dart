@@ -26,10 +26,8 @@ class TransactionsListsNotifier with ChangeNotifier {
 
   void setList(List<Transaction> lst) {
     transactionsList.value = lst;
-    filteredTransactionsList.value = lst;
-    _filterListDate(lst);
-    _filterListFields(lst);
     transactionsListId.value = getLastID(transactionsList.value);
+    updateFilters(date: true, fields: true);
     notifyListeners();
   }
 
@@ -37,6 +35,14 @@ class TransactionsListsNotifier with ChangeNotifier {
     transactionsList.value.add(transaction);
     filteredTransactionsList.value = transactionsList.value;
     transactionsListId.value = getLastID(transactionsList.value);
+    appendToList(transaction.convertToListItem());
+    notifyListeners();
+  }
+
+  void removeTransaction(int id, {int subId = 0}) {
+    transactionsList.value
+        .removeWhere((element) => element.isEqual(id: id, subId: subId));
+    updateFilters(date: true, fields: true);
     notifyListeners();
   }
 

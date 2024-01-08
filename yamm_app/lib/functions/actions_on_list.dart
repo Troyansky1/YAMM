@@ -10,7 +10,7 @@ initList() async {
 }
 
 Future<List<Transaction>> readList() async {
-  return readListFromCsv();
+  return getTransactionsListFromCsv();
 }
 
 deleteList() async {
@@ -19,6 +19,10 @@ deleteList() async {
 
 appendToList(List<dynamic> item) async {
   appendItemToCsv(item);
+}
+
+rewriteList(List<List<dynamic>> transactionsList) async {
+  writeListToCsv(transactionsList);
 }
 
 int getLastID(List<Transaction> transactionsList) {
