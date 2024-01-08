@@ -161,15 +161,15 @@ class _BuildTransactionListItemsState extends State<BuildTransactionListItems> {
     ]);
     return Dismissible(
         key: UniqueKey(),
-        background: Container(
+        secondaryBackground: Container(
             alignment: Alignment.centerRight,
             color: const Color.fromARGB(255, 196, 77, 68),
             child: const Padding(
               padding: EdgeInsets.all(20),
               child: Icon(Icons.delete),
             )),
-        secondaryBackground: Container(
-            alignment: Alignment.centerRight,
+        background: Container(
+            alignment: Alignment.centerLeft,
             color: Color.fromARGB(255, 138, 135, 135),
             child: const Padding(
               padding: EdgeInsets.all(20),
@@ -181,7 +181,11 @@ class _BuildTransactionListItemsState extends State<BuildTransactionListItems> {
               widget.transactionsListsNotifier
                   .removeTransaction(widget.transaction, context);
             });
-          } else if (direction == DismissDirection.startToEnd) {}
+          } else if (direction == DismissDirection.startToEnd) {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Currently can't edit, please refresh")));
+          }
         },
         child: Container(
           width: width,
