@@ -177,7 +177,7 @@ class Transaction {
     return valuesList;
   }
 
-  List convertKeysToListItem() {
+  List<String> convertKeysToListItem() {
     initMap();
     final valuesList = transactionMap.keys.toList(growable: false);
     return valuesList;

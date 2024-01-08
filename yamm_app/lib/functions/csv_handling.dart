@@ -13,7 +13,7 @@ getCsvFile() async {
   return file;
 }
 
-genFileForExport() async {
+genCsvFileForExport() async {
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   final String formatted = formatter.format(now);
@@ -22,14 +22,14 @@ genFileForExport() async {
   return File('$downloadsDirectoryPath/Transactions_$formatted.csv');
 }
 
-exportToDownloads() async {
+exportCsvToDownloads() async {
   File importFile = await getCsvFile();
   final input = importFile.openRead();
   final fields = await input
       .transform(utf8.decoder)
       .transform(const CsvToListConverter())
       .toList();
-  File downloadsFile = await genFileForExport();
+  File downloadsFile = await genCsvFileForExport();
   writeListToCsv(fields, downloadsFile);
 }
 
@@ -101,17 +101,4 @@ List<Transaction> buildTransactionItemFromCsv(List<List<dynamic>> lst) {
     transactionsList.add(transaction);
   }
   return transactionsList;
-}
-
-int getLastID(List<Transaction> transactionsList) {
-  int id;
-  List<Transaction> lst = transactionsList;
-  int len = lst.length;
-  if (len > 0) {
-    Transaction lastTransaction = lst[len - 1];
-    id = lastTransaction.getId() + 1;
-    return id;
-  } else {
-    return 0;
-  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yamm_app/enum_types/category_enum.dart';
-import 'package:yamm_app/functions/save_and_load_csv.dart';
+import 'package:yamm_app/functions/csv_handling.dart';
 import 'package:yamm_app/enum_types/repeat_enum.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:yamm_app/enum_types/currency_enum.dart';
@@ -79,7 +79,7 @@ class TransactionControllers with ChangeNotifier {
     transactionsListsNotifier.setLabelsMap();
   }
 
-  List<dynamic> buildTransactionListItem(Transaction transaction) {
+  List buildTransactionListItem(Transaction transaction) {
     return transaction.convertToListItem();
   }
 
@@ -105,7 +105,7 @@ class TransactionControllers with ChangeNotifier {
   void saveTransaction(TransactionsListsNotifier transactionsListsNotifier,
       {int subId = 0}) {
     Transaction transaction = setTransaction(id, subId);
-    List<dynamic> transactionListItem;
+    List transactionListItem;
     transactionListItem = buildTransactionListItem(transaction);
 
     appendItemToCsv(transactionListItem);

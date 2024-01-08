@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yamm_app/functions/actions_on_list.dart';
 import 'package:yamm_app/functions/dialogs.dart';
-import 'package:yamm_app/functions/save_and_load_csv.dart';
+import 'package:yamm_app/functions/csv_handling.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -82,7 +83,7 @@ class _SettingsState extends State<Settings>
                     ),
                     trailing: const Icon(Icons.keyboard_arrow_right),
                     onTap: () {
-                      exportToDownloads();
+                      exportList();
                     },
                   )
                 ],

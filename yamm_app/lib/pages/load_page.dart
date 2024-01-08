@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yamm_app/functions/actions_on_list.dart';
 import 'package:yamm_app/functions/preferences.dart';
 import 'package:yamm_app/pages/home_page.dart';
 import 'package:yamm_app/transaction.dart';
-import 'package:yamm_app/functions/save_and_load_csv.dart';
 import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
 
@@ -32,7 +32,7 @@ class _MyLoadPageState extends State<LoadPage> {
 
   Future<void> loadList() async {
     try {
-      importedTransactionsList = readListFromCsv();
+      importedTransactionsList = readList();
       setState(() {
         importedTransactionsList = importedTransactionsList;
       });
@@ -47,8 +47,8 @@ class _MyLoadPageState extends State<LoadPage> {
     setPreferenceList('labels', defaultLabelsList);
     setPreferenceList('paymentMethods', defaultPaymentMethods);
     if (!hasOpened) {
-      await initCsv();
-      lists.setList(await readListFromCsv());
+      await initList();
+      lists.setList(await readList());
       lists.updateFilters(date: true);
       setState(() {
         isLoading = false;
@@ -56,14 +56,14 @@ class _MyLoadPageState extends State<LoadPage> {
       prefs.setBool('hasOpened', true);
     } else {
       try {
-        lists.setList(await readListFromCsv());
+        lists.setList(await readList());
         lists.updateFilters(date: true);
         setState(() {
           isLoading = false;
         });
       } catch (e) {
-        exportToDownloads();
-        deleteCsv();
+        exportList();
+        deleteList();
       }
     }
   }
