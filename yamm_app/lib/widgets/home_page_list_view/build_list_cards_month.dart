@@ -104,7 +104,11 @@ class _BuildListCardsMonthState extends State<BuildListCardsMonth> {
       expandOnInitialInsertion: true,
       duration: defaultExpandDuration,
       builder: (BuildContext context, transaction, int index) {
-        return BuildTransactionListItems.buildListItem(transaction, context);
+        return BuildTransactionListItems(
+            transactionsListsNotifier: widget.transactionsListsNotifier,
+            transaction: transaction,
+            index: index,
+            context: context);
       },
     );
 

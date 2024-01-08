@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:yamm_app/filters.dart';
 import 'package:yamm_app/functions/actions_on_list.dart';
@@ -28,7 +30,7 @@ class TransactionsListsNotifier with ChangeNotifier {
     transactionsList.value = lst;
     transactionsListId.value = getLastID(transactionsList.value);
     updateFilters(date: true, fields: true);
-    notifyListeners();
+    notify();
   }
 
   void addTransaction(Transaction transaction) {
@@ -36,23 +38,28 @@ class TransactionsListsNotifier with ChangeNotifier {
     filteredTransactionsList.value = transactionsList.value;
     transactionsListId.value = getLastID(transactionsList.value);
     appendToList(transaction.convertToListItem());
-    notifyListeners();
+    notify();
   }
 
-  void removeTransaction(int id, {int subId = 0}) {
+  void removeTransaction(Transaction transaction, BuildContext context) {
+    int id = transaction.getId();
+    int subId = transaction.getSubId();
     transactionsList.value
         .removeWhere((element) => element.isEqual(id: id, subId: subId));
     updateFilters(date: true, fields: true);
-    notifyListeners();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("Deleted item")));
+    rewriteList(transactionsList.value);
+    notify();
   }
 
   void notify() {
     notifyListeners();
+    filters.value.notify = true;
   }
 
   void setyearFromPicker(BuildContext context) async {}
-
-  void deleteListItem(int id) {}
 
   void editListItem(int id, Transaction transaction) {}
 

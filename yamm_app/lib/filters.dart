@@ -8,4 +8,5 @@ class Filters {
   final Map<TransactionCategory, bool> categoryFilters = {};
   bool filterLabels = false;
   final Map<String, bool> labelsFilters = {};
+  bool notify = true;
 }

@@ -168,7 +168,7 @@ class Transaction {
   }
 
   bool isEqual({int id = 0, int subId = 0}) {
-    if (id == getId() || subId == getSubId()) {
+    if (id == getId() && subId == getSubId()) {
       return true;
     }
     return false;

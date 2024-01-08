@@ -30,7 +30,7 @@ exportCsvToDownloads() async {
       .transform(const CsvToListConverter())
       .toList();
   File downloadsFile = await genCsvFileForExport();
-  writeListToCsv(fields, downloadsFile);
+  writeListToCsv(fields, file: downloadsFile);
 }
 
 initCsv() async {
@@ -44,8 +44,9 @@ initCsv() async {
   );
 }
 
-writeListToCsv(List<List<dynamic>> lst, File file) async {
-  file.open(mode: FileMode.append);
+writeListToCsv(List<List<dynamic>> lst, {File? file}) async {
+  file ??= await getCsvFile();
+  file!.open(mode: FileMode.append);
   // Added delimiters at the eof
   String valuesCSV = "${const ListToCsvConverter().convert(lst)}\r\n";
 
@@ -59,7 +60,7 @@ appendItemToCsv(List<dynamic> item) async {
   List<List<dynamic>> lst = [];
   lst.add(item);
   File file = await getCsvFile();
-  writeListToCsv(lst, file);
+  writeListToCsv(lst);
 }
 
 deleteCsv() async {

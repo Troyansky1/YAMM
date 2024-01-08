@@ -44,8 +44,11 @@ class _BuildListCardsDayState extends State<BuildListCardsDay> {
     return SliverList.builder(
       itemCount: filteredTransactionsList.length,
       itemBuilder: (BuildContext context, int index) {
-        return BuildTransactionListItems.buildListItem(
-            filteredTransactionsList[index], context);
+        return BuildTransactionListItems(
+            transactionsListsNotifier: widget.transactionsListsNotifier,
+            transaction: filteredTransactionsList[index],
+            index: index,
+            context: context);
       },
     );
   }

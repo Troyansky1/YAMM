@@ -3,11 +3,27 @@ import 'package:intl/intl.dart';
 import 'package:yamm_app/transaction.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yamm_app/enum_types/transaction_type_enum.dart';
+import 'package:yamm_app/transactions_list.dart';
 import 'package:yamm_app/user_preferences.dart';
 
-class BuildTransactionListItems {
-  BuildTransactionListItems();
+class BuildTransactionListItems extends StatefulWidget {
+  final int index;
+  final Transaction transaction;
+  final TransactionsListsNotifier transactionsListsNotifier;
+  final BuildContext context;
+  const BuildTransactionListItems(
+      {super.key,
+      required this.transactionsListsNotifier,
+      required this.transaction,
+      required this.index,
+      required this.context});
 
+  @override
+  State<BuildTransactionListItems> createState() =>
+      _BuildTransactionListItemsState();
+}
+
+class _BuildTransactionListItemsState extends State<BuildTransactionListItems> {
   static Container buildAmountContainer(Transaction transaction, double width) {
     String amount = transaction.getAmountString();
     TextStyle amountStyle = const TextStyle();
@@ -134,32 +150,55 @@ class BuildTransactionListItems {
     );
   }
 
-  static Container buildListItem(
-      Transaction transaction, BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     List<Widget> columns = List<Widget>.empty(growable: true);
     double width = MediaQuery.of(context).size.width;
     columns.addAll([
-      buildDetailsContainer(transaction, width),
-      buildAmountContainer(transaction, width),
-      //buildEditContainer(transaction, width)
+      buildDetailsContainer(widget.transaction, width),
+      buildAmountContainer(widget.transaction, width),
+      //buildEditContainer(widget.transaction, width)
     ]);
-    //log("Building a list item");
-    return Container(
-      width: width,
-      foregroundDecoration: BoxDecoration(
-        borderRadius: const BorderRadius.horizontal(),
-        border: Border.all(
-          width: 1,
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: columns,
-        ),
-      ),
-    );
+    return Dismissible(
+        key: UniqueKey(),
+        background: Container(
+            alignment: Alignment.centerRight,
+            color: const Color.fromARGB(255, 196, 77, 68),
+            child: const Padding(
+              padding: EdgeInsets.all(20),
+              child: Icon(Icons.delete),
+            )),
+        secondaryBackground: Container(
+            alignment: Alignment.centerRight,
+            color: Color.fromARGB(255, 138, 135, 135),
+            child: const Padding(
+              padding: EdgeInsets.all(20),
+              child: Icon(Icons.edit),
+            )),
+        onDismissed: (direction) {
+          if (direction == DismissDirection.endToStart) {
+            setState(() {
+              widget.transactionsListsNotifier
+                  .removeTransaction(widget.transaction, context);
+            });
+          } else if (direction == DismissDirection.startToEnd) {}
+        },
+        child: Container(
+          width: width,
+          foregroundDecoration: BoxDecoration(
+            borderRadius: const BorderRadius.horizontal(),
+            border: Border.all(
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: columns,
+            ),
+          ),
+        ));
   }
 }

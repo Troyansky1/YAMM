@@ -21,8 +21,11 @@ appendToList(List<dynamic> item) async {
   appendItemToCsv(item);
 }
 
-rewriteList(List<List<dynamic>> transactionsList) async {
-  writeListToCsv(transactionsList);
+rewriteList(List<Transaction> transactionsList) async {
+  List<List<dynamic>> listToFile =
+      transactionsList.map((element) => element.convertToListItem()).toList();
+  deleteList();
+  writeListToCsv(listToFile);
 }
 
 int getLastID(List<Transaction> transactionsList) {
