@@ -8,3 +8,5 @@ export 'package:yamm_app/transaction_fields/service_provider_transaction_field.d
 export 'package:yamm_app/transaction_fields/currency_transaction_field.dart';
 export 'package:yamm_app/transaction_fields/category_transaction_field.dart';
 export 'package:yamm_app/transaction_fields/lable_transaction_field.dart';
+export 'package:yamm_app/transaction_fields/notes_transaction_field.dart';
+export 'package:yamm_app/transaction_fields/repeat_transaction_field.dart';

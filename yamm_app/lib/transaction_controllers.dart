@@ -39,7 +39,7 @@ class TransactionControllers with ChangeNotifier {
     dateVal = DateFormat(transactionDateFormat).format(DateTime.now());
     serviceProviderCont.text = "";
     notesCont.text = "";
-    repeatOptionCont.text = "";
+    repeatOptionCont.text = RepeatOptions.noRepeat.name;
     endDateCont.text = "";
   }
 
@@ -67,6 +67,7 @@ class TransactionControllers with ChangeNotifier {
     transaction.setServiceProvider(serviceProviderCont.text);
     transaction.setLabels(labels.value);
     transaction.setDetails(notesCont.text);
+    transaction.setRepeatOption(repeatOptionCont.text);
 
     return transaction;
   }

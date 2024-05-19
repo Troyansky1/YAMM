@@ -16,6 +16,7 @@ class Transaction {
   final CurrencyField _currencyField = CurrencyField();
   final CategoryField _categoryField = CategoryField();
   final LableField _lableField = LableField();
+  final RepeatField _repeatField = RepeatField();
   String paymentMethod = "";
   String notes = "notes";
   List<TransactionField?> fieldsList = [];
@@ -33,7 +34,8 @@ class Transaction {
       _dateField,
       _currencyField,
       _serviceProviderField,
-      _detailsField
+      _detailsField,
+      _repeatField
     ];
   }
 
@@ -54,7 +56,8 @@ class Transaction {
       'currency': _currencyField.getStrValue(),
       'category': _currencyField.getStrValue(),
       'lables': _lableField.getStrValue(),
-      'notes': _detailsField.getStrValue()
+      'notes': _detailsField.getStrValue(),
+      'repeat': _repeatField.getStrValue()
     });
   }
 
@@ -69,7 +72,8 @@ class Transaction {
       'currency': _currencyField.getStrValue(),
       'category': _categoryField.getStrValue(),
       'lables': _lableField.getStrValue(),
-      'notes': _detailsField.getStrValue()
+      'notes': _detailsField.getStrValue(),
+      'repeat': _repeatField.getStrValue()
     });
   }
 
@@ -167,15 +171,24 @@ class Transaction {
     return false;
   }
 
+  String getDetails() {
+    return _detailsField.getStrValue();
+  }
+
+  bool setRepeatOption(dynamic repeatOption) {
+    _repeatField.setValue(repeatOption);
+    return true;
+  }
+
+  List<String> getRepeatOption() {
+    return _repeatField.value;
+  }
+
   bool isEqual({int id = 0, int subId = 0}) {
     if (id == getId() && subId == getSubId()) {
       return true;
     }
     return false;
-  }
-
-  String getDetails() {
-    return _detailsField.getStrValue();
   }
 
   List convertToListItem() {

@@ -136,7 +136,7 @@ class _BuildTransactionListItemsState extends State<BuildTransactionListItems> {
     rows.addAll([
       buildServiceProviderRow(transaction),
       buildNotesRow(transaction),
-      buildDebugRow(transaction),
+      //buildDebugRow(transaction),
       buildCategoryRow(transaction)
     ]);
     return Container(

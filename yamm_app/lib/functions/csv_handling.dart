@@ -105,5 +105,6 @@ buildTransactionItem(List<dynamic> textTransaction) {
   transaction.setCategory(textTransaction[7]);
   transaction.setLabels(textTransaction[8]);
   transaction.setDetails(textTransaction[9]);
+  transaction.setRepeatOption(textTransaction[10]);
   return transaction;
 }
